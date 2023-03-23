@@ -1,0 +1,17 @@
+//SpectrumServerConfigDBBackup.cli
+
+//Connect with Spectrum Server
+connect --h localhost:8080 --u admin --p admin
+//connect --h localhost:8443 --u admin --p admin --s true
+
+
+// Backup Spectrum Server Configuration Database
+//The configuration database contains your security settings, dataflows, service options, data resource definitions, snapshots, and various configuration settings.
+//If you were to lose your server due to a system failure or other disaster, you could use the backup of the configuration database to restore your configuration to another Spectrum Technology Platform server.
+//Important: Do not run a backup when there is activity on the Spectrum Technology Platform server. While the backup is in progress, calls to services may time out and jobs may fail to execute successfully.
+
+//server backup  --o C:\backup\
+server backup  --o /backup/
+
+// Close connection to the server
+close

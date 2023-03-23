@@ -1,0 +1,14 @@
+//HubModelSchemaExport.cli
+
+//Connect with Spectrum Server
+connect --h localhost:8080 --u admin --p admin
+//connect --h localhost:8443 --u admin --p admin --s true
+
+//Export a Data Hub model, its metadata, its monitors,
+//and its queries. If you do not specify a path to where you would like the model exported, the system
+//export the model to the current working directory using the name you specify
+//hub schema export --m MasterCustomerModel --f C:/migration
+hub schema export --m MasterCustomerModel --f /migration
+
+// Close connection to the server
+close

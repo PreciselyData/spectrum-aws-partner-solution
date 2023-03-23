@@ -1,0 +1,21 @@
+//LimRepoImport.cli
+
+//Connect with Spectrum Server
+connect --h localhost:8080 --u admin --p admin
+//connect --h localhost:8443 --u admin --p admin --s true
+
+
+//Import named resources (such as named tables) from a local file system into the Spectrum Spatial repository
+//When importing, you must point to the same folder or directory you exported to previously
+//The limrepo import command will always recursively import all folders, including empty ones.
+//After performing an import, in many cases, you will need to adjust the named connections to point
+//to their new path using Spectrum Spatial Manager. For example, if your Native TAB files were installed
+//on C:\myfiles in your test instance and the same files are installed on
+//E:\ApplicationData\Spectrum\Spatial\Q3 then that connection would have to be corrected
+//in Spectrum Spatial Manager after import.
+
+//limrepo import --s C:\migration\samples
+limrepo import --s /migration/samples
+
+// Close connection to the server
+close

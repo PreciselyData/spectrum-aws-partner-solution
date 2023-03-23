@@ -1,0 +1,24 @@
+//UAMResourceCreate
+
+//Connect with Spectrum Server
+connect --h localhost:8080 --u admin --p admin
+//connect --h localhost:8443 --u admin --p admin --s true
+
+
+
+//Delete an existing UAM Resource and create a new UAM Resource
+//uamdb delete --t USA --n UAMDB
+//uamdb create --t Type --n Name --c CacheSize --i Country --pl PreloadingType --dt DatabaseType --b BasePath --d DPVPath --l LACSPath --s SuiteLinkPath --r RDIPath --e EWSPath --p Poolsize --mm minimumMemorySize --mx maximumMemorySize
+uamdb create --n UAMDB --t USA --b MAR2023 --d MAR2023 --l MAR2023 --s MAR2023 --r MAR2023
+//uamdb create --t CAN --n UAM_DB_CAN --b MAR2023
+
+
+//Delete an existing GAM Resource and create a new GAM Resource
+//gamdb delete --n Name --g Group
+//gamdb create --n Name --d Dataset Name --v Dataset Vintage --c Country --t Type --g Group --p Poolsize--mn minimum_memory_size --mx maximum_memory_size
+//gamdb delete --n GAV_DEU
+//gamdb create --n GAV_DEU --d GAV_EMEA --v MAY2022 --c DEU --t GAV --g Global --p 5 --mn 12200 --mx 65536
+
+
+//close connection to the server
+close

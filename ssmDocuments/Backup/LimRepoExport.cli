@@ -1,0 +1,17 @@
+//LimRepoExport.cli
+
+//Connect with Spectrum Server
+connect --h localhost:8080 --u admin --p admin
+//connect --h localhost:8443 --u admin --p admin --s true
+
+//Export named resources (such as named tables) from the Spectrum Spatial repository to a local file system
+//Resources are exported with their full repository paths in the target folder
+//For example, if you run limrepo export --s /Samples/NamedTables --o C:\export, the tool creates
+//C:\export\Samples\NamedTables\WorldTable, and so on for each named table under the NamedTables folder or directory
+//The limrepo export command will always recursively export all folders, including empty ones
+// "r" param recursively exports subfolders (children of the specified source)(true is default)
+//limrepo export --s /Samples --o C:\migration\samples
+limrepo export --s /Samples --o /migration/samples
+
+// Close connection to the server
+close

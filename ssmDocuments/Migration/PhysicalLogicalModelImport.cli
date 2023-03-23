@@ -1,0 +1,29 @@
+// PhysicalLogicalModelImport.cli
+
+// Connect with Spectrum Server
+connect --h localhost:8080 --u admin --p admin
+//connect --h localhost:8443 --u admin --p admin --s true
+
+// Import physical model the specified physical model file and its metadata to Discovery
+// "u" Specifies that the imported model is to update the existing model of same name
+//physicalmodel import --i C:/migration/mi_physicalModel_PM_XXX.smipm --u true
+//physicalmodel import --i /migration/mi_physicalModel_PM_XXX.smipm --u true
+
+//Import the specified logical model and its metadata to Discovery. 
+//To import the logical model along with its dependent physical models, use the importDependency "d" argument
+//PRE-00219521 The issue is that the cli exports the model files and folders with a “\” in front of the file names and directories on Linux.
+//Engineering suggested that we can overcome this by adding slash in model name which is added while exporting them
+//mv "\mi_physicalModel_PM_CIMD.smipm" mi_physicalModel_PM_CIMD.smipm
+//logicalmodel import --i /PBcfg/migration/\mi_logicalModel_LM_PROXY.smilm --u true --d false
+logicalmodel import --i /migration/mi_logicalModel_LM_XXX.smilm --u true --d true
+
+// Import the specified model store file to the Discovery
+modelstore import --i /migration/mi_modelStore_MS_XXX.smims --u true --d false
+//deploy the specified model store to the Spectrum server
+modelstore deploy --n MS_XXX
+
+//Create a connection between Spectrum Technology Platform and a database
+dbconnection add --n DC_MS_XXX --d "Model Store" --l "modelstore:MS_XXX"
+
+// Close connection to the server
+close

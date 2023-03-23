@@ -1,0 +1,16 @@
+//HubModelSchemaImport.cli
+
+//Connect with Spectrum Server
+connect --h localhost:8080 --u admin --p admin
+//connect --h localhost:8443 --u admin --p admin --s true
+
+
+//Import a Data Hub model, its metadata, its monitors,
+//and its queries. If you do not specify a path where you would like the model imported, the system
+//will look for a file of the name you specify in the current working directory
+//hub schema import --m MasterCustomerModel --f C:/migration
+//hub schema import --m MasterCustomerModel --f C:\migration
+hub schema import --m MasterCustomerModel --f /migration
+
+// Close connection to the server
+close

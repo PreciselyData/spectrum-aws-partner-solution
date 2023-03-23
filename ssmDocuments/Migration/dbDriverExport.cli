@@ -1,0 +1,13 @@
+//dbDriverExport
+
+//Connect with Spectrum Server
+connect --h localhost:8080 --u admin --p admin
+//connect --h localhost:8443 --u admin --p admin --s true
+
+//Export a JDBC driver definition to a JSON file. It does not export driver files, only the driver definition created in Management Console
+//dbdriver export --n "DB2" --o C:/migration/
+dbdriver export --n "DB2" --o /migration/
+
+
+// Close connection to the server
+close

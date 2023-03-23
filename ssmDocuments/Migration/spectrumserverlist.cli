@@ -1,0 +1,182 @@
+//spectrumserverlist.cli
+
+// Connect with Spectrum Server
+connect --h lxv101143:8080 --u admin --p admin
+
+
+//List  license information such as which licenses are installed, the number of days remaining on the license, and the number of transactions remaining
+licenseinfo list
+
+//List all dataflows on the server
+dataflow list
+
+
+//list the dataflows that are locked for editing by a user
+dataflow lock list
+
+//list all Process Flows on the server
+processflow list
+
+//List services exposed on the server
+service list
+
+
+//List the options in effect for a service
+service option list --s ValidateAddress
+
+//List the execution history for a job
+//job history list --j JobName --f FromDateTime --t ToDateTime
+job history list --j "LoadHub1"
+
+//List the execution history for a process flow
+//processflow history list --n ProcessFlowName --f FromDateTime --t ToDateTime
+processflow history list --n "My Process Flow"
+
+//List DNM tables on the server
+table list AdvancedTransformer
+table list OpenParser
+table list TableLookup
+
+//lists all the Open Parser domains on the server
+openparser domain list
+
+//list database connections
+dbconnection list
+
+
+//List of all the resource connections defined on Spectrum
+resourceconnection list
+
+//List of the FTP connections defined on the Spectrum
+data source ftp list
+
+//List of the SFTP connections defined on the Spectrum
+data source sftp list
+
+//list database drivers
+dbdriver list
+
+//List all Spectrum Universal Addressing databases of that type in tabular format
+//uamdb list --t Type
+uamdb list --t USA
+
+//List the Spectrum Universal Addressing databases registered on the platform including Component, Name, and Vintage
+//uamdb listdatasets --t Type
+uamdb listdatasets --t USA
+
+//Lists the Spectrum Global Addressing databases registered on the platform
+gamdb listdatasets
+
+//List the configured Spectrum Global Addressing databases and the pool size for each database
+//gamdb listdbresources --g Group
+gamdb listdbresources --g Global
+
+
+//list all configured Global Geocoding databases
+globalgeocodedb list
+
+//List the configured Spectrum Enterprise Geocoding US databases and their pool size
+egmusadb list
+
+//List the configured Spectrum Enterprise Geocoding Global databases and their pool sizes
+egmglobaldb list
+
+
+//List the configured Spectrum Enterprise Geocoding World databases and their pool sizes
+egmworlddb list
+
+//List the configured Spectrum Enterprise Tax databases and their pool size
+geotaxdb list
+
+
+//list all UAM databases
+uamdb list --t USA
+
+//List of all logical models
+logicalmodel list
+
+//List of all the model stores
+modelstore list
+
+//List of all the profiles created
+profile list
+
+//List of all the physical models
+//physicalmodel list --t dataSourceType
+physicalmodel list
+
+
+//List all the match rules on the server including the match rule name and whether the match rule is exposed
+matchrule list
+
+//List all the match keys on the server
+matchkey list
+
+//List all the best of breed rules on the server
+bestofbreedrule list
+
+//List all AMM search indexes including include index name, index type, and the number of records
+//index list --c checkSchema --f filePath
+//"c" Compares repository schema with elasticsearch schema
+index list
+
+//List of all search index snapshots
+//-Name of the snapshot
+//-Name of the search index
+//-If the snapshot was created successfully
+//-Reason of failure, if the snapshot was not created successfully
+//-The start time, end time and total time taken in creating the snapshot
+//-Total shards in the snapshot and successful and failed shards, if any
+index snapshot list --f c:/migration/snapshotList.csv
+
+//Return a list of all the restored index snapshots
+index restore list --f filePath
+
+//Show the details for currently installed Spectrum Product Data(SPD)
+//-Product
+//-Component
+//-Qualifier
+//-Vintage
+//-Expiration [date]
+//-Identifier
+productdata list
+
+
+//List Datahub models as well as counts for entities and relationships for each model
+//"c" Specifies whether to include counts for entities and relationships (true)
+hub model list --c true
+
+//List  all Context Graph models that have been backed up to a particular folder.
+//The command lists models in the default backup directory for Context Graph models unless you specify a different location
+hub backup list
+
+
+// List entity types, relationship labels and total counts for a model
+// "v" Specifies whether to include verbose output (true)
+//hub schema list all --m PB_PSG_Projects_RM --v false
+hub schema list entityTypes --m PB_PSG_Projects_RM
+
+//List of all entity properties for a Context Graph model
+hub schema list entityProperties --m PB_PSG_Projects_RM --e Project
+
+//List glossary entities
+glossaryentity list
+
+//List of all Spectrum Information Extraction models
+iemodel list
+
+//List all the scorecards created in the system
+scorecard list
+
+//List users including user's roles, email address, description, and whether the user is enabled or disabled
+user list
+
+//lists roles on the system
+user role list
+
+
+//List the names of the all the roles
+role list
+
+// Close connection to the server
+close

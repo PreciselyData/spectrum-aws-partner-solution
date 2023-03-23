@@ -1,0 +1,13 @@
+//Role Export.cli
+
+// Connect with Spectrum Server
+connect --h localhost:8080 --u admin --p admin
+//connect --h localhost:8443 --u admin --p admin --s true
+
+//Exports all role definitions to a JSON file named roles.json. This file is used as input to the role import command
+//role export --o C:/migration/migration/
+role export --o /migration/
+
+
+// Close connection to the server
+close

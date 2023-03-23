@@ -1,0 +1,22 @@
+//DataflowExport.cli
+
+//Connect with Spectrum Server
+connect --h localhost:8080 --u admin --p admin
+//connect --h localhost:8443 --u admin --p admin --s true
+
+//Exports a dataflow from the server to a .df file. 
+//The dataflow can then be imported to another server.
+//"e" Specifies whether to export the exposed version (true) of the dataflow or the most recently saved version (false)
+//Note: Dataflows can only be exchanged between identical versions of Spectrum Technology Platform
+
+//dataflow export --d "XXX_SF_ValidateStandardizeAddresses" --e True --o C:/migration/
+dataflow export --d "XXX_SF_ValidateStandardizeAddresses" --e True --o /migration/
+dataflow export --d "XXX_DF_CIMD_DI_DC" --e True --o /migration/
+
+//export a process flow from the server to a .pf file. 
+//The process flow can then be imported to another server.
+//Note: Process flows can only be exchanged between identical versions of Spectrum Technology Platform
+processflow export --n "XXX_PF_PROXY_PROCESSING" --e True --o /migration/
+
+// Close connection to the server
+close

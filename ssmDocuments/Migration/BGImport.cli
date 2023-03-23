@@ -1,0 +1,15 @@
+// BGImport.cli
+
+// Connect with Spectrum Server
+connect --h localhost:8080 --u admin --p admin
+//connect --h localhost:8443 --u admin --p admin --s true
+
+
+//Import glossary entities from a CSV file and create a version 1.0 draft
+//"d" Specify the delimiter to be used in the export file
+//glossaryentity import --i C:/migration --d |
+//glossaryentity import --i C:\migration --d |
+glossaryentity import --i /migration --d |
+
+// Close connection to the server
+close

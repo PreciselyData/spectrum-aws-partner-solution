@@ -1,0 +1,16 @@
+//BGExport.cli
+
+// Connect with Spectrum Server
+connect --h localhost:8080 --u admin --p admin
+//connect --h localhost:8443 --u admin --p admin --s true
+
+
+//Export glossary entities from the Spectrum server to a given directory in a CSV format
+//"d" Specify the delimiter to be used in the export file
+//glossaryentity export --n Product--o C:/migration --d |
+//glossaryentity export --n Product--o C:\migration --d |
+glossaryentity export --n Product --o /migration --d |
+
+
+// Close connection to the server
+close

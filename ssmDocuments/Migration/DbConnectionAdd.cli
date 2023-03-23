@@ -1,0 +1,18 @@
+//DbConnectionAdd.cli
+
+// Connect with Spectrum Server
+connect --h localhost:8080 --u admin --p admin
+//connect --h localhost:8443 --u admin --p admin --s true
+
+//create a connection between Spectrum Technology Platform and a database
+//Add Oracle database connection
+dbconnection add --n DS_XXXX --d Oracle --h dmdb-uat.xxxxx.us-east-1.rds.amazonaws.com --o 1521 --i DCOM --u SPECTRUM --p xxxxxx
+
+//Add Greenplum database connection
+dbconnection add --n DS_XXXX --d Postgres --h 10.98.156.164 --o 5432 --i adcprod --u spectrum --p xxxxxx
+
+// Add Aura DB database connection
+dbconnection add --n DS_XXXX --d Postgres --h dev-ipm-db.cluster-xxxxxx.us-east-1.rds.amazonaws.com --o 5432 --i postgres --u spectrum --p xxxxx
+
+// Close connection to the server
+close

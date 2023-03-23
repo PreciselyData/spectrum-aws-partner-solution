@@ -1,0 +1,6 @@
+// connect with local server
+connect --h localhost:8080 --u admin --p admin
+// Enable  performance monitoring for a job or service
+performancemonitor enabled set --e true --d "ER_DF_Party_InputBatchConsolidation"
+// close connection to the server
+close 

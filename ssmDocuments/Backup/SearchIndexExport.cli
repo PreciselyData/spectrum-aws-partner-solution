@@ -1,0 +1,20 @@
+//SearchIndexExport.cli
+
+//Connect with Spectrum Server
+connect --h localhost:8080 --u admin --p admin
+//connect --h localhost:8443 --u admin --p admin --s true
+
+//Exports the search index to a desired output location in *.zip file format. 
+//The *.zip file contains a *.txt file with pipe delimiters and double quotes as text qualifiers. 
+//The output file name corresponds to the name of the search index, followed by the time stamp.
+//For Legacy indexes, this command exports only the fields marked as Store when the index is created.
+//For Clustered indexes, this command exports all index fields.
+//The line break type is CRLF for Windows and LF for non-Windows exported files.
+index export start --i CUSTOMER_SI --o /migration/
+//index export start --i CUSTOMER_XREF_SI --o /migration/
+
+//Check index export progress
+//index export progress
+
+// Close connection to the server
+close

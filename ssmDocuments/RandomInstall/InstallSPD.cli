@@ -1,0 +1,74 @@
+//Connect with Spectrum Server
+connect --h localhost:8080 --u admin --p admin
+//connect --h localhost:8443 --u admin --p admin --s true
+
+//Use the productdata extract register and productdata archive register commands to ensure that the SPD data, which may be large, resides in an appropriate and manageable location of your choosing on the server. 
+//The default location inside the Spectrum folders can make upgrades and re-installations more difficult and require even greater temporary space
+
+//Set an alternate (non-default) archive location for a set of product data on the server
+productdata archive register --p Platform --d  /spectrumdata/archive/ref-data
+productdata extract register --p Platform --d /spectrumdata/ref-data
+
+//Remove the specified Spectrum Product Data (SPD) from the Spectrum Technology Platform. Run this command on all Spectrum databases containing the
+//SPD data that you want to remove.
+//Before you run this command, run the productdata list command to review the product, component, qualifier, and vintage details before deleting any data. The parameters to the
+//productdata delete command are obtained by running the productdata list command
+
+//Show the details for currently installed Spectrum Product Data(SPD)
+//-Product
+//-Component
+//-Qualifier
+//-Vintage
+//-Expiration [date]
+//-Identifier
+productdata list
+
+
+//productdata delete --p productName --c productComponent --q qualifier --v dataVintage
+//productdata delete --p 'Universal Addressing Module' --c c1p --q UAM-US --v MAY2022
+//productdata delete --p 'Universal Addressing Module' --c c1p --q UAM-US-RDI --v MAY2022
+//productdata delete --p 'Universal Addressing Module' --c c1p --q UAM-US-LACS --v MAY2022
+//productdata delete --p 'Universal Addressing Module' --c c1p --q UAM-US-SLK --v MAY2022
+//productdata delete --p 'Universal Addressing Module' --c c1p --q UAM-US-DPV --v MAY2022
+//productdata delete --p 'geocoding-all' --c geocoding-all --q USA-HERE --v 202005
+//productdata delete --p 'geocoding-all' --c geocoding-all --q USA-MasterLocationData --v 202003
+//productdata delete --p 'Global Address Validation Coder' --c GlobalAddressValidationUS --q GAV_US_DOM --v MAY_2021
+
+
+
+// Install Spectrum Product Data (SPD) from the command line interface (CLI)
+// "w"- Specifies the action to take during installation: wait until fully installed to return (True) or return immediately (False)
+//UAM US Database 
+//productdata install --f C:/spectrumdata/datasets_spd/USS062020_201910.spd --w False
+productdata install --f /spectrumdata/datasets_spd/USS062020_201910.spd --w False
+//DPV Split 
+productdata install --f /spectrumdata/datasets_spd/DPU062020_201910.spd --w False
+//LACSLink Database 
+productdata install --f /spectrumdata/datasets_spd/2LL062020_201910.spd --w False
+//SuiteLink Database 
+productdata install --f /spectrumdata/datasets_spd/SLK082021_201910.spd --w False
+productdata install --f /spectrumdata/datasets_spd/RDI062020_201910.spd --w False
+productdata install --f /spectrumdata/datasets_spd/EWS052020_20_5_28.spd --w False
+
+
+//Geocoding MLD US
+productdata install --f /spectrumdata/datasets_spd/KLD122021.spd --w False
+//Geocoding TT Street US
+productdata install --f /spectrumdata/datasets_spd/KGD122021.spd --w False
+productdata install --f /spectrumdata/datasets_spd/KNT052020.spd --w False
+productdata install --f /spectrumdata/datasets_spd/K14112021.spd --w False
+productdata install --f /spectrumdata/datasets_spd/KLR122021.spd --w False
+
+productdata install --f /spectrumdata/datasets_spd/CAS062020_201910.spd --w False
+
+productdata install --f /spectrumdata/datasets_spd/CAN-EGM-MASTERLOCATION-CA8-103-202003-GEOCODING.spd --w False
+productdata install --f /spectrumdata/datasets_spd/CAN-EGM-TOMTOM-CA1-103-202003-GEOCODING.spd --w False
+
+productdata install --f /spectrumdata/datasets_spd/GAP122020.spd --w False
+productdata install --f /spectrumdata/datasets_spd/GCA032021.spd --w False
+//GlobalAddressValidation US Database
+productdata install --f /spectrumdata/datasets_spd/GAV_US_DOM_022022.spd --w False
+productdata install --f /spectrumdata/datasets_spd/GAC122020.spd --w False
+
+//close connection to the server
+close 
