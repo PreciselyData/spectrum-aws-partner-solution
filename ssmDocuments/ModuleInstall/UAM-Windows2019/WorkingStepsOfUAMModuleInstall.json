@@ -161,6 +161,14 @@
           "runCommand": ["cd 'C:/Program Files/Precisely/spectrum-cli-22.1'",
                 "./cli.cmd --cmdfile 'C:/Program Files/Precisely/UAM/moduleScripts/AddressValidationResourceCreate.cli'"]
         }
+      },
+      {
+        "action": "aws:runPowerShellScript",
+        "name": "deleteEverything",
+        "inputs": {
+          "timeoutSeconds": 10800 ,
+          "runCommand": ["Remove-Item 'C:\\Program Files\\Precisely\\UAM'"]
+        }
       }
     ]
   }

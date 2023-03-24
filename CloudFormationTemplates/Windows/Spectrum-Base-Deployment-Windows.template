@@ -8,7 +8,7 @@
       "default": "Amazon EC2 Configuration"
      },
      "Parameters": [
-      "PlatformType",
+      "PlatformVersion",
       "AMIId",
       "KeypairName"
      ]
@@ -18,7 +18,7 @@
       "default": "Network Configuration"
      },
      "Parameters":[
-        "VPCId"
+        "VPCIdInput"
      ]
     },
     {
@@ -32,7 +32,7 @@
     }
    ],
    "ParameterLabels": {
-    "PlatformType": {
+    "PlatformVersion": {
      "default": "Platform Type (Required)"
     },
     "AMIId": {
@@ -41,7 +41,7 @@
     "KeypairName": {
      "default": "EC2 Instance Keypair Name (Required)"
     },
-    "VPCId": {
+    "VPCIdInput": {
     "default": "VPC ID (Required)"
     },
     "InstanceType": {
@@ -54,23 +54,25 @@
   }
  },
  "Parameters": {
-    "PlatformType": {
+    "PlatformVersion": {
      "Type": "String",
-     "AllowedPattern": "(^Windows$|^Linux$)",
      "AllowedValues": [
-      "Windows",
-      "Linux"
+      "Windows 2019",
+      "Windows 2016",
+      "Windows 2012 RC"
      ],
-     "ConstraintDescription": "You must specify platform type.",
-     "Description": "Choose the platform type. Supported platform types are Windows and Linux. For supported operating systems refer to https://docs.precisely.com/docs/sftw/spectrum/22.1/en/webhelp/DocumentationDirectory/index.html."
+     "ConstraintDescription": "You must specify Windows Server version.",
+     "Description": "Choose the Windows Server version. Supported versions are Windows Server 2019, Windows Server 2016 & Windows Server 2012 R2. For supported operating systems refer to https://docs.precisely.com/docs/sftw/spectrum-all-supportview/22.1/en-us/pdf/Spectrum_2022.1.0_InstallationGuide_Windows.pdf."
     },
     "AMIId": {
      "Type": "String",
      "Default": "ami-0204b0d5554335251",
      "AllowedValues": [
-        "ami-0204b0d5554335251"
+        "ami-0204b0d5554335251",
+        "WindowsServer2016TBD",
+        "WindowsServer2012RCTBD"
        ],
-     "Description": "For Windows Server 2019, use ami id: ami-0204b0d5554335251. For RedHat 8.0, use ami id: TBD"
+     "Description": "For Windows Server 2019, use ami id: ami-0204b0d5554335251. For Windows Server 2016, use ami id: TBD. For Windows Server 2012 RC, use ami id: TBD"
     },
     "KeypairName": {
      "Type": "AWS::EC2::KeyPair::KeyName",
@@ -78,7 +80,7 @@
      "ConstraintDescription": "The name can include up to 255 ASCII characters. It cannot include leading or trailing spaces.",
      "Description": "Choose an EC2 KeyPair to allow remote access to the EC2 instances."
     },
-    "VPCId": {
+    "VPCIdInput": {
      "Type": "AWS::EC2::VPC::Id",
      "AllowedPattern": "^vpc-[a-z0-9]*$",
      "Description": "Choose a VPC ID. Note: All Spectrum components that are part of same deployment must be deployed in the same VPC."
@@ -172,22 +174,6 @@
     }
    },
 "Conditions": {
-    "WindowsAMI": {
-     "Fn::Equals": [
-      {
-       "Ref": "PlatformType"
-      },
-      "Windows"
-     ]
-    },
-    "RedHatAMI": {
-     "Fn::Equals": [
-      {
-       "Ref": "PlatformType"
-      },
-      "Linux"
-     ]
-    }
    },
 "Resources" : {
     "SpectrumDeployment" : {
@@ -216,7 +202,7 @@
             "GroupDescription" : {
                 "Ref": "AWS::StackName"
             },
-            "VpcId": { "Ref" : "VPCId" }
+            "VpcId": { "Ref" : "VPCIdInput" }
         }
     }
     },

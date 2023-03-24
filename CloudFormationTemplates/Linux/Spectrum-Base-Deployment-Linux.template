@@ -56,21 +56,35 @@
  "Parameters": {
     "PlatformType": {
      "Type": "String",
-     "AllowedPattern": "(^Windows$|^Linux$)",
      "AllowedValues": [
-      "Windows",
-      "Linux"
+      "Red Hat Linux 8",
+      "Red Hat Linux 7",
+      "CentOS 7",
+      "CentOS 8",
+      "Oracle Linux 7",
+      "Oracle Linux 8",
+      "Ubuntu 16.04 LTS",
+      "Ubuntu 18.04 LTS",
+      "Ubuntu 20.04 LTS"
      ],
      "ConstraintDescription": "You must specify platform type.",
-     "Description": "Choose the platform type. Supported platform types are Windows and Linux. For supported operating systems refer to https://docs.precisely.com/docs/sftw/spectrum/22.1/en/webhelp/DocumentationDirectory/index.html."
+     "Description": "Choose the Linux platform OS. Supported Linux platform OS are Red Hat Linux 7 and 8, CentOS 7 and 8, Oracle Linux 7 and 8, Ubuntu 16.04 LTS, 18.04 LTS and 20.04 LTS. For supported operating systems refer to https://docs.precisely.com/docs/sftw/spectrum-all-supportview/22.1/en-us/pdf/Spectrum_2022.1.0_InstallationGuide_Linux.pdf."
     },
     "AMIId": {
      "Type": "String",
-     "Default": "ami-0204b0d5554335251",
+     "Default": "ami-09c97ed81ec9a7ae4",
      "AllowedValues": [
-        "ami-0204b0d5554335251"
+        "ami-09c97ed81ec9a7ae4",
+        "Red Hat Linux 7 TBD",
+        "CentOS 7 TBD",
+        "CentOS 8 TBD",
+        "Oracle Linux 7 TBD",
+        "Oracle Linux 8 TBD",
+        "Ubuntu 16.04 LTS TBD",
+        "Ubuntu 18.04 LTS TBD",
+        "Ubuntu 20.04 LTS TBD"
        ],
-     "Description": "For Windows Server 2019, use ami id: ami-0204b0d5554335251. For RedHat 8.0, use ami id: TBD"
+     "Description": "For Red Hat Linux 8, use ami id: ami-09c97ed81ec9a7ae4. For Red Hat Linux 7, use ami id: TBD. For CentOS 7, use ami id: TBD. For CentOS 8, use ami id: TBD. For Oracle Linux 7, use ami id: TBD. For Oracle Linux 7, use ami id: TBD. For Ubuntu 16.04 LTS, use ami id: TBD. For Ubuntu 18.04 LTS, use ami id: TBD. For Ubuntu 20.04 LTS, use ami id: TBD"
     },
     "KeypairName": {
      "Type": "AWS::EC2::KeyPair::KeyName",
@@ -172,22 +186,6 @@
     }
    },
 "Conditions": {
-    "WindowsAMI": {
-     "Fn::Equals": [
-      {
-       "Ref": "PlatformType"
-      },
-      "Windows"
-     ]
-    },
-    "RedHatAMI": {
-     "Fn::Equals": [
-      {
-       "Ref": "PlatformType"
-      },
-      "Linux"
-     ]
-    }
    },
 "Resources" : {
     "SpectrumDeployment" : {

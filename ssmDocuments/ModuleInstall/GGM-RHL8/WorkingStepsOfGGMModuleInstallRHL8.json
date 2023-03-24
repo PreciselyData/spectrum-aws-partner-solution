@@ -188,6 +188,14 @@
     "parameters": {},
     "mainSteps": [
       {
+        "action": "aws:runShellScript",
+        "name": "turnOnServer",
+        "inputs": {
+          "timeoutSeconds": 10800 ,
+          "runCommand": ["cd /opt/spectrum/server/bin" , "sudo su spectrum && . ./setup", "sudo su spectrum && ./server.start"]
+        }
+      },
+      {
         "action": "aws:downloadContent",
         "name": "downloadInstaller",
         "inputs": {
@@ -257,10 +265,18 @@
       },
       {
         "action": "aws:runShellScript",
+        "name": "turnOffServer",
+        "inputs": {
+          "timeoutSeconds": 10800 ,
+          "runCommand": ["cd /opt/spectrum/server/bin", "sudo su spectrum && . ./setup", "sudo su spectrum  && ./server.stop", "( tail -f -n0 /opt/spectrum/server/logs/spectrum-server.log & ) | grep -q 'Precisely Spectrum Technology Platform shutdown complete.'"]
+        }
+      },
+      {
+        "action": "aws:runShellScript",
         "name": "turnOnServer",
         "inputs": {
           "timeoutSeconds": 10800 ,
-          "runCommand": ["sudo su spectrum", "cd /opt/spectrum/server/bin", ". ./setup", "./server.start", "( tail -f -n0 /opt/spectrum/server/logs/spectrum-server.log & ) | grep -q 'Precisely Spectrum Technology Platform (Version 22.1 119) Started'"]
+          "runCommand": ["cd /opt/spectrum/server/bin" , "sudo su spectrum && . ./setup", "sudo su spectrum && ./server.start"]
         }
       },
       {
@@ -297,18 +313,6 @@
 
 
 
-
-
-
-
-
-
-
-
-
-
-
-
   {
     "schemaVersion": "2.2",
     "description": "RunCommandInstallGlobalGeocodingModule-RHL8-OneScript",
@@ -316,26 +320,26 @@
     "mainSteps": [
       {
         "action": "aws:runShellScript",
-        "name": "turnOnServer",
+        "name": "turnOnServer1",
         "inputs": {
           "timeoutSeconds": 10800 ,
-          "runCommand": ["sudo su spectrum", "cd /opt/spectrum/server/bin", ". ./setup", "./server.start"]
+          "runCommand": ["cd /opt/spectrum/server/bin" , "sudo su spectrum && . ./setup", "sudo su spectrum && ./server.start"]
         }
       },
       {
-      "action": "aws:runShellScript",
-      "name": "listenForServerStart",
-      "inputs": {
-        "timeoutSeconds": 10800 ,
-        "runCommand": ["( tail -f -n0 /opt/spectrum/server/logs/spectrum-server.log & ) | grep -q 'Precisely Spectrum Technology Platform (Version 22.1 119) Started'"]
-      }
+        "action": "aws:runShellScript",
+        "name": "deleteTMP",
+        "inputs": {
+          "timeoutSeconds": 10800 ,
+          "runCommand": ["cd /opt/spectrum/server" , "sudo su && rmdir tmp"]
+        }
       },
       {
         "action": "aws:runShellScript",
-        "name": "createDBConnection",
+        "name": "turnOnServer2",
         "inputs": {
           "timeoutSeconds": 10800 ,
-          "runCommand": ["sudo su spectrum", "cd /opt/spectrum/server/bin", ". ./setup", "cd /opt/spectrum-cli-22.1", "./cli.sh --cmdfile '/opt/GGM/moduleScriptsRHL8/GeocodingResourceImport.cli'"]
+          "runCommand": ["cd /opt/spectrum/server/bin" , "sudo su spectrum && . ./setup", "sudo su spectrum && ./server.start"]
         }
       }
     ]
