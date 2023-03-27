@@ -18,7 +18,9 @@
       "default": "Network Configuration"
      },
      "Parameters":[
-        "VPCIdInput"
+        "VpcId",
+        "SubnetId",
+        "SecurityGroupIds"
      ]
     },
     {
@@ -41,8 +43,14 @@
     "KeypairName": {
      "default": "EC2 Instance Keypair Name (Required)"
     },
-    "VPCIdInput": {
+    "VpcId": {
     "default": "VPC ID (Required)"
+    },
+    "SubnetId": {
+    "default": "Subnet ID (Required)"
+    },
+    "SecurityGroupIds": {
+    "default": "Security Groups ID"
     },
     "InstanceType": {
      "default": "EC2 Instance Type (Required)"
@@ -66,13 +74,13 @@
     },
     "AMIId": {
      "Type": "String",
-     "Default": "ami-0204b0d5554335251",
+     "Default": "ami-0ca52f6ceba7bf321",
      "AllowedValues": [
-        "ami-0204b0d5554335251",
+        "ami-0ca52f6ceba7bf321",
         "WindowsServer2016TBD",
         "WindowsServer2012RCTBD"
        ],
-     "Description": "For Windows Server 2019, use ami id: ami-0204b0d5554335251. For Windows Server 2016, use ami id: TBD. For Windows Server 2012 RC, use ami id: TBD"
+     "Description": "For Windows Server 2019, use ami id: ami-0ca52f6ceba7bf321. For Windows Server 2016, use ami id: TBD. For Windows Server 2012 RC, use ami id: TBD"
     },
     "KeypairName": {
      "Type": "AWS::EC2::KeyPair::KeyName",
@@ -80,16 +88,20 @@
      "ConstraintDescription": "The name can include up to 255 ASCII characters. It cannot include leading or trailing spaces.",
      "Description": "Choose an EC2 KeyPair to allow remote access to the EC2 instances."
     },
-    "VPCIdInput": {
+    "VpcId": {
      "Type": "AWS::EC2::VPC::Id",
      "AllowedPattern": "^vpc-[a-z0-9]*$",
      "Description": "Choose a VPC ID. Note: All Spectrum components that are part of same deployment must be deployed in the same VPC."
     },
+    "SecurityGroupIds": {
+     "Type": "List<AWS::EC2::SecurityGroup::Id>",
+     "AllowedPattern": "^sg-[a-z0-9]*$",
+     "Description": "Choose one or multiple security groups."
+    },
     "InstanceType": {
      "Type": "String",
-     "Default": "t2.medium",
+     "Default": "t2.large",
      "AllowedValues": [
-      "t2.medium",
       "c3.xlarge",
       "c3.2xlarge",
       "c3.4xlarge",
@@ -191,18 +203,17 @@
              }
             }
            ],
+        "IamInstanceProfile" : "PRECISELY-BASIC-SSM-EC2-Role",
         "InstanceType" : { "Ref" : "InstanceType" },
         "KeyName" : { "Ref" : "KeypairName" },
-        "ImageId" : { "Ref" : "AMIId" }
+        "ImageId" : { "Ref" : "AMIId" },
+        "SecurityGroupIds" : { "Ref" : "SecurityGroupIds"}
       }
     },
-    "InstanceSecurityGroup": {
-        "Type": "AWS::EC2::SecurityGroup",
+    "InstanceVPC": {
+        "Type": "AWS::EC2::Subnet",
         "Properties": {
-            "GroupDescription" : {
-                "Ref": "AWS::StackName"
-            },
-            "VpcId": { "Ref" : "VPCIdInput" }
+            "VpcId": { "Ref" : "VpcId" }
         }
     }
     },
@@ -211,9 +222,9 @@
       "Description" : "InstanceId of the newly created EC2 instance",
       "Value" : { "Ref" : "SpectrumDeployment" }
     },
-    "SecurityGroup" : {
-        "Description" : "Security Group ID of the newly created EC2 instance",
-        "Value" : { "Ref" : "InstanceSecurityGroup" }
+    "InstanceVPC" : {
+        "Description" : "VPC of the newly created EC2 instance",
+        "Value" : { "Ref" : "InstanceVPC" }
       }
   }
 }

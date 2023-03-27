@@ -89,7 +89,7 @@
         "inputs": {
           "timeoutSeconds": 10800 ,
           "runCommand": ["cd 'C:/Program Files/Precisely/spectrum-cli-22.1'",
-                "./cli.cmd --cmdfile 'C:/Program Files/Precisely/GAV/moduleScripts/GlobalAddressValidationResourceCreate.cli'"]
+                "./cli.cmd --cmdfile 'C:/Program Files/Precisely/GAV/moduleScripts/GAVIntlResourceCreate.cli'"]
         }
       }
     ]
@@ -130,9 +130,9 @@
         "inputs": {
           "sourceType": "S3",
           "sourceInfo": {
-            "path": "https://cloudformation-spectrum.s3.amazonaws.com/Modules/GAV/moduleScripts/"
+            "path": "https://cloudformation-spectrum.s3.amazonaws.com/Modules/GAV/GAV-Windows/moduleScriptsIntlWindows2019/"
           },
-          "destinationPath": "C:\\Program Files\\Precisely\\GAV\\moduleScripts"
+          "destinationPath": "C:\\Program Files\\Precisely\\GAV\\moduleScriptsIntlWindows2019"
         }
       },
       {
@@ -159,7 +159,7 @@
         "inputs": {
           "timeoutSeconds": 10800 ,
           "runCommand": ["cd 'C:/Program Files/Precisely/spectrum-cli-22.1'",
-                "./cli.cmd --cmdfile 'C:/Program Files/Precisely/GAV/moduleScripts/GlobalAddressValidationResourceCreate.cli'"]
+                "./cli.cmd --cmdfile 'C:/Program Files/Precisely/GAV/moduleScriptsIntlWindows2019/GAVIntlResourceCreate.cli'"]
         }
       },
       {
