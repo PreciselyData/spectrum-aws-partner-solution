@@ -155,6 +155,15 @@
       },
       {
         "action": "aws:runPowerShellScript",
+        "name": "listenForDataUpload",
+        "inputs": {
+          "timeoutSeconds": 10800 ,
+          "runCommand": ["Select-String -Path 'C:/Program Files/Precisely/server/logs/'",
+                "./cli.cmd --cmdfile 'C:/Program Files/Precisely/GAV/moduleScriptsUSWindows2019/GAVUSResourceCreate.cli'"]
+        }
+      },
+      {
+        "action": "aws:runPowerShellScript",
         "name": "createDBConnection",
         "inputs": {
           "timeoutSeconds": 10800 ,

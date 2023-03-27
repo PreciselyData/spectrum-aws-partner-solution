@@ -130,9 +130,9 @@
         "inputs": {
           "sourceType": "S3",
           "sourceInfo": {
-            "path": "https://cloudformation-spectrum.s3.amazonaws.com/Modules/GGM/moduleScripts/"
+            "path": "https://cloudformation-spectrum.s3.amazonaws.com/Modules/GGM/GGM-Windows/moduleScriptsUSWindows2019/"
           },
-          "destinationPath": "C:\\Program Files\\Precisely\\GGM\\moduleScripts"
+          "destinationPath": "C:\\Program Files\\Precisely\\GGM\\moduleScriptsUSWindows2019"
         }
       },
       {
@@ -159,9 +159,10 @@
         "inputs": {
           "timeoutSeconds": 10800 ,
           "runCommand": ["cd 'C:/Program Files/Precisely/spectrum-cli-22.1'",
-                "./cli.cmd --cmdfile 'C:/Program Files/Precisely/GGM/moduleScripts/GgmResourceImport.cli'"]
+                "./cli.cmd --cmdfile 'C:/Program Files/Precisely/GGM/moduleScriptsUSWindows2019/GgmUSResourceImport.cli'"]
         }
       },
+      
       {
         "action": "aws:runPowerShellScript",
         "name": "deleteEverything",

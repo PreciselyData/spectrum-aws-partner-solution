@@ -172,8 +172,7 @@
       "x1e.4xlarge",
       "x1e.8xlarge",
       "x1e.16xlarge",
-      "x1e.32xlarge",
-      "x2iedn.2xlarge"
+      "x1e.32xlarge"
      ],
      "Description": "Choose EC2 instance type. Default is t2.medium."
     },
@@ -208,8 +207,11 @@
         "InstanceType" : { "Ref" : "InstanceType" },
         "KeyName" : { "Ref" : "KeypairName" },
         "ImageId" : { "Ref" : "AMIId" },
-        "SecurityGroupIds" : { "Ref" : "SecurityGroupIds"},
-        "SubnetId" : { "Ref" : "SubnetId" }
+        "NetworkInterfaces": [ {
+          "AssociatePublicIpAddress": "true",
+          "DeviceIndex": "0",
+          "SubnetId": { "Ref" : "SubnetId" }
+          } ]
       }
     }
     },
@@ -221,3 +223,33 @@
   }
 }
 
+
+
+
+
+
+"Resources" : {
+    "SpectrumDeployment" : {
+      "Type" : "AWS::EC2::Instance",
+      "Properties" : {
+        "BlockDeviceMappings": [
+            {
+             "DeviceName": "/dev/sda1",
+             "Ebs": {
+              "DeleteOnTermination": true,
+              "VolumeSize": {
+               "Ref": "InstanceDriveSize"
+              },
+              "VolumeType": "gp3"
+             }
+            }
+           ],
+        "IamInstanceProfile" : "PRECISELY-BASIC-SSM-EC2-Role",
+        "InstanceType" : { "Ref" : "InstanceType" },
+        "KeyName" : { "Ref" : "KeypairName" },
+        "ImageId" : { "Ref" : "AMIId" },
+        "SecurityGroupIds" : { "Ref" : "SecurityGroupIds"},
+        "SubnetId" : { "Ref" : "SubnetId" }
+      }
+    }
+    },
