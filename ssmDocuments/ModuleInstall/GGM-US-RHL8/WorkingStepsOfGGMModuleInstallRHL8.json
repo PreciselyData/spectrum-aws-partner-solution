@@ -1,0 +1,346 @@
+// Download Data, Installer, Scripts -------Success
+{ 
+"schemaVersion": "2.2",
+  "description": "RunCommandInstallGlobalGeocodingModule-RHL8-OneScript",
+  "parameters": {},
+  "mainSteps": [
+    {
+      "action": "aws:downloadContent",
+      "name": "downloadInstaller",
+      "inputs": {
+        "sourceType": "S3",
+        "sourceInfo": {
+          "path": "https://cloudformation-spectrum.s3.amazonaws.com/Modules/GGM/GGM-Linux/installers-22.1-linux/"
+        },
+        "destinationPath": "//opt//GGM//installers-22.1-linux"
+      }
+    },
+    {
+      "action": "aws:downloadContent",
+      "name": "downloadData",
+      "inputs": {
+        "sourceType": "S3",
+        "sourceInfo": {
+          "path": "https://cloudformation-spectrum.s3.amazonaws.com/Modules/GGM/data/"
+        },
+        "destinationPath": "//opt//GGM//data"
+      }
+    },
+    {
+      "action": "aws:downloadContent",
+      "name": "downloadScripts",
+      "inputs": {
+        "sourceType": "S3",
+        "sourceInfo": {
+          "path": "https://cloudformation-spectrum.s3.amazonaws.com/Modules/GGM/GGM-Linux/moduleScriptsRHL8/"
+        },
+        "destinationPath": "//opt/GGM//moduleScriptsRHL8"
+      }
+    }
+  ]
+},
+//Add a permissions modification here -------- Success
+{
+  "schemaVersion": "2.2",
+  "description": "RunCommandInstallGlobalGeocodingModule-RHL8-OneScript",
+  "parameters": {},
+  "mainSteps": [
+    {
+      "action": "aws:runShellScript",
+      "name": "changeToSuperUser",
+      "inputs": {
+        "timeoutSeconds": 10800 ,
+        "runCommand": ["sudo su" 
+        ]
+      }
+    },
+    {
+      "action": "aws:runShellScript",
+      "name": "changeOwner",
+      "inputs": {
+        "timeoutSeconds": 10800 ,
+        "runCommand": ["chown -R spectrum /opt/GGM/" 
+        ]
+      }
+    },
+    {
+      "action": "aws:runShellScript",
+      "name": "changeGroup",
+      "inputs": {
+        "timeoutSeconds": 10800 ,
+        "runCommand": ["chgrp -R spectrum /opt/GGM/" 
+        ]
+      }
+    },
+    {
+      "action": "aws:runShellScript",
+      "name": "changePermissions",
+      "inputs": {
+        "timeoutSeconds": 10800 ,
+        "runCommand": ["chmod -R 777 /opt/GGM" 
+        ]
+      }
+    },
+    {
+      "action": "aws:runShellScript",
+      "name": "exitSuperUser",
+      "inputs": {
+        "timeoutSeconds": 10800 ,
+        "runCommand": ["exit" 
+        ]
+      }
+    }
+  ]
+},
+
+
+// Install of Module---------------success
+{
+  "schemaVersion": "2.2",
+  "description": "RunCommandInstallGlobalGeocodingModule-RHL8-OneScript",
+  "parameters": {},
+  "mainSteps": [
+    {
+      "action": "aws:runShellScript",
+      "name": "changeDirectory",
+      "inputs": {
+        "timeoutSeconds": 10800 ,
+        "runCommand": ["sudo su spectrum", "cd /opt/GGM/installers-22.1-linux/", "./install.sh", "exit"
+        ]
+      }
+    }
+  ]
+},
+  //Start Server--------------
+  {
+    "schemaVersion": "2.2",
+    "description": "RunCommandInstallGlobalGeocodingModule-RHL8-OneScript",
+    "parameters": {},
+    "mainSteps": [
+      {
+        "action": "aws:runShellScript",
+        "name": "turnOnServer",
+        "inputs": {
+          "timeoutSeconds": 10800 ,
+          "runCommand": ["sudo su spectrum", "cd /opt/spectrum/server/bin", ". ./setup", "./server.start", "exit"]
+      }
+    }
+  ]
+},
+
+//Move data to server/import--------
+{
+    "schemaVersion": "2.2",
+    "description": "RunCommandInstallGlobalGeocodingModule-RHL8-OneScript",
+    "parameters": {},
+    "mainSteps": [
+      {
+        "action": "aws:runShellScript",
+        "name": "moveData",
+        "inputs": {
+          "timeoutSeconds": 10800 ,
+          "runCommand": ["mv /opt/GGM/data/*.spd /opt/spectrum/server/import"]
+        }
+      }
+    ]
+  },
+
+//Listener for Server to start
+{
+  "schemaVersion": "2.2",
+  "description": "RunCommandInstallGlobalGeocodingModule-RHL8-OneScript",
+  "parameters": {},
+  "mainSteps": [
+    {
+      "action": "aws:runShellScript",
+      "name": "listenForServerStart",
+      "inputs": {
+        "timeoutSeconds": 10800 ,
+        "runCommand": ["tail -f -n0 /opt/spectrum/server/log/spectrum-server.log & | grep -q "Precisely Spectrum Technology Platform (Version 22.1 119) Started""]
+      }
+    }
+  ]
+},
+
+
+//Run script for configuration-----------
+{
+    "schemaVersion": "2.2",
+    "description": "RunCommandInstallGlobalGeocodingModule-RHL8-OneScript",
+    "parameters": {},
+    "mainSteps": [
+      {
+        "action": "aws:runShellScript",
+        "name": "createDBConnection",
+        "inputs": {
+          "timeoutSeconds": 10800 ,
+          "runCommand": ["sudo su spectrum", "cd /opt/spectrum/server/bin", ". ./setup", "cd /opt/spectrum-cli-22.1", "./cli.sh --cmdfile '/opt/GGM/moduleScriptsRHL8/GeocodingResourceImport.cli'"]
+        }
+      }
+    ]
+  },
+//Delete installer 
+
+//Combined Script
+{
+    "schemaVersion": "2.2",
+    "description": "RunCommandInstallGlobalGeocodingModule-RHL8",
+    "parameters": {},
+    "mainSteps": [
+      {
+        "action": "aws:runShellScript",
+        "name": "turnOnServer",
+        "inputs": {
+          "timeoutSeconds": 10800 ,
+          "runCommand": ["cd /opt/spectrum/server/bin" , "sudo su spectrum && . ./setup", "sudo su spectrum && ./server.start"]
+        }
+      },
+      {
+        "action": "aws:downloadContent",
+        "name": "downloadInstaller",
+        "inputs": {
+          "sourceType": "S3",
+          "sourceInfo": {
+            "path": "https://cloudformation-spectrum.s3.amazonaws.com/Modules/GGM/GGM-Linux/installers-22.1-linux/"
+          },
+          "destinationPath": "//opt//GGM//installers-22.1-linux"
+        }
+      },
+      {
+        "action": "aws:downloadContent",
+        "name": "downloadData",
+        "inputs": {
+          "sourceType": "S3",
+          "sourceInfo": {
+            "path": "https://cloudformation-spectrum.s3.amazonaws.com/Modules/GGM/data/"
+          },
+          "destinationPath": "//opt//GGM//data"
+        }
+      },
+      {
+        "action": "aws:downloadContent",
+        "name": "downloadScripts",
+        "inputs": {
+          "sourceType": "S3",
+          "sourceInfo": {
+            "path": "https://cloudformation-spectrum.s3.amazonaws.com/Modules/GGM/GGM-Linux/moduleScriptsRHL8/"
+          },
+          "destinationPath": "//opt/GGM//moduleScriptsRHL8"
+        }
+      },
+      {
+        "action": "aws:runShellScript",
+        "name": "changePermissionsGGM",
+        "inputs": {
+          "timeoutSeconds": 10800 ,
+          "runCommand": ["sudo su" , "chown -R spectrum /opt/GGM/", "chgrp -R spectrum /opt/GGM/", "chmod -R 777 /opt/GGM" , "exit"
+          ]
+        }
+      },
+      {
+        "action": "aws:runShellScript",
+        "name": "changePermissionsSpectrum",
+        "inputs": {
+          "timeoutSeconds": 10800 ,
+          "runCommand": ["sudo su" , "chown -R spectrum /opt/spectrum/", "chgrp -R spectrum /opt/spectrum/", "exit"
+          ]
+        }
+      },
+      {
+        "action": "aws:runShellScript",
+        "name": "runInstaller",
+        "inputs": {
+          "timeoutSeconds": 10800 ,
+          "runCommand": ["sudo su spectrum", "cd /opt/GGM/installers-22.1-linux/", "./install.sh"
+          ]
+        }
+      },
+      {
+        "action": "aws:runShellScript",
+        "name": "moveData",
+        "inputs": {
+          "timeoutSeconds": 10800 ,
+          "runCommand": ["sudo su spectrum", "mv /opt/GGM/data/*.spd /opt/spectrum/server/import"]
+        }
+      },
+      {
+        "action": "aws:runShellScript",
+        "name": "turnOffServer",
+        "inputs": {
+          "timeoutSeconds": 10800 ,
+          "runCommand": ["cd /opt/spectrum/server/bin", "sudo su spectrum && . ./setup", "sudo su spectrum  && ./server.stop", "( tail -f -n0 /opt/spectrum/server/logs/spectrum-server.log & ) | grep -q 'Precisely Spectrum Technology Platform shutdown complete.'"]
+        }
+      },
+      {
+        "action": "aws:runShellScript",
+        "name": "turnOnServer",
+        "inputs": {
+          "timeoutSeconds": 10800 ,
+          "runCommand": ["cd /opt/spectrum/server/bin" , "sudo su spectrum && . ./setup", "sudo su spectrum && ./server.start"]
+        }
+      },
+      {
+        "action": "aws:runShellScript",
+        "name": "listenForServerStart",
+        "inputs": {
+          "timeoutSeconds": 10800 ,
+          "runCommand": ["( tail -f -n0 /opt/spectrum/server/logs/spectrum-server.log & ) | grep -q 'Precisely Spectrum Technology Platform (Version 22.1 119) Started'"]
+        }
+        },
+      {
+        "action": "aws:runShellScript",
+        "name": "createDBConnection",
+        "inputs": {
+          "timeoutSeconds": 10800 ,
+          "runCommand": ["sudo su spectrum", "cd /opt/spectrum/server/bin", ". ./setup", "cd /opt/spectrum-cli-22.1", "./cli.sh --cmdfile '/opt/GGM/moduleScriptsRHL8/GgmUSResourceImport.cli'"]
+        }
+      }
+    ]
+  }
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+  {
+    "schemaVersion": "2.2",
+    "description": "RunCommandInstallGlobalGeocodingModule-RHL8-OneScript",
+    "parameters": {},
+    "mainSteps": [
+      {
+        "action": "aws:runShellScript",
+        "name": "turnOnServer1",
+        "inputs": {
+          "timeoutSeconds": 10800 ,
+          "runCommand": ["cd /opt/spectrum/server/bin" , "sudo su spectrum && . ./setup", "sudo su spectrum && ./server.start"]
+        }
+      },
+      {
+        "action": "aws:runShellScript",
+        "name": "deleteTMP",
+        "inputs": {
+          "timeoutSeconds": 10800 ,
+          "runCommand": ["cd /opt/spectrum/server" , "sudo su && rmdir tmp"]
+        }
+      },
+      {
+        "action": "aws:runShellScript",
+        "name": "turnOnServer2",
+        "inputs": {
+          "timeoutSeconds": 10800 ,
+          "runCommand": ["cd /opt/spectrum/server/bin" , "sudo su spectrum && . ./setup", "sudo su spectrum && ./server.start"]
+        }
+      }
+    ]
+  }

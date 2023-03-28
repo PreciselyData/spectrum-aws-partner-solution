@@ -18,7 +18,9 @@
       "default": "Network Configuration"
      },
      "Parameters":[
-        "VPCId"
+        "NetworkInterface",
+        "SubnetId",
+        "SecurityGroupIds"
      ]
     },
     {
@@ -41,8 +43,11 @@
     "KeypairName": {
      "default": "EC2 Instance Keypair Name (Required)"
     },
-    "VPCId": {
-    "default": "VPC ID (Required)"
+    "SubnetId": {
+    "default": "Subnet ID (Required)"
+    },
+    "SecurityGroupIds": {
+    "default": "Security Groups ID"
     },
     "InstanceType": {
      "default": "EC2 Instance Type (Required)"
@@ -72,9 +77,9 @@
     },
     "AMIId": {
      "Type": "String",
-     "Default": "ami-09c97ed81ec9a7ae4",
+     "Default": "ami-08691af3238845b6d",
      "AllowedValues": [
-        "ami-09c97ed81ec9a7ae4",
+        "ami-08691af3238845b6d",
         "Red Hat Linux 7 TBD",
         "CentOS 7 TBD",
         "CentOS 8 TBD",
@@ -84,7 +89,7 @@
         "Ubuntu 18.04 LTS TBD",
         "Ubuntu 20.04 LTS TBD"
        ],
-     "Description": "For Red Hat Linux 8, use ami id: ami-09c97ed81ec9a7ae4. For Red Hat Linux 7, use ami id: TBD. For CentOS 7, use ami id: TBD. For CentOS 8, use ami id: TBD. For Oracle Linux 7, use ami id: TBD. For Oracle Linux 7, use ami id: TBD. For Ubuntu 16.04 LTS, use ami id: TBD. For Ubuntu 18.04 LTS, use ami id: TBD. For Ubuntu 20.04 LTS, use ami id: TBD"
+     "Description": "For Red Hat Linux 8, use ami id: ami-08691af3238845b6d. For Red Hat Linux 7, use ami id: TBD. For CentOS 7, use ami id: TBD. For CentOS 8, use ami id: TBD. For Oracle Linux 7, use ami id: TBD. For Oracle Linux 7, use ami id: TBD. For Ubuntu 16.04 LTS, use ami id: TBD. For Ubuntu 18.04 LTS, use ami id: TBD. For Ubuntu 20.04 LTS, use ami id: TBD"
     },
     "KeypairName": {
      "Type": "AWS::EC2::KeyPair::KeyName",
@@ -92,16 +97,19 @@
      "ConstraintDescription": "The name can include up to 255 ASCII characters. It cannot include leading or trailing spaces.",
      "Description": "Choose an EC2 KeyPair to allow remote access to the EC2 instances."
     },
-    "VPCId": {
-     "Type": "AWS::EC2::VPC::Id",
-     "AllowedPattern": "^vpc-[a-z0-9]*$",
-     "Description": "Choose a VPC ID. Note: All Spectrum components that are part of same deployment must be deployed in the same VPC."
+    "SubnetId": {
+     "Type": "AWS::EC2::Subnet::Id",
+     "Description": "Choose a Subnet ID."
+    },
+    "SecurityGroupIds": {
+     "Type": "List<AWS::EC2::SecurityGroup::Id>",
+     "AllowedPattern": "^sg-[a-z0-9]*$",
+     "Description": "Choose one or multiple security groups."
     },
     "InstanceType": {
      "Type": "String",
-     "Default": "t2.medium",
+     "Default": "t2.xlarge",
      "AllowedValues": [
-      "t2.medium",
       "c3.xlarge",
       "c3.2xlarge",
       "c3.4xlarge",
@@ -203,29 +211,19 @@
              }
             }
            ],
+        "IamInstanceProfile" : "PRECISELY-BASIC-SSM-EC2-Role",
         "InstanceType" : { "Ref" : "InstanceType" },
         "KeyName" : { "Ref" : "KeypairName" },
-        "ImageId" : { "Ref" : "AMIId" }
+        "ImageId" : { "Ref" : "AMIId" },
+        "SecurityGroupIds" : { "Ref" : "SecurityGroupIds"},
+        "SubnetId" : { "Ref" : "SubnetId" }
       }
-    },
-    "InstanceSecurityGroup": {
-        "Type": "AWS::EC2::SecurityGroup",
-        "Properties": {
-            "GroupDescription" : {
-                "Ref": "AWS::StackName"
-            },
-            "VpcId": { "Ref" : "VPCId" }
-        }
     }
     },
 "Outputs" : {
     "InstanceId" : {
       "Description" : "InstanceId of the newly created EC2 instance",
       "Value" : { "Ref" : "SpectrumDeployment" }
-    },
-    "SecurityGroup" : {
-        "Description" : "Security Group ID of the newly created EC2 instance",
-        "Value" : { "Ref" : "InstanceSecurityGroup" }
-      }
+    }
   }
 }
