@@ -208,8 +208,12 @@
         "InstanceType" : { "Ref" : "InstanceType" },
         "KeyName" : { "Ref" : "KeypairName" },
         "ImageId" : { "Ref" : "AMIId" },
-        "SecurityGroupIds" : { "Ref" : "SecurityGroupIds"},
-        "SubnetId" : { "Ref" : "SubnetId" }
+        "NetworkInterfaces": [ {
+          "AssociatePublicIpAddress": "true",
+          "DeviceIndex": "0",
+          "GroupSet" : { "Ref" : "SecurityGroupIds" },
+          "SubnetId": { "Ref" : "SubnetId" }
+          } ]
       }
     }
     },
