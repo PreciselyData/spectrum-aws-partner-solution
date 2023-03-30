@@ -1,0 +1,214 @@
+// Download Data, Installer, Scripts -------Success
+{
+  "schemaVersion": "2.2",
+  "description": "RunCommandInstallUniversalAddressingModule-Windows-OneScript",
+  "parameters": {},
+  "mainSteps": [
+    {
+      "action": "aws:downloadContent",
+      "name": "downloadInstaller",
+      "inputs": {
+        "sourceType": "S3",
+        "sourceInfo": {
+          "path": "https://cloudformation-spectrum.s3.amazonaws.com/Modules/UAM/UAM-Windows/installers-22.1-nt/"
+        },
+        "destinationPath": "C:\\Program Files\\Precisely\\UAM\\installers-22.1-nt"
+      }
+    },
+    {
+      "action": "aws:downloadContent",
+      "name": "downloadData",
+      "inputs": {
+        "sourceType": "S3",
+        "sourceInfo": {
+          "path": "https://cloudformation-spectrum.s3.amazonaws.com/Modules/UAM/data/"
+        },
+        "destinationPath": "C:\\Program Files\\Precisely\\UAM\\data"
+      }
+    },
+    {
+      "action": "aws:downloadContent",
+      "name": "downloadScripts",
+      "inputs": {
+        "sourceType": "S3",
+        "sourceInfo": {
+          "path": "https://cloudformation-spectrum.s3.amazonaws.com/Modules/UAM/moduleScripts/"
+        },
+        "destinationPath": "C:\\Program Files\\Precisely\\UAM\\moduleScripts"
+      }
+    }
+  ]
+},
+//Do I need a Waiting or Listener function here
+
+// Install of Module---------------Success
+{
+  "schemaVersion": "2.2",
+  "description": "RunCommandInstallUniversalAddressingModule-Windows-OneScript",
+  "parameters": {},
+  "mainSteps": [
+    {
+      "action": "aws:runPowerShellScript",
+      "name": "runInstaller",
+      "inputs": {
+        "timeoutSeconds": 10800 ,
+        "runCommand": ["cd 'C:\\Program Files\\Precisely\\UAM\\installers-22.1-nt'", 
+        "./install.exe"
+        ]
+      }
+    }
+  ]
+}
+//Listener for install completion?
+
+//Move data to server/import--------Success
+{
+    "schemaVersion": "2.2",
+    "description": "RunCommandInstallUniversalAddressingModule-Windows-OneScript",
+    "parameters": {},
+    "mainSteps": [
+      {
+        "action": "aws:runPowerShellScript",
+        "name": "runInstaller",
+        "inputs": {
+          "timeoutSeconds": 10800 ,
+          "runCommand": ["Move-Item -Path 'C:\\Program Files\\Precisely\\UAM\\data\\*.spd' -Destination 'C:\\Program Files\\Precisely\\Spectrum\\server\\import'"]
+        }
+      }
+    ]
+  }
+//Run script for configuration-----------Success
+{
+    "schemaVersion": "2.2",
+    "description": "RunCommandInstallUniversalAddressingModule-Windows-OneScript",
+    "parameters": {},
+    "mainSteps": [
+      {
+        "action": "aws:runPowerShellScript",
+        "name": "createDBConnection",
+        "inputs": {
+          "timeoutSeconds": 10800 ,
+          "runCommand": ["cd 'C:/Program Files/Precisely/spectrum-cli-22.1'",
+                "./cli.cmd --cmdfile 'C:/Program Files/Precisely/UAM/moduleScripts/AddressValidationResourceCreate.cli'"]
+        }
+      }
+    ]
+  }
+//Delete installer 
+
+//Combined Script
+{
+    "schemaVersion": "2.2",
+    "description": "RunCommandUniversalAddressingModuleInstall-US-Windows",
+    "parameters": {},
+    "mainSteps": [
+      {
+        "action": "aws:downloadContent",
+        "name": "downloadInstaller",
+        "inputs": {
+          "sourceType": "S3",
+          "sourceInfo": {
+            "path": "https://cloudformation-spectrum.s3.amazonaws.com/Modules/UAM/UAM-Windows/installers-22.1-nt/"
+          },
+          "destinationPath": "C:\\Program Files\\Precisely\\UAM\\installers-22.1-nt"
+        }
+      },
+      {
+        "action": "aws:downloadContent",
+        "name": "downloadData",
+        "inputs": {
+          "sourceType": "S3",
+          "sourceInfo": {
+            "path": "https://cloudformation-spectrum.s3.amazonaws.com/Modules/UAM/data/"
+          },
+          "destinationPath": "C:\\Program Files\\Precisely\\UAM\\data"
+        }
+      },
+      {
+        "action": "aws:downloadContent",
+        "name": "downloadScripts",
+        "inputs": {
+          "sourceType": "S3",
+          "sourceInfo": {
+            "path": "https://cloudformation-spectrum.s3.amazonaws.com/Modules/UAM/UAM-Windows/moduleScriptsUSWindows2019/"
+          },
+          "destinationPath": "C:\\Program Files\\Precisely\\UAM\\moduleScriptsUSWindows2019"
+        }
+      },
+      {
+        "action": "aws:runPowerShellScript",
+        "name": "runInstaller",
+        "inputs": {
+          "timeoutSeconds": 10800 ,
+          "runCommand": ["cd 'C:\\Program Files\\Precisely\\UAM\\installers-22.1-nt'", 
+          "./install.exe"
+          ]
+        }
+      },
+      {
+        "action": "aws:runPowerShellScript",
+        "name": "moveData",
+        "inputs": {
+          "timeoutSeconds": 10800 ,
+          "runCommand": ["Move-Item -Path 'C:\\Program Files\\Precisely\\UAM\\data\\*.spd' -Destination 'C:\\Program Files\\Precisely\\Spectrum\\server\\import'"]
+        }
+      },
+      {
+        "action": "aws:runPowerShellScript",
+        "name": "listenForDataUploadUAMUSMAR2023",
+        "inputs": {
+          "timeoutSeconds": 10800 ,
+          "runCommand": ["while (!(Test-Path 'C:\\Program Files\\Precisely\\Spectrum\\server\\ref-data\\Universal_Addressing_Module\\c1p\\UAM-US_MAR2023')) { Start-Sleep 10 }"]
+        }
+      },
+      {
+        "action": "aws:runPowerShellScript",
+        "name": "listenForDataUploadUAMUSDPVMAR2023",
+        "inputs": {
+          "timeoutSeconds": 10800 ,
+          "runCommand": ["while (!(Test-Path 'C:\\Program Files\\Precisely\\Spectrum\\server\\ref-data\\Universal_Addressing_Module\\c1p\\UAM-US-DPV_MAR2023')) { Start-Sleep 10 }"]
+        }
+      },
+      {
+        "action": "aws:runPowerShellScript",
+        "name": "listenForDataUploadUAMUSLACSMAR2023",
+        "inputs": {
+          "timeoutSeconds": 10800 ,
+          "runCommand": ["while (!(Test-Path 'C:\\Program Files\\Precisely\\Spectrum\\server\\ref-data\\Universal_Addressing_Module\\c1p\\UAM-US-LACS_MAR2023')) { Start-Sleep 10 }"]
+        }
+      },
+      {
+        "action": "aws:runPowerShellScript",
+        "name": "listenForDataUploadUAMUSRDIMAR2023",
+        "inputs": {
+          "timeoutSeconds": 10800 ,
+          "runCommand": ["while (!(Test-Path 'C:\\Program Files\\Precisely\\Spectrum\\server\\ref-data\\Universal_Addressing_Module\\c1p\\UAM-US-RDI_MAR2023')) { Start-Sleep 10 }"]
+        }
+      },
+      {
+        "action": "aws:runPowerShellScript",
+        "name": "listenForDataUploadUAMUSSLKMAR2023",
+        "inputs": {
+          "timeoutSeconds": 10800 ,
+          "runCommand": ["while (!(Test-Path 'C:\\Program Files\\Precisely\\Spectrum\\server\\ref-data\\Universal_Addressing_Module\\c1p\\UAM-US-SLK_MAR2023')) { Start-Sleep 10 }"]
+        }
+      },
+      {
+        "action": "aws:runPowerShellScript",
+        "name": "createDBConnection",
+        "inputs": {
+          "timeoutSeconds": 10800 ,
+          "runCommand": ["cd 'C:/Program Files/Precisely/spectrum-cli-22.1'",
+                "./cli.cmd --cmdfile 'C:/Program Files/Precisely/UAM/moduleScriptsUSWindows2019/UamUSResourceCreate.cli'"]
+        }
+      },
+      {
+        "action": "aws:runPowerShellScript",
+        "name": "deleteEverything",
+        "inputs": {
+          "timeoutSeconds": 10800 ,
+          "runCommand": ["Remove-Item 'C:\\Program Files\\Precisely\\UAM'"]
+        }
+      }
+    ]
+  }

@@ -192,7 +192,7 @@
         "name": "turnOnServer",
         "inputs": {
           "timeoutSeconds": 10800 ,
-          "runCommand": ["cd /opt/spectrum/server/bin" , "sudo su spectrum && . ./setup", "sudo su spectrum && ./server.start"]
+          "runCommand": ["runuser -l spectrum -c '. ./opt/spectrum/server/bin/setup'", "runuser -l spectrum -c './opt/spectrum/server/bin/server.start'"]
         }
       },
       {

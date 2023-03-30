@@ -99,7 +99,7 @@
 //Combined Script
 {
     "schemaVersion": "2.2",
-    "description": "RunCommandInstallGlobalGeocodingModule-Windows-OneScript",
+    "description": "RunCommandInstallGlobalGeocodingModule-US-Windows",
     "parameters": {},
     "mainSteps": [
       {
@@ -151,6 +151,30 @@
         "inputs": {
           "timeoutSeconds": 10800 ,
           "runCommand": ["Move-Item -Path 'C:\\Program Files\\Precisely\\GGM\\data\\*.spd' -Destination 'C:\\Program Files\\Precisely\\Spectrum\\server\\import'"]
+        }
+      },
+      {
+        "action": "aws:runPowerShellScript",
+        "name": "listenForDataUploadEGMWORLDAP202212",
+        "inputs": {
+          "timeoutSeconds": 10800 ,
+          "runCommand": ["while (!(Test-Path 'C:\\Program Files\\Precisely\\Spectrum\\server\\ref-data\\geocoding-all\\geocoding-all\\EGM-WORLD-AP-WLD_202212')) { Start-Sleep 10 }"]
+        }
+      },
+      {
+        "action": "aws:runPowerShellScript",
+        "name": "listenForDataUploadEGMWORLDMLDGLB202212",
+        "inputs": {
+          "timeoutSeconds": 10800 ,
+          "runCommand": ["while (!(Test-Path 'C:\\Program Files\\Precisely\\Spectrum\\server\\ref-data\\geocoding-all\\geocoding-all\\EGM-WORLD-MLD-GLB_202212')) { Start-Sleep 10 }"]
+        }
+      },
+      {
+        "action": "aws:runPowerShellScript",
+        "name": "listenForDataUploadEGMWORLDSTREETWBL202212",
+        "inputs": {
+          "timeoutSeconds": 10800 ,
+          "runCommand": ["while (!(Test-Path 'C:\\Program Files\\Precisely\\Spectrum\\server\\ref-data\\geocoding-all\\geocoding-all\\EGM-WORLD-STREET-WBL_202212')) { Start-Sleep 10 }"]
         }
       },
       {
