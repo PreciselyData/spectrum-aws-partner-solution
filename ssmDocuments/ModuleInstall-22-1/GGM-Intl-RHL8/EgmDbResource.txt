@@ -1,0 +1,65 @@
+[ {
+  "permissions" : [ "READ", "EXECUTE", "DELETE", "ADMINISTRATION", "CREATE", "WRITE" ],
+  "product" : "GeoStan",
+  "productLabel" : "GeoStan",
+  "module" : "geostan",
+  "moduleLabel" : "US Geographic Coders",
+  "name" : "TomTom",
+  "maxActive" : 4,
+  "properties" : {
+    "BASE_DB_PATHS" : "${spectrum.spd.geocoding-all/geocoding-all/USA-TomTom_202205}/USA-EGM-TOMTOM-STREET-EN-KGD",
+    "DataSetName" : "TomTom"
+  },
+  "minimumMemory" : 0,
+  "maximumMemory" : 8,
+  "override" : false,
+  "vmargs" : "",
+  "javaProperties" : {
+    "egm.us.verbose" : "true",
+    "pool.max.active" : "16",
+    "FileMemoryLimit" : "500",
+    "egm.us.log.geostan.io" : "false",
+    "DpvFormat" : "SPLIT_FILEIO",
+    "pool.min.idle" : "16",
+    "egm.us.multimatch.max.processing" : "100",
+    "PreinitializeLACSLink" : "false",
+    "egm.us.multimatch.max.records" : "10",
+    "egm.us.return.pbkey.zip.centroids" : "false"
+  },
+  "environmentVariables" : {
+    "GEOSTAN_LIB_PATH" : "${g1.server.modules.dir}/geostan/lib"
+  },
+  "replyTimeout" : -1
+}, {
+  "permissions" : [ "READ", "EXECUTE", "DELETE", "ADMINISTRATION", "CREATE", "WRITE" ],
+  "product" : "GeoStan",
+  "productLabel" : "GeoStan",
+  "module" : "geostan",
+  "moduleLabel" : "US Geographic Coders",
+  "name" : "MLD",
+  "maxActive" : 4,
+  "properties" : {
+    "BASE_DB_PATHS" : "${spectrum.spd.geocoding-all/geocoding-all/USA-TomTom_202205}/USA-EGM-TOMTOM-STREET-EN-KGD;${spectrum.spd.geocoding-all/geocoding-all/USA-MasterLocationData_202205}/USA-EGM-MASTERLOCATION-AP-EN-KLD",
+    "DataSetName" : "MLD"
+  },
+  "minimumMemory" : 0,
+  "maximumMemory" : 8,
+  "override" : false,
+  "vmargs" : "",
+  "javaProperties" : {
+    "egm.us.verbose" : "true",
+    "pool.max.active" : "16",
+    "FileMemoryLimit" : "500",
+    "egm.us.log.geostan.io" : "false",
+    "DpvFormat" : "SPLIT_FILEIO",
+    "pool.min.idle" : "16",
+    "egm.us.multimatch.max.processing" : "100",
+    "PreinitializeLACSLink" : "false",
+    "egm.us.multimatch.max.records" : "10",
+    "egm.us.return.pbkey.zip.centroids" : "false"
+  },
+  "environmentVariables" : {
+    "GEOSTAN_LIB_PATH" : "${g1.server.modules.dir}/geostan/lib"
+  },
+  "replyTimeout" : -1
+} ]

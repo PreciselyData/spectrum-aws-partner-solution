@@ -1,0 +1,99 @@
+{
+    "schemaVersion": "2.2",
+    "description": "RunCommandInstallGlobalGeocodingModule-20-1-US-Windows",
+    "parameters": {},
+    "mainSteps": [
+      {
+        "action": "aws:downloadContent",
+        "name": "downloadInstaller",
+        "inputs": {
+          "sourceType": "S3",
+          "sourceInfo": {
+            "path": "https://cloudformation-spectrum.s3.amazonaws.com/Modules/GGM/GGM-Windows/installers-20.1-nt/"
+          },
+          "destinationPath": "C:\\Program Files\\Precisely\\GGM\\installers-20.1-nt"
+        }
+      },
+      {
+        "action": "aws:downloadContent",
+        "name": "downloadData",
+        "inputs": {
+          "sourceType": "S3",
+          "sourceInfo": {
+            "path": "https://cloudformation-spectrum.s3.amazonaws.com/Modules/GGM/data/"
+          },
+          "destinationPath": "C:\\Program Files\\Precisely\\GGM\\data"
+        }
+      },
+      {
+        "action": "aws:downloadContent",
+        "name": "downloadScripts",
+        "inputs": {
+          "sourceType": "S3",
+          "sourceInfo": {
+            "path": "https://cloudformation-spectrum.s3.amazonaws.com/Modules/GGM/GGM-Windows/moduleScriptsUSWindows2019/"
+          },
+          "destinationPath": "C:\\Program Files\\Precisely\\GGM\\moduleScriptsUSWindows2019"
+        }
+      },
+      {
+        "action": "aws:runPowerShellScript",
+        "name": "runInstaller",
+        "inputs": {
+          "timeoutSeconds": 10800 ,
+          "runCommand": ["cd 'C:\\Program Files\\Precisely\\GGM\\installers-20.1-nt'", 
+          "./install.exe"
+          ]
+        }
+      },
+      {
+        "action": "aws:runPowerShellScript",
+        "name": "moveData",
+        "inputs": {
+          "timeoutSeconds": 10800 ,
+          "runCommand": ["Move-Item -Path 'C:\\Program Files\\Precisely\\GGM\\data\\*.spd' -Destination 'C:\\Program Files\\Precisely\\Spectrum\\server\\import'"]
+        }
+      },
+      {
+        "action": "aws:runPowerShellScript",
+        "name": "listenForDataUploadEGMWORLDAP",
+        "inputs": {
+          "timeoutSeconds": 10800 ,
+          "runCommand": ["while($true){ Get-Content 'C:\\Program Files\\Precisely\\Spectrum\\server\\logs\\spectrum-server.log' -Wait | Select-String 'Registered EGM-WORLD-AP-WLD-136-202212-GEOCODING.spd' | %{write-host Found $_; break}}"]
+        }
+      },
+      {
+        "action": "aws:runPowerShellScript",
+        "name": "listenForDataUploadEGMWORLDMLD",
+        "inputs": {
+          "timeoutSeconds": 10800 ,
+          "runCommand": ["while($true){ Get-Content 'C:\\Program Files\\Precisely\\Spectrum\\server\\logs\\spectrum-server.log' -Wait | Select-String 'Registered EGM-WORLD-MLD-GLB-136-202212-GEOCODING.spd' | %{write-host Found $_; break}}"]
+        }
+      },
+      {
+        "action": "aws:runPowerShellScript",
+        "name": "listenForDataUploadEGMWORLDSTREET",
+        "inputs": {
+          "timeoutSeconds": 10800 ,
+          "runCommand": ["while($true){ Get-Content 'C:\\Program Files\\Precisely\\Spectrum\\server\\logs\\spectrum-server.log' -Wait | Select-String 'Registered EGM-WORLD-STREET-WBL-136-202212-GEOCODING.spd' | %{write-host Found $_; break}}"]
+        }
+      },
+      {
+        "action": "aws:runPowerShellScript",
+        "name": "createDBConnection",
+        "inputs": {
+          "timeoutSeconds": 10800 ,
+          "runCommand": ["cd 'C:/Program Files/Precisely/spectrum-cli-20.1'",
+                "./cli.cmd --cmdfile 'C:/Program Files/Precisely/GGM/moduleScriptsUSWindows2019/GgmUSResourceImport.cli'"]
+        }
+      },
+      {
+        "action": "aws:runPowerShellScript",
+        "name": "deleteEverything",
+        "inputs": {
+          "timeoutSeconds": 10800 ,
+          "runCommand": ["Remove-Item 'C:\\Program Files\\Precisely\\GGM' -Recurse -Force -Confirm:$false"]
+        }
+      }
+    ]
+  }

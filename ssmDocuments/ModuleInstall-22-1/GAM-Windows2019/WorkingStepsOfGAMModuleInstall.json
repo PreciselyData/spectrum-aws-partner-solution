@@ -1,0 +1,166 @@
+// Download Data, Installer, Scripts -------Success
+{
+  "schemaVersion": "2.2",
+  "description": "RunCommandInstallGlobalAddressModule-Windows-OneScript",
+  "parameters": {},
+  "mainSteps": [
+    {
+      "action": "aws:downloadContent",
+      "name": "downloadInstaller",
+      "inputs": {
+        "sourceType": "S3",
+        "sourceInfo": {
+          "path": "https://cloudformation-spectrum.s3.amazonaws.com/Modules/GAM/GAM-Windows/installers-22.1-nt/"
+        },
+        "destinationPath": "C:\\Program Files\\Precisely\\GAM\\installers-22.1-nt"
+      }
+    },
+    {
+      "action": "aws:downloadContent",
+      "name": "downloadData",
+      "inputs": {
+        "sourceType": "S3",
+        "sourceInfo": {
+          "path": "https://cloudformation-spectrum.s3.amazonaws.com/Modules/GAM/data/"
+        },
+        "destinationPath": "C:\\Program Files\\Precisely\\GAM\\data"
+      }
+    },
+    {
+      "action": "aws:downloadContent",
+      "name": "downloadScripts",
+      "inputs": {
+        "sourceType": "S3",
+        "sourceInfo": {
+          "path": "https://cloudformation-spectrum.s3.amazonaws.com/Modules/GAM/moduleScripts/"
+        },
+        "destinationPath": "C:\\Program Files\\Precisely\\GAM\\moduleScripts"
+      }
+    }
+  ]
+},
+//Do I need a Waiting or Listener function here
+
+// Install of Module---------------Success
+{
+  "schemaVersion": "2.2",
+  "description": "RunCommandInstallGlobalAddressModule-Windows-OneScript",
+  "parameters": {},
+  "mainSteps": [
+    {
+      "action": "aws:runPowerShellScript",
+      "name": "runInstaller",
+      "inputs": {
+        "timeoutSeconds": 10800 ,
+        "runCommand": ["cd 'C:\\Program Files\\Precisely\\GAM\\installers-22.1-nt'", 
+        "./install.exe"
+        ]
+      }
+    }
+  ]
+}
+//Listener for install completion?
+
+//Move data to server/import--------Success
+{
+    "schemaVersion": "2.2",
+    "description": "RunCommandInstallGlobalAddressModule-Windows-OneScript",
+    "parameters": {},
+    "mainSteps": [
+      {
+        "action": "aws:runPowerShellScript",
+        "name": "runInstaller",
+        "inputs": {
+          "timeoutSeconds": 10800 ,
+          "runCommand": ["Move-Item -Path 'C:\\Program Files\\Precisely\\GAM\\data\\*.spd' -Destination 'C:\\Program Files\\Precisely\\Spectrum\\server\\import'"]
+        }
+      }
+    ]
+  }
+//Run script for configuration-----------Success
+{
+    "schemaVersion": "2.2",
+    "description": "RunCommandInstallGlobalAddressModule-Windows-OneScript",
+    "parameters": {},
+    "mainSteps": [
+      {
+        "action": "aws:runPowerShellScript",
+        "name": "createDBConnection",
+        "inputs": {
+          "timeoutSeconds": 10800 ,
+          "runCommand": ["cd 'C:/Program Files/Precisely/spectrum-cli-22.1'",
+                "./cli.cmd --cmdfile 'C:/Program Files/Precisely/GAM/moduleScripts/GlobalAddressValidationResourceCreate.cli'"]
+        }
+      }
+    ]
+  }
+//Delete installer 
+
+//Combined Script
+{
+    "schemaVersion": "2.2",
+    "description": "RunCommandInstallGlobalAddressValidationModule-Windows-OneScript",
+    "parameters": {},
+    "mainSteps": [
+      {
+        "action": "aws:downloadContent",
+        "name": "downloadInstaller",
+        "inputs": {
+          "sourceType": "S3",
+          "sourceInfo": {
+            "path": "https://cloudformation-spectrum.s3.amazonaws.com/Modules/GAM/GAM-Windows/installers-22.1-nt/"
+          },
+          "destinationPath": "C:\\Program Files\\Precisely\\GAM\\installers-22.1-nt"
+        }
+      },
+      {
+        "action": "aws:downloadContent",
+        "name": "downloadData",
+        "inputs": {
+          "sourceType": "S3",
+          "sourceInfo": {
+            "path": "https://cloudformation-spectrum.s3.amazonaws.com/Modules/GAM/data/"
+          },
+          "destinationPath": "C:\\Program Files\\Precisely\\GAM\\data"
+        }
+      },
+      {
+        "action": "aws:downloadContent",
+        "name": "downloadScripts",
+        "inputs": {
+          "sourceType": "S3",
+          "sourceInfo": {
+            "path": "https://cloudformation-spectrum.s3.amazonaws.com/Modules/GAM/moduleScripts/"
+          },
+          "destinationPath": "C:\\Program Files\\Precisely\\GAM\\moduleScripts"
+        }
+      },
+      {
+        "action": "aws:runPowerShellScript",
+        "name": "runInstaller",
+        "inputs": {
+          "timeoutSeconds": 10800 ,
+          "runCommand": ["cd 'C:\\Program Files\\Precisely\\GAM\\installers-22.1-nt'", 
+          "./install.exe"
+          ]
+        }
+      },
+      {
+        "action": "aws:runPowerShellScript",
+        "name": "moveData",
+        "inputs": {
+          "timeoutSeconds": 10800 ,
+          "runCommand": ["Move-Item -Path 'C:\\Program Files\\Precisely\\GAM\\data\\*.spd' -Destination 'C:\\Program Files\\Precisely\\Spectrum\\server\\import'"]
+        }
+      },
+      {
+        "action": "aws:runPowerShellScript",
+        "name": "createDBConnection",
+        "inputs": {
+          "timeoutSeconds": 10800 ,
+          "runCommand": ["cd 'C:/Program Files/Precisely/spectrum-cli-22.1'",
+                "./cli.cmd --cmdfile 'C:/Program Files/Precisely/GAM/moduleScripts/GlobalAddressValidationResourceCreate.cli'"]
+        }
+      }
+    ]
+  }

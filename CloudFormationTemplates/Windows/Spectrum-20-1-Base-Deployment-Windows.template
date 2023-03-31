@@ -1,0 +1,227 @@
+{
+ "Description": "Spectrum CloudFormation Template: Provisions a Spectrum 20.1 deployment on one EC2 instance. **WARNING** You will be billed by AWS for the AWS resources if you create a stack from this template.",
+ "Metadata": {
+  "AWS::CloudFormation::Interface": {
+   "ParameterGroups": [
+    {
+     "Label": {
+      "default": "Amazon EC2 Configuration"
+     },
+     "Parameters": [
+      "PlatformVersion",
+      "AMIId",
+      "KeypairName"
+     ]
+    },
+    {
+     "Label": {
+      "default": "Network Configuration"
+     },
+     "Parameters":[
+        "NetworkInterface",
+        "VpcId",
+        "SubnetId",
+        "SecurityGroupIds"
+     ]
+    },
+    {
+     "Label": {
+      "default": "Spectrum Configuration"
+     },
+     "Parameters": [
+      "InstanceType",
+      "InstanceDriveSize"
+     ]
+    }
+   ],
+   "ParameterLabels": {
+    "PlatformVersion": {
+     "default": "Platform Type (Required)"
+    },
+    "AMIId": {
+     "default": "EC2 Instance AMI ID (Required)"
+    },
+    "KeypairName": {
+     "default": "EC2 Instance Keypair Name (Required)"
+    },
+    "VpcId": {
+    "default": "VPC ID (Required)"
+    },
+    "SubnetId": {
+    "default": "Subnet ID (Required)"
+    },
+    "SecurityGroupIds": {
+    "default": "Security Groups ID"
+    },
+    "InstanceType": {
+     "default": "EC2 Instance Type (Required)"
+    },
+    "InstanceDriveSize": {
+     "default": "EC2 Instance Root Drive Disk Space (Required)"
+    }
+   }
+  }
+ },
+ "Parameters": {
+    "PlatformVersion": {
+     "Type": "String",
+     "AllowedValues": [
+      "Windows 2019",
+      "Windows 2016",
+      "Windows 2012 RC"
+     ],
+     "ConstraintDescription": "You must specify Windows Server version.",
+     "Description": "Choose the Windows Server version. Supported versions are Windows Server 2019, Windows Server 2016 & Windows Server 2012 R2. For supported operating systems refer to https://docs.precisely.com/docs/sftw/spectrum-all-supportview/22.1/en-us/pdf/Spectrum_2022.1.0_InstallationGuide_Windows.pdf."
+    },
+    "AMIId": {
+     "Type": "String",
+     "Default": "ami-029d91fb82a5c8eae",
+     "AllowedValues": [
+        "ami-029d91fb82a5c8eae",
+        "WindowsServer2016TBD",
+        "WindowsServer2012RCTBD"
+       ],
+     "Description": "For Windows Server 2019, use ami id: ami-029d91fb82a5c8eae. For Windows Server 2016, use ami id: TBD. For Windows Server 2012 RC, use ami id: TBD"
+    },
+    "KeypairName": {
+     "Type": "AWS::EC2::KeyPair::KeyName",
+     "AllowedPattern": "^[\\S]+(?: +[\\S]+)*$",
+     "ConstraintDescription": "The name can include up to 255 ASCII characters. It cannot include leading or trailing spaces.",
+     "Description": "Choose an EC2 KeyPair to allow remote access to the EC2 instances."
+    },
+    "SubnetId": {
+     "Type": "AWS::EC2::Subnet::Id",
+     "Description": "Choose a Subnet ID."
+    },
+    "SecurityGroupIds": {
+     "Type": "List<AWS::EC2::SecurityGroup::Id>",
+     "AllowedPattern": "^sg-[a-z0-9]*$",
+     "Description": "Choose one or multiple security groups."
+    },
+    "InstanceType": {
+     "Type": "String",
+     "Default": "t2.xlarge",
+     "AllowedValues": [
+      "c3.xlarge",
+      "c3.2xlarge",
+      "c3.4xlarge",
+      "c3.8xlarge",
+      "c4.xlarge",
+      "c4.2xlarge",
+      "c4.4xlarge",
+      "c4.8xlarge",
+      "c5.2xlarge",
+      "c5.4xlarge",
+      "c5.9xlarge",
+      "c5.18xlarge",
+      "c5.xlarge",
+      "c5n.xlarge",
+      "c5n.2xlarge",
+      "c5n.4xlarge",
+      "c5n.9xlarge",
+      "c5n.18xlarge",
+      "m3.xlarge",
+      "m3.2xlarge",
+      "m4.xlarge",
+      "m4.2xlarge",
+      "m4.4xlarge",
+      "m4.10xlarge",
+      "m4.16xlarge",
+      "m5.xlarge",
+      "m5.2xlarge",
+      "m5.4xlarge",
+      "m5.12xlarge",
+      "m5.24xlarge",
+      "m5.metal",
+      "m5a.xlarge",
+      "m5a.2xlarge",
+      "m5a.4xlarge",
+      "m5a.12xlarge",
+      "m5a.24xlarge",
+      "p3.2xlarge",
+      "p3.8xlarge",
+      "p3.16xlarge",
+      "r3.xlarge",
+      "r3.2xlarge",
+      "r3.4xlarge",
+      "r3.8xlarge",
+      "r4.xlarge",
+      "r4.2xlarge",
+      "r4.4xlarge",
+      "r4.8xlarge",
+      "r4.16xlarge",
+      "r5.xlarge",
+      "r5.2xlarge",
+      "r5.4xlarge",
+      "r5.12xlarge",
+      "r5.24xlarge",
+      "r5.metal",
+      "r5a.xlarge",
+      "r5a.2xlarge",
+      "r5a.4xlarge",
+      "r5a.12xlarge",
+      "r5a.24xlarge",
+      "t2.xlarge",
+      "t2.2xlarge",
+      "t3.xlarge",
+      "t3.2xlarge",
+      "x1.16xlarge",
+      "x1.32xlarge",
+      "x1e.xlarge",
+      "x1e.2xlarge",
+      "x1e.4xlarge",
+      "x1e.8xlarge",
+      "x1e.16xlarge",
+      "x1e.32xlarge",
+      "x2iedn.2xlarge"
+     ],
+     "Description": "Choose EC2 instance type. Default is t2.medium."
+    },
+    "InstanceDriveSize": {
+     "Type": "Number",
+     "Default": 250,
+     "ConstraintDescription": "Must be between 250 and 1024 GB.",
+     "Description": "Provide size of the root Drive in GB. Default is 250 GB. Minimum is 250 GB. Maximum is 1024 GB.",
+     "MaxValue": 1024,
+     "MinValue": 250
+    }
+   },
+"Conditions": {
+   },
+"Resources" : {
+    "SpectrumDeployment" : {
+      "Type" : "AWS::EC2::Instance",
+      "Properties" : {
+        "BlockDeviceMappings": [
+            {
+             "DeviceName": "/dev/sda1",
+             "Ebs": {
+              "DeleteOnTermination": true,
+              "VolumeSize": {
+               "Ref": "InstanceDriveSize"
+              },
+              "VolumeType": "gp3"
+             }
+            }
+           ],
+        "IamInstanceProfile" : "PRECISELY-BASIC-SSM-EC2-Role",
+        "InstanceType" : { "Ref" : "InstanceType" },
+        "KeyName" : { "Ref" : "KeypairName" },
+        "ImageId" : { "Ref" : "AMIId" },
+        "NetworkInterfaces": [ {
+          "AssociatePublicIpAddress": "true",
+          "DeviceIndex": "0",
+          "GroupSet" : { "Ref" : "SecurityGroupIds" },
+          "SubnetId": { "Ref" : "SubnetId" }
+          } ]
+      }
+    }
+    },
+"Outputs" : {
+    "InstanceId" : {
+      "Description" : "InstanceId of the newly created EC2 instance",
+      "Value" : { "Ref" : "SpectrumDeployment" }
+    }
+  }
+}
+
