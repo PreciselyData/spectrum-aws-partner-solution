@@ -1,6 +1,6 @@
 {
     "schemaVersion": "2.2",
-    "description": "RunCommandGlobalGeocodingModuleInstall-Intl-22-1-Windows",
+    "description": "RunCommandGlobalGeocodingModuleInstall-22-1-Intl-Windows",
     "parameters": {},
     "mainSteps": [
       {
