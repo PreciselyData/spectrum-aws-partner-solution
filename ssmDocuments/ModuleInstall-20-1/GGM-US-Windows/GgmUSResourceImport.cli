@@ -1,4 +1,4 @@
-//GeocodingResourceImport
+//GeocodingResourceImport--same as 22.1
 
 //Connect with Spectrum Server
 connect --h localhost:8080 --u admin --p admin
@@ -8,7 +8,7 @@ connect --h localhost:8080 --u admin --p admin
 //globalgeocodedb delete --n MLD
 //egmusadb delete --n MLD
 
-globalgeocodedb import --f 'C:/Program Files/Precisely/GGM/moduleScriptsUSWindows2019/GgmUSDbResource.txt'
+globalgeocodedb import --f 'C:/Program Files/Precisely/GGM/moduleScriptsUSWindows/GgmUSDbResource.txt'
 
 //close connection to the server
 close 

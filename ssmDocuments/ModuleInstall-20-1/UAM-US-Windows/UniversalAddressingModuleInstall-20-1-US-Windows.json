@@ -1,6 +1,6 @@
 {
     "schemaVersion": "2.2",
-    "description": "RunCommandUniversalAddressingModuleInstall-22-1-US-Windows",
+    "description": "RunCommandUniversalAddressingModuleInstall-20-1-US-Windows",
     "parameters": {},
     "mainSteps": [
       {
@@ -9,9 +9,9 @@
         "inputs": {
           "sourceType": "S3",
           "sourceInfo": {
-            "path": "https://cloudformation-spectrum.s3.amazonaws.com/Modules/UAM/UAM-Windows/installers-22.1-nt/"
+            "path": "https://cloudformation-spectrum.s3.amazonaws.com/Modules/UAM/UAM-Windows/installers-20.1-nt/"
           },
-          "destinationPath": "C:\\Program Files\\Precisely\\UAM\\installers-22.1-nt"
+          "destinationPath": "C:\\Program Files\\Precisely\\UAM\\installers-20.1-nt"
         }
       },
       {
@@ -31,9 +31,9 @@
         "inputs": {
           "sourceType": "S3",
           "sourceInfo": {
-            "path": "https://cloudformation-spectrum.s3.amazonaws.com/Modules/UAM/UAM-Windows/moduleScriptsUSWindows2019/"
+            "path": "https://cloudformation-spectrum.s3.amazonaws.com/Modules/UAM/UAM-Windows/moduleScriptsUSWindows/"
           },
-          "destinationPath": "C:\\Program Files\\Precisely\\UAM\\moduleScriptsUSWindows2019"
+          "destinationPath": "C:\\Program Files\\Precisely\\UAM\\moduleScriptsUSWindows"
         }
       },
       {
@@ -41,7 +41,7 @@
         "name": "runInstaller",
         "inputs": {
           "timeoutSeconds": 10800 ,
-          "runCommand": ["cd 'C:\\Program Files\\Precisely\\UAM\\installers-22.1-nt'", 
+          "runCommand": ["cd 'C:\\Program Files\\Precisely\\UAM\\installers-20.1-nt'", 
           "./install.exe"
           ]
         }
@@ -108,8 +108,8 @@
         "name": "createDBConnection",
         "inputs": {
           "timeoutSeconds": 10800 ,
-          "runCommand": ["cd 'C:/Program Files/Precisely/spectrum-cli-22.1'",
-                "./cli.cmd --cmdfile 'C:/Program Files/Precisely/UAM/moduleScriptsUSWindows2019/UamUSResourceCreate.cli'"]
+          "runCommand": ["cd 'C:/Program Files/Precisely/spectrum-cli-20.1'",
+                "./cli.cmd --cmdfile 'C:/Program Files/Precisely/UAM/moduleScriptsUSWindows/UamUSResourceCreate.cli'"]
         }
       },
       {

@@ -78,10 +78,10 @@
      "Default": "ami-0ca52f6ceba7bf321",
      "AllowedValues": [
         "ami-0ca52f6ceba7bf321",
-        "WindowsServer2016TBD",
-        "WindowsServer2012RCTBD"
+        "ami-0349cf370f160a930",
+        "ami-0d65d4e8869538dc3"
        ],
-     "Description": "For Windows Server 2019, use ami id: ami-0ca52f6ceba7bf321. For Windows Server 2016, use ami id: TBD. For Windows Server 2012 RC, use ami id: TBD"
+     "Description": "For Windows Server 2019, use ami id: ami-0ca52f6ceba7bf321. For Windows Server 2016, use ami id: ami-0349cf370f160a930. For Windows Server 2012 RC, use ami id: ami-0d65d4e8869538dc3"
     },
     "KeypairName": {
      "Type": "AWS::EC2::KeyPair::KeyName",

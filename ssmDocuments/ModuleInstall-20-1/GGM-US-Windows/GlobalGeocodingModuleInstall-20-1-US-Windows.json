@@ -1,6 +1,6 @@
 {
     "schemaVersion": "2.2",
-    "description": "RunCommandInstallGlobalGeocodingModule-20-1-Windows-OneScript",
+    "description": "RunCommandGlobalGeocodingModuleInstall-20-1-US-Windows",
     "parameters": {},
     "mainSteps": [
       {
@@ -31,9 +31,9 @@
         "inputs": {
           "sourceType": "S3",
           "sourceInfo": {
-            "path": "https://cloudformation-spectrum.s3.amazonaws.com/Modules/GGM/GGM-Windows/moduleScriptsIntlWindows2019/"
+            "path": "https://cloudformation-spectrum.s3.amazonaws.com/Modules/GGM/GGM-Windows/moduleScriptsUSWindows/"
           },
-          "destinationPath": "C:\\Program Files\\Precisely\\GGM\\moduleScriptsIntlWindows2019"
+          "destinationPath": "C:\\Program Files\\Precisely\\GGM\\moduleScriptsUSWindows"
         }
       },
       {
@@ -84,7 +84,7 @@
         "inputs": {
           "timeoutSeconds": 10800 ,
           "runCommand": ["cd 'C:/Program Files/Precisely/spectrum-cli-20.1'",
-                "./cli.cmd --cmdfile 'C:/Program Files/Precisely/GGM/moduleScriptsIntlWindows2019/GgmIntlResourceImport.cli'"]
+                "./cli.cmd --cmdfile 'C:/Program Files/Precisely/GGM/moduleScriptsUSWindows/GgmUSResourceImport.cli'"]
         }
       },
       {

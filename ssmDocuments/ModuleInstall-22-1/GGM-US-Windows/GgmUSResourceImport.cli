@@ -8,8 +8,7 @@ connect --h localhost:8080 --u admin --p admin
 //globalgeocodedb delete --n MLD
 //egmusadb delete --n MLD
 
-//globalgeocodedb import --f c:/migration/GlobalGeocodeDbResource.txt
-globalgeocodedb import --f 'C:/Program Files/Precisely/GGM/moduleScriptsIntlWindows2019/GgmIntlDbResource.txt'
+globalgeocodedb import --f 'C:/Program Files/Precisely/GGM/moduleScriptsUSWindows/GgmUSDbResource.txt'
 
 //close connection to the server
 close 

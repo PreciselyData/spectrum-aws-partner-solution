@@ -1,4 +1,4 @@
-//UAMResourceCreate
+//UAMResourceCreate---same as 22.1
 
 //Connect with Spectrum Server
 connect --h localhost:8080 --u admin --p admin
@@ -9,7 +9,7 @@ connect --h localhost:8080 --u admin --p admin
 //Delete an existing UAM Resource and create a new UAM Resource
 //uamdb delete --t USA --n UAMDB
 //uamdb create --t Type --n Name --c CacheSize --i Country --pl PreloadingType --dt DatabaseType --b BasePath --d DPVPath --l LACSPath --s SuiteLinkPath --r RDIPath --e EWSPath --p Poolsize --mm minimumMemorySize --mx maximumMemorySize
-uamdb import --f 'C:/Program Files/Precisely/UAM/moduleScriptsUSWindows2019/UamUSDbResource.txt'
+uamdb import --f 'C:/Program Files/Precisely/UAM/moduleScriptsUSWindows/UamUSDbResource.txt'
 //uamdb create --t CAN --n UAM_DB_CAN --b MAR2023
 
 

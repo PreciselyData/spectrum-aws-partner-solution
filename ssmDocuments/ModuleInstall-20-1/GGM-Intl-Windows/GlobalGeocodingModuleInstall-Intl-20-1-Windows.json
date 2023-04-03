@@ -1,6 +1,6 @@
 {
     "schemaVersion": "2.2",
-    "description": "RunCommandInstallGlobalGeocodingModule-22-1-Windows-OneScript",
+    "description": "RunCommandGlobalGeocodingModuleInstall-Intl-20-1-Windows",
     "parameters": {},
     "mainSteps": [
       {
@@ -9,9 +9,9 @@
         "inputs": {
           "sourceType": "S3",
           "sourceInfo": {
-            "path": "https://cloudformation-spectrum.s3.amazonaws.com/Modules/GGM/GGM-Windows/installers-22.1-nt/"
+            "path": "https://cloudformation-spectrum.s3.amazonaws.com/Modules/GGM/GGM-Windows/installers-20.1-nt/"
           },
-          "destinationPath": "C:\\Program Files\\Precisely\\GGM\\installers-22.1-nt"
+          "destinationPath": "C:\\Program Files\\Precisely\\GGM\\installers-20.1-nt"
         }
       },
       {
@@ -31,9 +31,9 @@
         "inputs": {
           "sourceType": "S3",
           "sourceInfo": {
-            "path": "https://cloudformation-spectrum.s3.amazonaws.com/Modules/GGM/GGM-Windows/moduleScriptsIntlWindows2019/"
+            "path": "https://cloudformation-spectrum.s3.amazonaws.com/Modules/GGM/GGM-Windows/moduleScriptsIntlWindows/"
           },
-          "destinationPath": "C:\\Program Files\\Precisely\\GGM\\moduleScriptsIntlWindows2019"
+          "destinationPath": "C:\\Program Files\\Precisely\\GGM\\moduleScriptsIntlWindows"
         }
       },
       {
@@ -41,7 +41,7 @@
         "name": "runInstaller",
         "inputs": {
           "timeoutSeconds": 10800 ,
-          "runCommand": ["cd 'C:\\Program Files\\Precisely\\GGM\\installers-22.1-nt'", 
+          "runCommand": ["cd 'C:\\Program Files\\Precisely\\GGM\\installers-20.1-nt'", 
           "./install.exe"
           ]
         }
@@ -83,8 +83,8 @@
         "name": "createDBConnection",
         "inputs": {
           "timeoutSeconds": 10800 ,
-          "runCommand": ["cd 'C:/Program Files/Precisely/spectrum-cli-22.1'",
-                "./cli.cmd --cmdfile 'C:/Program Files/Precisely/GGM/moduleScriptsIntlWindows2019/GgmIntlResourceImport.cli'"]
+          "runCommand": ["cd 'C:/Program Files/Precisely/spectrum-cli-20.1'",
+                "./cli.cmd --cmdfile 'C:/Program Files/Precisely/GGM/moduleScriptsIntlWindows/GgmIntlResourceImport.cli'"]
         }
       },
       {

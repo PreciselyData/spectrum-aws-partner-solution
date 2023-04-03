@@ -31,9 +31,9 @@
       "inputs": {
         "sourceType": "S3",
         "sourceInfo": {
-          "path": "https://cloudformation-spectrum.s3.amazonaws.com/Modules/GAV/GAV-Windows/moduleScriptsUSWindows2019/"
+          "path": "https://cloudformation-spectrum.s3.amazonaws.com/Modules/GAV/GAV-Windows/moduleScriptsUSWindows/"
         },
-        "destinationPath": "C:\\Program Files\\Precisely\\GAV\\moduleScriptsUSWindows2019"
+        "destinationPath": "C:\\Program Files\\Precisely\\GAV\\moduleScriptsUSWindows"
       }
     },
     {
@@ -76,7 +76,7 @@
       "inputs": {
         "timeoutSeconds": 10800 ,
         "runCommand": ["cd 'C:/Program Files/Precisely/spectrum-cli-20.1'",
-              "./cli.cmd --cmdfile 'C:/Program Files/Precisely/GAV/moduleScriptsUSWindows2019/GAVUSResourceCreate.cli'"]
+              "./cli.cmd --cmdfile 'C:/Program Files/Precisely/GAV/moduleScriptsUSWindows/GAVUSResourceCreate.cli'"]
       }
     },
     {
