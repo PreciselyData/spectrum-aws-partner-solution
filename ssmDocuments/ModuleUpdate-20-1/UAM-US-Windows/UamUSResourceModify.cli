@@ -1,4 +1,4 @@
-//UAMResourceModify
+//UAMResourceModify---same as 22.1
 
 //Connect with Spectrum Server
 connect --h localhost:8080 --u admin --p admin
@@ -6,11 +6,8 @@ connect --h localhost:8080 --u admin --p admin
 
 //Update an existing UAM DB Resource
 //uamdb modify --t Type --n Name --b BasePath --d DPVPath --l LACSPath --s SuiteLinkPath --r RDIPath --e EWSPath --p Poolsize
-uamdb modify --n UAMDB --t USA --b MAY2022 --d MAY2022 --l MAY2022 --s MAY2022
+uamdb modify --t USA --n UAM_USA --b APR2023 --d APR2023 --l APR2023 --s APR2023 --r APR2023
 
-//Update an existing GAM DB Resource
-//gamdb modify --n Name --d Dataset Name --v Dataset Vintage --c Country --t Type --g Group --p Poolsize
-//gamdb modify --n GAV_DEU --d GAV_EMEA --v MAY2022 --c DEU --t GAV --g Global --p 5
 
 //close connection to the server
 close

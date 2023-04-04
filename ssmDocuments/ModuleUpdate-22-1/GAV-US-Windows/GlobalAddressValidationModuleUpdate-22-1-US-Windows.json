@@ -1,26 +1,15 @@
 {
   "schemaVersion": "2.2",
-  "description": "RunCommandGlobalAddressValidationModuleInstall-22-1-US-Windows",
+  "description": "RunCommandGlobalAddressValidationModuleUpdate-22-1-US-Windows",
   "parameters": {},
   "mainSteps": [
-    {
-      "action": "aws:downloadContent",
-      "name": "downloadInstaller",
-      "inputs": {
-        "sourceType": "S3",
-        "sourceInfo": {
-          "path": "https://cloudformation-spectrum.s3.amazonaws.com/Modules/GAV/GAV-Windows/installers-22.1-nt/"
-        },
-        "destinationPath": "C:\\Program Files\\Precisely\\GAV\\installers-22.1-nt"
-      }
-    },
     {
       "action": "aws:downloadContent",
       "name": "downloadData",
       "inputs": {
         "sourceType": "S3",
         "sourceInfo": {
-          "path": "https://cloudformation-spectrum.s3.amazonaws.com/Modules/GAV/dataUS/"
+          "path": "https://cloudformation-spectrum.s3.amazonaws.com/Modules/GAV/042023dataUS/"
         },
         "destinationPath": "C:\\Program Files\\Precisely\\GAV\\dataUS"
       }
@@ -38,16 +27,6 @@
     },
     {
       "action": "aws:runPowerShellScript",
-      "name": "runInstaller",
-      "inputs": {
-        "timeoutSeconds": 10800 ,
-        "runCommand": ["cd 'C:\\Program Files\\Precisely\\GAV\\installers-22.1-nt'", 
-        "./install.exe"
-        ]
-      }
-    },
-    {
-      "action": "aws:runPowerShellScript",
       "name": "moveData",
       "inputs": {
         "timeoutSeconds": 10800 ,
@@ -59,7 +38,7 @@
       "name": "listenForDataUploadGAVUSDOM",
       "inputs": {
         "timeoutSeconds": 10800 ,
-        "runCommand": ["while($true){ Get-Content 'C:\\Program Files\\Precisely\\Spectrum\\server\\logs\\spectrum-server.log' -Wait | Select-String 'Registered GAV_US_DOM_032023.spd' | %{write-host Found $_; break}}"]
+        "runCommand": ["while($true){ Get-Content 'C:\\Program Files\\Precisely\\Spectrum\\server\\logs\\spectrum-server.log' -Wait | Select-String 'Registered GAV_US_DOM_042023.spd' | %{write-host Found $_; break}}"]
       }
     },
     {
@@ -67,7 +46,7 @@
       "name": "listenForDataUploadGAVUSNONDOM",
       "inputs": {
         "timeoutSeconds": 10800 ,
-        "runCommand": ["while($true){ Get-Content 'C:\\Program Files\\Precisely\\Spectrum\\server\\logs\\spectrum-server.log' -Wait | Select-String 'Registered GAV_US_NON_DOM_032023.spd' | %{write-host Found $_; break}}"]
+        "runCommand": ["while($true){ Get-Content 'C:\\Program Files\\Precisely\\Spectrum\\server\\logs\\spectrum-server.log' -Wait | Select-String 'Registered GAV_US_NON_DOM_042023.spd' | %{write-host Found $_; break}}"]
       }
     },
     {
@@ -76,7 +55,7 @@
       "inputs": {
         "timeoutSeconds": 10800 ,
         "runCommand": ["cd 'C:/Program Files/Precisely/spectrum-cli-22.1'",
-              "./cli.cmd --cmdfile 'C:/Program Files/Precisely/GAV/moduleScriptsUSWindows/GAVUSResourceCreate.cli'"]
+              "./cli.cmd --cmdfile 'C:/Program Files/Precisely/GAV/moduleScriptsUSWindows/GAVUSResourceModify.cli'"]
       }
     },
     {

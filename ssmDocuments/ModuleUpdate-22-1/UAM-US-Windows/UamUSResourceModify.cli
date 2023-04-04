@@ -1,0 +1,13 @@
+//UAMResourceModify
+
+//Connect with Spectrum Server
+connect --h localhost:8080 --u admin --p admin
+//connect --h localhost:8443 --u admin --p admin --s true
+
+//Update an existing UAM DB Resource
+//uamdb modify --t Type --n Name --b BasePath --d DPVPath --l LACSPath --s SuiteLinkPath --r RDIPath --e EWSPath --p Poolsize
+uamdb modify --t USA --n UAM_USA --b APR2023 --d APR2023 --l APR2023 --s APR2023 --r APR2023
+
+
+//close connection to the server
+close
