@@ -1,6 +1,6 @@
 {
   "schemaVersion": "2.2",
-  "description": "RunCommandGlobalAddressValidationModuleUpdate-22-1-US-Windows",
+  "description": "RunCommandGlobalAddressValidationModuleUpdate-22-1-Intl-Windows",
   "parameters": {},
   "mainSteps": [
     {
@@ -9,9 +9,9 @@
       "inputs": {
         "sourceType": "S3",
         "sourceInfo": {
-          "path": "https://cloudformation-spectrum.s3.amazonaws.com/Modules/GAV/UpdatedDataUS/"
+          "path": "https://cloudformation-spectrum.s3.amazonaws.com/Modules/GAV/UpdatedDataIntl/"
         },
-        "destinationPath": "C:\\Program Files\\Precisely\\GAV\\dataUS"
+        "destinationPath": "C:\\Program Files\\Precisely\\GAV\\dataIntl"
       }
     },
     {
@@ -20,9 +20,9 @@
       "inputs": {
         "sourceType": "S3",
         "sourceInfo": {
-          "path": "https://cloudformation-spectrum.s3.amazonaws.com/Modules/GAV/GAV-Windows/moduleScriptsUSWindows/"
+          "path": "https://cloudformation-spectrum.s3.amazonaws.com/Modules/GAV/GAV-Windows/moduleScriptsIntlWindows/"
         },
-        "destinationPath": "C:\\Program Files\\Precisely\\GAV\\moduleScriptsUSWindows"
+        "destinationPath": "C:\\Program Files\\Precisely\\GAV\\moduleScriptsIntlWindows"
       }
     },
     {
@@ -30,7 +30,7 @@
       "name": "moveData",
       "inputs": {
         "timeoutSeconds": 10800 ,
-        "runCommand": ["Move-Item -Path 'C:\\Program Files\\Precisely\\GAV\\dataUS\\*.spd' -Destination 'C:\\Program Files\\Precisely\\Spectrum\\server\\import'"]
+        "runCommand": ["Move-Item -Path 'C:\\Program Files\\Precisely\\GAV\\dataIntl\\*.spd' -Destination 'C:\\Program Files\\Precisely\\Spectrum\\server\\import'"]
       }
     },
     {
@@ -51,11 +51,19 @@
     },
     {
       "action": "aws:runPowerShellScript",
+      "name": "listenForDataUploadGGL",
+      "inputs": {
+        "timeoutSeconds": 10800 ,
+        "runCommand": ["while($true){ Get-Content 'C:\\Program Files\\Precisely\\Spectrum\\server\\logs\\spectrum-server.log' -Wait | Select-String 'Registered GGL122022.spd' | %{write-host Found $_; break}}"]
+      }
+    },
+    {
+      "action": "aws:runPowerShellScript",
       "name": "createDBConnection",
       "inputs": {
         "timeoutSeconds": 10800 ,
         "runCommand": ["cd 'C:/Program Files/Precisely/spectrum-cli-22.1'",
-              "./cli.cmd --cmdfile 'C:/Program Files/Precisely/GAV/moduleScriptsUSWindows/GAVUSResourceModify.cli'"]
+              "./cli.cmd --cmdfile 'C:/Program Files/Precisely/GAV/moduleScriptsIntlWindows/GAVIntlResourceModify.cli'"]
       }
     },
     {

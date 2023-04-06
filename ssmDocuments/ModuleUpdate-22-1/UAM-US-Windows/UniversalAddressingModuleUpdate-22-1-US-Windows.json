@@ -9,7 +9,7 @@
         "inputs": {
           "sourceType": "S3",
           "sourceInfo": {
-            "path": "https://cloudformation-spectrum.s3.amazonaws.com/Modules/UAM/042023dataUS/"
+            "path": "https://cloudformation-spectrum.s3.amazonaws.com/Modules/UAM/UpdatedDataUS/"
           },
           "destinationPath": "C:\\Program Files\\Precisely\\UAM\\dataUS"
         }

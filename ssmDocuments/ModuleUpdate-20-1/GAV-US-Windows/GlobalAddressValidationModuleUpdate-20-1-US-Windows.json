@@ -1,26 +1,15 @@
 {
   "schemaVersion": "2.2",
-  "description": "RunCommandGlobalAddressValidationModuleInstall-22-1-US-Windows",
+  "description": "RunCommandGlobalAddressValidationModuleUpdate-20-1-US-Windows",
   "parameters": {},
   "mainSteps": [
-    {
-      "action": "aws:downloadContent",
-      "name": "downloadInstaller",
-      "inputs": {
-        "sourceType": "S3",
-        "sourceInfo": {
-          "path": "https://cloudformation-spectrum.s3.amazonaws.com/Modules/GAV/GAV-Windows/installers-22.1-nt/"
-        },
-        "destinationPath": "C:\\Program Files\\Precisely\\GAV\\installers-22.1-nt"
-      }
-    },
     {
       "action": "aws:downloadContent",
       "name": "downloadData",
       "inputs": {
         "sourceType": "S3",
         "sourceInfo": {
-          "path": "https://cloudformation-spectrum.s3.amazonaws.com/Modules/GAV/dataUS/"
+          "path": "https://cloudformation-spectrum.s3.amazonaws.com/Modules/GAV/UpdatedDataUS/"
         },
         "destinationPath": "C:\\Program Files\\Precisely\\GAV\\dataUS"
       }
@@ -34,16 +23,6 @@
           "path": "https://cloudformation-spectrum.s3.amazonaws.com/Modules/GAV/GAV-Windows/moduleScriptsUSWindows/"
         },
         "destinationPath": "C:\\Program Files\\Precisely\\GAV\\moduleScriptsUSWindows"
-      }
-    },
-    {
-      "action": "aws:runPowerShellScript",
-      "name": "runInstaller",
-      "inputs": {
-        "timeoutSeconds": 10800 ,
-        "runCommand": ["cd 'C:\\Program Files\\Precisely\\GAV\\installers-22.1-nt'", 
-        "./install.exe"
-        ]
       }
     },
     {
@@ -75,8 +54,8 @@
       "name": "createDBConnection",
       "inputs": {
         "timeoutSeconds": 10800 ,
-        "runCommand": ["cd 'C:/Program Files/Precisely/spectrum-cli-22.1'",
-              "./cli.cmd --cmdfile 'C:/Program Files/Precisely/GAV/moduleScriptsUSWindows/GAVUSResourceCreate.cli'"]
+        "runCommand": ["cd 'C:/Program Files/Precisely/spectrum-cli-20.1'",
+              "./cli.cmd --cmdfile 'C:/Program Files/Precisely/GAV/moduleScriptsUSWindows/GAVUSResourceModify.cli'"]
       }
     },
     {

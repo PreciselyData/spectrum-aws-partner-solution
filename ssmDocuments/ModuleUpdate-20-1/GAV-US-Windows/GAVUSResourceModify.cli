@@ -1,4 +1,4 @@
-//GAVResourceCreate
+//GAVResourceCreate --- same as 22.1
 
 //Connect with Spectrum Server
 connect --h localhost:8080 --u admin --p admin

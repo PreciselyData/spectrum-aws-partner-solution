@@ -7,6 +7,7 @@ connect --h localhost:8080 --u admin --p admin
 //gamdb modify --n Name --d Dataset Name --v Dataset Vintage --c Country --t Type --g Group --p Poolsize --mn minimum_memory_size --mx maximum_memory_size
 gamdb modify --n GAV_DOM --d GAV_US_DOM --v 'April 2023' --t GAV --g US
 gamdb modify --n GAV_NON_DOM --d GAV_US_NON_DOM --v 'April 2023' --t GAV --g US
+gamdb modify --n TGL --d TGL-WORLD --v 202301 --t GAV --g Global 
 
 //close connection to the server
 close
