@@ -64,14 +64,6 @@
       },
       {
         "action": "aws:runPowerShellScript",
-        "name": "listenForDataUploadCAS",
-        "inputs": {
-          "timeoutSeconds": 10800 ,
-          "runCommand": ["while($true){ Get-Content 'C:\\Program Files\\Precisely\\Spectrum\\server\\logs\\spectrum-server.log' -Wait | Select-String 'Registered CAS042023_201910.spd' | %{write-host Found $_; break}}"]
-        }
-      },
-      {
-        "action": "aws:runPowerShellScript",
         "name": "listenForDataUploadDPU",
         "inputs": {
           "timeoutSeconds": 10800 ,
