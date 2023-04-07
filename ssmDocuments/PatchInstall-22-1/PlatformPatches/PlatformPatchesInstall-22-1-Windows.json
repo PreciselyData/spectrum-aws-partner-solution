@@ -5,73 +5,83 @@
   "mainSteps": [
     {
       "action": "aws:downloadContent",
-      "name": "downloadData",
+      "name": "downloadPatchS03",
       "inputs": {
         "sourceType": "S3",
         "sourceInfo": {
-          "path": "https://cloudformation-spectrum.s3.amazonaws.com/Modules/GAV/UpdatedDataIntl/"
+          "path": "https://cim-spectrum-platform-and-bigdata.s3.amazonaws.com/cdq20221s03_Windows.zip"
         },
-        "destinationPath": "C:\\Program Files\\Precisely\\GAV\\dataIntl"
+        "destinationPath": "C:\\Program Files\\Precisely\\PatchesDownload\\"
       }
     },
     {
       "action": "aws:downloadContent",
-      "name": "downloadScripts",
+      "name": "downloadPatchS12",
       "inputs": {
         "sourceType": "S3",
         "sourceInfo": {
-          "path": "https://cloudformation-spectrum.s3.amazonaws.com/Modules/GAV/GAV-Windows/moduleScriptsIntlWindows/"
+          "path": "https://cim-spectrum-platform-and-bigdata.s3.amazonaws.com/cdq20221s12_Windows.zip"
         },
-        "destinationPath": "C:\\Program Files\\Precisely\\GAV\\moduleScriptsIntlWindows"
+        "destinationPath": "C:\\Program Files\\Precisely\\PatchesDownload\\"
+      }
+    },
+    {
+      "action": "aws:downloadContent",
+      "name": "downloadPatchS15",
+      "inputs": {
+        "sourceType": "S3",
+        "sourceInfo": {
+          "path": "https://cim-spectrum-platform-and-bigdata.s3.amazonaws.com/cdq20221s15_Windows.zip"
+        },
+        "destinationPath": "C:\\Program Files\\Precisely\\PatchesDownload\\"
       }
     },
     {
       "action": "aws:runPowerShellScript",
-      "name": "moveData",
+      "name": "extractPatchS03",
       "inputs": {
         "timeoutSeconds": 10800 ,
-        "runCommand": ["Move-Item -Path 'C:\\Program Files\\Precisely\\GAV\\dataIntl\\*.spd' -Destination 'C:\\Program Files\\Precisely\\Spectrum\\server\\import'"]
+        "runCommand": ["Expand-Archive -LiteralPath 'C:\\Program Files\\Precisely\\PatchesDownload\\cdq20221s03_Windows.zip' -DestinationPath 'C:\\Program Files\\Precisely\\ExtractedPatches' -Force"]
       }
     },
     {
       "action": "aws:runPowerShellScript",
-      "name": "listenForDataUploadGAVUSDOM",
+      "name": "extractPatchS12",
       "inputs": {
         "timeoutSeconds": 10800 ,
-        "runCommand": ["while($true){ Get-Content 'C:\\Program Files\\Precisely\\Spectrum\\server\\logs\\spectrum-server.log' -Wait | Select-String 'Registered GAV_US_DOM_042023.spd' | %{write-host Found $_; break}}"]
+        "runCommand": ["Expand-Archive -LiteralPath 'C:\\Program Files\\Precisely\\PatchesDownload\\cdq20221s12_Windows.zip' -DestinationPath 'C:\\Program Files\\Precisely\\ExtractedPatches' -Force"]
       }
     },
     {
       "action": "aws:runPowerShellScript",
-      "name": "listenForDataUploadGAVUSNONDOM",
+      "name": "extractPatchS15",
       "inputs": {
         "timeoutSeconds": 10800 ,
-        "runCommand": ["while($true){ Get-Content 'C:\\Program Files\\Precisely\\Spectrum\\server\\logs\\spectrum-server.log' -Wait | Select-String 'Registered GAV_US_NON_DOM_042023.spd' | %{write-host Found $_; break}}"]
+        "runCommand": ["Expand-Archive -LiteralPath 'C:\\Program Files\\Precisely\\PatchesDownload\\cdq20221s15_Windows.zip' -DestinationPath 'C:\\Program Files\\Precisely\\ExtractedPatches' -Force"]
       }
     },
     {
       "action": "aws:runPowerShellScript",
-      "name": "listenForDataUploadGGL",
+      "name": "extractPatchS032",
       "inputs": {
         "timeoutSeconds": 10800 ,
-        "runCommand": ["while($true){ Get-Content 'C:\\Program Files\\Precisely\\Spectrum\\server\\logs\\spectrum-server.log' -Wait | Select-String 'Registered GGL122022.spd' | %{write-host Found $_; break}}"]
+        "runCommand": ["Expand-Archive -LiteralPath 'C:\\Program Files\\Precisely\\ExtractedPatches\\cdq20221s03.zip' -DestinationPath 'C:\\Program Files\\Precisely\\Patches\\cdq20221s03' -Force"]
       }
     },
     {
       "action": "aws:runPowerShellScript",
-      "name": "createDBConnection",
+      "name": "extractPatchS122",
       "inputs": {
         "timeoutSeconds": 10800 ,
-        "runCommand": ["cd 'C:/Program Files/Precisely/spectrum-cli-20.1'",
-              "./cli.cmd --cmdfile 'C:/Program Files/Precisely/GAV/moduleScriptsIntlWindows/GAVIntlResourceModify.cli'"]
+        "runCommand": ["Expand-Archive -LiteralPath 'C:\\Program Files\\Precisely\\ExtractedPatches\\cdq20221s12.zip' -DestinationPath 'C:\\Program Files\\Precisely\\Patches\\cdq20221s12' -Force"]
       }
     },
     {
       "action": "aws:runPowerShellScript",
-      "name": "deleteEverything",
+      "name": "extractPatchS152",
       "inputs": {
         "timeoutSeconds": 10800 ,
-        "runCommand": ["Remove-Item 'C:\\Program Files\\Precisely\\GAV' -Recurse -Force -Confirm:$false"]
+        "runCommand": ["Expand-Archive -LiteralPath 'C:\\Program Files\\Precisely\\ExtractedPatches\\cdq20221s15.zip' -DestinationPath 'C:\\Program Files\\Precisely\\Patches\\cdq20221s15' -Force"]
       }
     }
   ]

@@ -5,73 +5,56 @@
   "mainSteps": [
     {
       "action": "aws:downloadContent",
-      "name": "downloadData",
+      "name": "downloadPatchS09",
       "inputs": {
         "sourceType": "S3",
         "sourceInfo": {
-          "path": "https://cloudformation-spectrum.s3.amazonaws.com/Modules/GAV/UpdatedDataIntl/"
+          "path": "https://cim-spectrum-platform-and-bigdata.s3.amazonaws.com/cdq20221s09_Windows.zip"
         },
-        "destinationPath": "C:\\Program Files\\Precisely\\GAV\\dataIntl"
+        "destinationPath": "C:\\Program Files\\Precisely\\PatchesDownload\\"
       }
     },
     {
       "action": "aws:downloadContent",
-      "name": "downloadScripts",
+      "name": "downloadPatchS18",
       "inputs": {
         "sourceType": "S3",
         "sourceInfo": {
-          "path": "https://cloudformation-spectrum.s3.amazonaws.com/Modules/GAV/GAV-Windows/moduleScriptsIntlWindows/"
+          "path": "https://cim-spectrum-platform-and-bigdata.s3.amazonaws.com/cdq20221s18_Windows.zip"
         },
-        "destinationPath": "C:\\Program Files\\Precisely\\GAV\\moduleScriptsIntlWindows"
+        "destinationPath": "C:\\Program Files\\Precisely\\PatchesDownload\\"
       }
     },
     {
       "action": "aws:runPowerShellScript",
-      "name": "moveData",
+      "name": "extractPatchS09",
       "inputs": {
         "timeoutSeconds": 10800 ,
-        "runCommand": ["Move-Item -Path 'C:\\Program Files\\Precisely\\GAV\\dataIntl\\*.spd' -Destination 'C:\\Program Files\\Precisely\\Spectrum\\server\\import'"]
+        "runCommand": ["Expand-Archive -LiteralPath 'C:\\Program Files\\Precisely\\PatchesDownload\\cdq20221s09_Windows.zip' -DestinationPath 'C:\\Program Files\\Precisely\\ExtractedPatches' -Force"]
       }
     },
     {
       "action": "aws:runPowerShellScript",
-      "name": "listenForDataUploadGAVUSDOM",
+      "name": "extractPatchS18",
       "inputs": {
         "timeoutSeconds": 10800 ,
-        "runCommand": ["while($true){ Get-Content 'C:\\Program Files\\Precisely\\Spectrum\\server\\logs\\spectrum-server.log' -Wait | Select-String 'Registered GAV_US_DOM_042023.spd' | %{write-host Found $_; break}}"]
+        "runCommand": ["Expand-Archive -LiteralPath 'C:\\Program Files\\Precisely\\PatchesDownload\\cdq20221s18_Windows.zip' -DestinationPath 'C:\\Program Files\\Precisely\\ExtractedPatches' -Force"]
       }
     },
     {
       "action": "aws:runPowerShellScript",
-      "name": "listenForDataUploadGAVUSNONDOM",
+      "name": "extractPatchS092",
       "inputs": {
         "timeoutSeconds": 10800 ,
-        "runCommand": ["while($true){ Get-Content 'C:\\Program Files\\Precisely\\Spectrum\\server\\logs\\spectrum-server.log' -Wait | Select-String 'Registered GAV_US_NON_DOM_042023.spd' | %{write-host Found $_; break}}"]
+        "runCommand": ["Expand-Archive -LiteralPath 'C:\\Program Files\\Precisely\\ExtractedPatches\\cdq20221s09.zip' -DestinationPath 'C:\\Program Files\\Precisely\\Patches\\cdq20221s09' -Force"]
       }
     },
     {
       "action": "aws:runPowerShellScript",
-      "name": "listenForDataUploadGGL",
+      "name": "extractPatchS182",
       "inputs": {
         "timeoutSeconds": 10800 ,
-        "runCommand": ["while($true){ Get-Content 'C:\\Program Files\\Precisely\\Spectrum\\server\\logs\\spectrum-server.log' -Wait | Select-String 'Registered GGL122022.spd' | %{write-host Found $_; break}}"]
-      }
-    },
-    {
-      "action": "aws:runPowerShellScript",
-      "name": "createDBConnection",
-      "inputs": {
-        "timeoutSeconds": 10800 ,
-        "runCommand": ["cd 'C:/Program Files/Precisely/spectrum-cli-20.1'",
-              "./cli.cmd --cmdfile 'C:/Program Files/Precisely/GAV/moduleScriptsIntlWindows/GAVIntlResourceModify.cli'"]
-      }
-    },
-    {
-      "action": "aws:runPowerShellScript",
-      "name": "deleteEverything",
-      "inputs": {
-        "timeoutSeconds": 10800 ,
-        "runCommand": ["Remove-Item 'C:\\Program Files\\Precisely\\GAV' -Recurse -Force -Confirm:$false"]
+        "runCommand": ["Expand-Archive -LiteralPath 'C:\\Program Files\\Precisely\\ExtractedPatches\\cdq20221s18.zip' -DestinationPath 'C:\\Program Files\\Precisely\\Patches\\cdq20221s18' -Force"]
       }
     }
   ]
