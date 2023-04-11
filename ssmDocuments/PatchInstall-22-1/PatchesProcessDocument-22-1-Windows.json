@@ -1,0 +1,351 @@
+{
+  "schemaVersion": "2.2",
+  "description": "RunCommandPatchesProcessDocument-22-1-Windows",
+  "parameters": {
+    "GGMInstalled": {
+      "default": "False",
+      "description": "Is Global Geocoding Module installed on the Spectrum instance?",
+      "type": "String",
+      "allowedValues": [
+        "True",
+        "False"
+      ]
+    },
+    "UAMInstalled": {
+      "default": "False",
+      "description": "Is Universal Addressing Module installed on the Spectrum instance?",
+      "type": "String",
+      "allowedValues": [
+        "True",
+        "False"
+      ]
+    },
+    "GAVInstalled": {
+      "default": "False",
+      "description": "Is Global Address Validation Module installed on the Spectrum instance?",
+      "type": "String",
+      "allowedValues": [
+        "True",
+        "False"
+      ]
+    },
+    "EGMInstalled": {
+      "default": "False",
+      "description": "Is Enterprise Geocoding Module installed on the Spectrum instance?",
+      "type": "String",
+      "allowedValues": [
+        "False"
+      ]
+    },
+    "CGInstalled": {
+      "default": "False",
+      "description": "Is Context Graph Module installed on the Spectrum instance?",
+      "type": "String",
+      "allowedValues": [
+        "False"
+      ]
+    },
+    "SSAInstalled": {
+      "default": "False",
+      "description": "Is Spectrum Spatial Analyst installed on the Spectrum instance?",
+      "type": "String",
+      "allowedValues": [
+        "False"
+      ]
+    },
+    "SSInstalled": {
+      "default": "False",
+      "description": "Is Spectrum Spatial installed on the Spectrum instance?",
+      "type": "String",
+      "allowedValues": [
+        "False"
+      ]
+    }
+  },
+  "mainSteps": [
+    {
+      "name": "DownloadGGMPatches",
+      "action": "aws:runDocument",
+      "precondition": {
+        "StringEquals": [
+          "{{GGMInstalled}}",
+          "True"
+        ]
+      },
+      "inputs": {
+        "documentType": "SSMDocument",
+        "documentPath": "DownloadGGMPatches-22-1-Windows"
+      }
+    },
+    {
+      "name": "DownloadUAMPatches",
+      "action": "aws:runDocument",
+      "precondition": {
+        "StringEquals": [
+          "{{UAMInstalled}}",
+          "True"
+        ]
+      },
+      "inputs": {
+        "documentType": "SSMDocument",
+        "documentPath": "DownloadUAMPatches-22-1-Windows"
+      }
+    },
+    {
+      "name": "DownloadGAVPatches",
+      "action": "aws:runDocument",
+      "precondition": {
+        "StringEquals": [
+          "{{GAVInstalled}}",
+          "True"
+        ]
+      },
+      "inputs": {
+        "documentType": "SSMDocument",
+        "documentPath": "DownloadGAVPatches-22-1-Windows"
+      }
+    },
+    {
+      "name": "DownloadPlatformPatches",
+      "action": "aws:runDocument",
+      "inputs": {
+        "documentType": "SSMDocument",
+        "documentPath": "DownloadPlatformPatches-22-1-Windows"
+      }
+    },
+    {
+      "name": "installPatchS01",
+      "action": "aws:runDocument",
+      "precondition": {
+        "StringEquals": [
+          "{{UAMInstalled}}",
+          "True"
+        ]
+      },
+      "inputs": {
+        "documentType": "SSMDocument",
+        "documentPath": "InstallPatchS01-22-1-Windows"
+      }
+    },
+    {
+      "name": "installPatchS02",
+      "action": "aws:runDocument",
+      "precondition": {
+        "StringEquals": [
+          "{{GGMInstalled}}",
+          "True"
+        ]
+      },
+      "inputs": {
+        "documentType": "SSMDocument",
+        "documentPath": "InstallPatchS02-22-1-Windows"
+      }
+    },
+    {
+      "name": "installPatchS03",
+      "action": "aws:runDocument",
+      "inputs": {
+        "documentType": "SSMDocument",
+        "documentPath": "InstallPatchS03-22-1-Windows"
+      }
+    },
+    {
+      "name": "installPatchS04",
+      "action": "aws:runDocument",
+      "precondition": {
+        "StringEquals": [
+          "{{GGMInstalled}}",
+          "True"
+        ]
+      },
+      "inputs": {
+        "documentType": "SSMDocument",
+        "documentPath": "InstallPatchS04-22-1-Windows"
+      }
+    },
+    {
+      "name": "installPatchS05",
+      "action": "aws:runDocument",
+      "precondition": {
+        "StringEquals": [
+          "{{GGMInstalled}}",
+          "True"
+        ]
+      },
+      "inputs": {
+        "documentType": "SSMDocument",
+        "documentPath": "InstallPatchS05-22-1-Windows"
+      }
+    },
+    {
+      "name": "installPatchS06",
+      "action": "aws:runDocument",
+      "precondition": {
+        "StringEquals": [
+          "{{SSAInstalled}}",
+          "True"
+        ]
+      },
+      "inputs": {
+        "documentType": "SSMDocument",
+        "documentPath": "InstallPatchS06-22-1-Windows"
+      }
+    },
+    {
+      "name": "installPatchS07",
+      "action": "aws:runDocument",
+      "precondition": {
+        "StringEquals": [
+          "{{GGMInstalled}}",
+          "True"
+        ]
+      },
+      "inputs": {
+        "documentType": "SSMDocument",
+        "documentPath": "InstallPatchS07-22-1-Windows"
+      }
+    },
+    {
+      "name": "installPatchS08",
+      "action": "aws:runDocument",
+      "precondition": {
+        "StringEquals": [
+          "{{GGMInstalled}}",
+          "True"
+        ]
+      },
+      "inputs": {
+        "documentType": "SSMDocument",
+        "documentPath": "InstallPatchS08-22-1-Windows"
+      }
+    },
+    {
+      "name": "installPatchS09",
+      "action": "aws:runDocument",
+      "precondition": {
+        "StringEquals": [
+          "{{GAVInstalled}}",
+          "True"
+        ]
+      },
+      "inputs": {
+        "documentType": "SSMDocument",
+        "documentPath": "InstallPatchS09-22-1-Windows"
+      }
+    },
+    {
+      "name": "installPatchS10",
+      "action": "aws:runDocument",
+      "precondition": {
+        "StringEquals": [
+          "{{SSInstalled}}",
+          "True"
+        ]
+      },
+      "inputs": {
+        "documentType": "SSMDocument",
+        "documentPath": "InstallPatchS10-22-1-Windows"
+      }
+    },
+    {
+      "name": "installPatchS11",
+      "action": "aws:runDocument",
+      "precondition": {
+        "StringEquals": [
+          "{{SSAInstalled}}",
+          "True"
+        ]
+      },
+      "inputs": {
+        "documentType": "SSMDocument",
+        "documentPath": "InstallPatchS11-22-1-Windows"
+      }
+    },
+    {
+      "name": "installPatchS12",
+      "action": "aws:runDocument",
+      "inputs": {
+        "documentType": "SSMDocument",
+        "documentPath": "InstallPatchS12-22-1-Windows"
+      }
+    },
+    {
+      "name": "installPatchS13",
+      "action": "aws:runDocument",
+      "precondition": {
+        "StringEquals": [
+          "{{CGInstalled}}",
+          "True"
+        ]
+      },
+      "inputs": {
+        "documentType": "SSMDocument",
+        "documentPath": "InstallPatchS13-22-1-Windows"
+      }
+    },
+    {
+      "name": "installPatchS14",
+      "action": "aws:runDocument",
+      "precondition": {
+        "StringEquals": [
+          "{{EGMInstalled}}",
+          "True"
+        ]
+      },
+      "inputs": {
+        "documentType": "SSMDocument",
+        "documentPath": "InstallPatchS14-22-1-Windows"
+      }
+    },
+    {
+      "name": "installPatchS15",
+      "action": "aws:runDocument",
+      "inputs": {
+        "documentType": "SSMDocument",
+        "documentPath": "InstallPatchS15-22-1-Windows"
+      }
+    },
+    {
+      "name": "installPatchS16",
+      "action": "aws:runDocument",
+      "precondition": {
+        "StringEquals": [
+          "{{CGInstalled}}",
+          "True"
+        ]
+      },
+      "inputs": {
+        "documentType": "SSMDocument",
+        "documentPath": "InstallPatchS16-22-1-Windows"
+      }
+    },
+    {
+      "name": "installPatchS17",
+      "action": "aws:runDocument",
+      "precondition": {
+        "StringEquals": [
+          "{{SSAInstalled}}",
+          "True"
+        ]
+      },
+      "inputs": {
+        "documentType": "SSMDocument",
+        "documentPath": "InstallPatchS17-22-1-Windows"
+      }
+    },
+    {
+      "name": "installPatchS18",
+      "action": "aws:runDocument",
+      "precondition": {
+        "StringEquals": [
+          "{{GAVInstalled}}",
+          "True"
+        ]
+      },
+      "inputs": {
+        "documentType": "SSMDocument",
+        "documentPath": "InstallPatchS18-22-1-Windows"
+      }
+    }
+  ]
+}

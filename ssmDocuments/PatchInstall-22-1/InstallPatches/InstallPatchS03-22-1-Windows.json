@@ -1,0 +1,470 @@
+{
+  "schemaVersion": "2.2",
+  "description": "RunCommandInstallPatchS03-22-1-Windows",
+  "parameters": {},
+  "mainSteps": [
+    {
+      "action": "aws:runPowerShellScript",
+      "name": "lookForPatchS03",
+      "inputs": {
+        "timeoutSeconds": 300 ,
+        "runCommand": ["while (!(Test-Path -Path 'C:\\Program Files\\Precisely\\Patches\\cdq20221s03')) {Start-Sleep 10}"]
+      }
+    },
+    {
+      "action": "aws:runPowerShellScript",
+      "name": "stopServer",
+      "inputs": {
+        "timeoutSeconds": 10800 ,
+        "runCommand": ["Stop-Service -Name 'spectrum-server' -Force"]
+      }
+    },
+    {
+      "action": "aws:runPowerShellScript",
+      "name": "listenForServerStop",
+      "inputs": {
+        "timeoutSeconds": 10800 ,
+        "runCommand": ["while($true){ Get-Content 'C:\\Program Files\\Precisely\\Spectrum\\server\\logs\\spectrum-server.log' -Tail 1 -Wait | Select-String 'Precisely Spectrum Technology Platform shutdown complete' | %{write-host Found $_; break}}"]
+      }
+    },
+    {
+      "action": "aws:runPowerShellScript",
+      "name": "backupIndexLib",
+      "inputs": {
+        "timeoutSeconds": 10800 ,
+        "runCommand": ["Copy-Item -Path 'C:\\Program Files\\Precisely\\Spectrum\\index\\lib' -Destination 'C:\\Program Files\\Precisely\\PatchesBackups\\PatchS03' "]
+      }
+    },
+    {
+      "action": "aws:runPowerShellScript",
+      "name": "backupIndexModules",
+      "inputs": {
+        "timeoutSeconds": 10800 ,
+        "runCommand": ["Copy-Item -Path 'C:\\Program Files\\Precisely\\Spectrum\\index\\modules' -Destination 'C:\\Program Files\\Precisely\\PatchesBackups\\PatchS03' "]
+      }
+    },
+    {
+      "action": "aws:runPowerShellScript",
+      "name": "backupIndexPlugins",
+      "inputs": {
+        "timeoutSeconds": 10800 ,
+        "runCommand": ["Copy-Item -Path 'C:\\Program Files\\Precisely\\Spectrum\\index\\plugins' -Destination 'C:\\Program Files\\Precisely\\PatchesBackups\\PatchS03' "]
+      }
+    },
+    {
+      "action": "aws:runPowerShellScript",
+      "name": "backupRepository",
+      "inputs": {
+        "timeoutSeconds": 10800 ,
+        "runCommand": ["Copy-Item -Path 'C:\\Program Files\\Precisely\\Spectrum\\repository' -Destination 'C:\\Program Files\\Precisely\\PatchesBackups\\PatchS03' "]
+      }
+    },
+    {
+      "action": "aws:runPowerShellScript",
+      "name": "backupServerDeploy",
+      "inputs": {
+        "timeoutSeconds": 10800 ,
+        "runCommand": ["Copy-Item -Path 'C:\\Program Files\\Precisely\\Spectrum\\server\\deploy' -Destination 'C:\\Program Files\\Precisely\\PatchesBackups\\PatchS03' "]
+      }
+    },
+    {
+      "action": "aws:runPowerShellScript",
+      "name": "backupserverExports",
+      "inputs": {
+        "timeoutSeconds": 10800 ,
+        "runCommand": ["Copy-Item -Path 'C:\\Program Files\\Precisely\\Spectrum\\server\\exports' -Destination 'C:\\Program Files\\Precisely\\PatchesBackups\\PatchS03' "]
+      }
+    },
+    {
+      "action": "aws:runPowerShellScript",
+      "name": "backupServerLib",
+      "inputs": {
+        "timeoutSeconds": 10800 ,
+        "runCommand": ["Copy-Item -Path 'C:\\Program Files\\Precisely\\Spectrum\\server\\lib' -Destination 'C:\\Program Files\\Precisely\\PatchesBackups\\PatchS03' "]
+      }
+    },
+    {
+      "action": "aws:runPowerShellScript",
+      "name": "deleteRepository",
+      "inputs": {
+        "timeoutSeconds": 10800 ,
+        "runCommand": ["Remove-Item 'C:\\Program Files\\Precisely\\Spectrum\\repository' -Force"]
+      }
+    },
+    {
+      "action": "aws:runPowerShellScript",
+      "name": "deleteServerLib",
+      "inputs": {
+        "timeoutSeconds": 10800 ,
+        "runCommand": ["Remove-Item 'C:\\Program Files\\Precisely\\Spectrum\\server\\lib' -Force"]
+      }
+    },
+    {
+      "action": "aws:runPowerShellScript",
+      "name": "deleteIndexLibJacksonCore",
+      "inputs": {
+        "timeoutSeconds": 10800 ,
+        "runCommand": ["Remove-Item 'C:\\Program Files\\Precisely\\Spectrum\\index\\lib\\jackson-core-2.10.4.jar' -Force"]
+      }
+    },
+    {
+      "action": "aws:runPowerShellScript",
+      "name": "deleteIndexLibToolsPluginBcFips",
+      "inputs": {
+        "timeoutSeconds": 10800 ,
+        "runCommand": ["Remove-Item 'C:\\Program Files\\Precisely\\Spectrum\\index\\lib\\tools\\plugin-cli\\bc-fips-1.0.2.jar' -Force"]
+      }
+    },
+    {
+      "action": "aws:runPowerShellScript",
+      "name": "deleteIndexLibToolsPluginBcprov",
+      "inputs": {
+        "timeoutSeconds": 10800 ,
+        "runCommand": ["Remove-Item 'C:\\Program Files\\Precisely\\Spectrum\\index\\lib\\tools\\plugin-cli\bc-fips-1.0.2.jar' -Force"]
+      }
+    },
+    {
+      "action": "aws:runPowerShellScript",
+      "name": "deleteIndexModulesKibanaCommonsCodec",
+      "inputs": {
+        "timeoutSeconds": 10800 ,
+        "runCommand": ["Remove-Item 'C:\\Program Files\\Precisely\\Spectrum\\index\\modules\\kibana\\commons-codec-1.11.jar' -Force"]
+      }
+    },
+    {
+      "action": "aws:runPowerShellScript",
+      "name": "deleteIndexModulesKibanaHttpclient",
+      "inputs": {
+        "timeoutSeconds": 10800 ,
+        "runCommand": ["Remove-Item 'C:\\Program Files\\Precisely\\Spectrum\\index\\modules\\kibana\\httpclient-4.5.10.jar' -Force"]
+      }
+    },
+    {
+      "action": "aws:runPowerShellScript",
+      "name": "deleteIndexModulesReindexCcprov",
+      "inputs": {
+        "timeoutSeconds": 10800 ,
+        "runCommand": ["Remove-Item 'C:\\Program Files\\Precisely\\Spectrum\\index\\modules\\reindex\\bcprov-jdk15on-1.64.jar' -Force"]
+      }
+    },
+    {
+      "action": "aws:runPowerShellScript",
+      "name": "deleteIndexModulesTransportnetty4NettyCommon",
+      "inputs": {
+        "timeoutSeconds": 10800 ,
+        "runCommand": ["Remove-Item 'C:\\Program Files\\Precisely\\Spectrum\\index\\modules\\transport-netty4\\netty-common-4.1.71.Final.jar' -Force"]
+      }
+    },
+    {
+      "action": "aws:runPowerShellScript",
+      "name": "deleteIndexModulesTransportnetty4NettyHandler",
+      "inputs": {
+        "timeoutSeconds": 10800 ,
+        "runCommand": ["Remove-Item 'C:\\Program Files\\Precisely\\Spectrum\\index\\modules\\transport-netty4\\netty-handler-4.1.71.Final.jar' -Force"]
+      }
+    },
+    {
+      "action": "aws:runPowerShellScript",
+      "name": "deleteIndexPluginsOpendistroalertingCommons",
+      "inputs": {
+        "timeoutSeconds": 10800 ,
+        "runCommand": ["Remove-Item 'C:\\Program Files\\Precisely\\Spectrum\\index\\plugins\\opendistro-alerting\\commons-codec-1.13.jar' -Force"]
+      }
+    },
+    {
+      "action": "aws:runPowerShellScript",
+      "name": "deleteIndexPluginsOpendistroalertingGuava",
+      "inputs": {
+        "timeoutSeconds": 10800 ,
+        "runCommand": ["Remove-Item 'C:\\Program Files\\Precisely\\Spectrum\\index\\plugins\\opendistro-alerting\\guava-19.0.jar' -Force"]
+      }
+    },
+    {
+      "action": "aws:runPowerShellScript",
+      "name": "deleteIndexPluginsOpendistroalertingHttpclient",
+      "inputs": {
+        "timeoutSeconds": 10800 ,
+        "runCommand": ["Remove-Item 'C:\\Program Files\\Precisely\\Spectrum\\index\\plugins\\opendistro-alerting\\httpclient-4.5.10.jar' -Force"]
+      }
+    },
+    {
+      "action": "aws:runPowerShellScript",
+      "name": "deleteIndexPluginsOpendistroalertingJavac",
+      "inputs": {
+        "timeoutSeconds": 10800 ,
+        "runCommand": ["Remove-Item 'C:\\Program Files\\Precisely\\Spectrum\\index\\plugins\\opendistro-alerting\\javac-9-dev-r3297-1-shaded.jar' -Force"]
+      }
+    },
+    {
+      "action": "aws:runPowerShellScript",
+      "name": "deleteIndexPluginsOpendistroanomalydetectionCommons",
+      "inputs": {
+        "timeoutSeconds": 10800 ,
+        "runCommand": ["Remove-Item 'C:\\Program Files\\Precisely\\Spectrum\\index\\plugins\\opendistro-anomaly-detection\\commons-codec-1.11.jar' -Force"]
+      }
+    },
+    {
+      "action": "aws:runPowerShellScript",
+      "name": "deleteIndexPluginsOpendistroanomalydetectionGson",
+      "inputs": {
+        "timeoutSeconds": 10800 ,
+        "runCommand": ["Remove-Item 'C:\\Program Files\\Precisely\\Spectrum\\index\\plugins\\opendistro-anomaly-detection\\gson-2.8.6.jar' -Force"]
+      }
+    },
+    {
+      "action": "aws:runPowerShellScript",
+      "name": "deleteIndexPluginsOpendistroanomalydetectionHttpclient",
+      "inputs": {
+        "timeoutSeconds": 10800 ,
+        "runCommand": ["Remove-Item 'C:\\Program Files\\Precisely\\Spectrum\\index\\plugins\\opendistro-anomaly-detection\\httpclient-4.5.10.jar' -Force"]
+      }
+    },
+    {
+      "action": "aws:runPowerShellScript",
+      "name": "deleteIndexPluginsOpendistroreportsschedulerGuava",
+      "inputs": {
+        "timeoutSeconds": 10800 ,
+        "runCommand": ["Remove-Item 'C:\\Program Files\\Precisely\\Spectrum\\index\\plugins\\opendistro-reports-scheduler\\guava-15.0.jar' -Force"]
+      }
+    },
+    {
+      "action": "aws:runPowerShellScript",
+      "name": "deleteIndexPluginsOpendistrosecurityBcprov",
+      "inputs": {
+        "timeoutSeconds": 10800 ,
+        "runCommand": ["Remove-Item 'C:\\Program Files\\Precisely\\Spectrum\\index\\plugins\\opendistro_security\\bcprov-jdk15on-1.67.jar' -Force"]
+      }
+    },
+    {
+      "action": "aws:runPowerShellScript",
+      "name": "deleteIndexPluginsOpendistrosecurityHttpclient",
+      "inputs": {
+        "timeoutSeconds": 10800 ,
+        "runCommand": ["Remove-Item 'C:\\Program Files\\Precisely\\Spectrum\\index\\plugins\\opendistro_security\\httpclient-4.5.3.jar' -Force"]
+      }
+    },
+    {
+      "action": "aws:runPowerShellScript",
+      "name": "deleteIndexPluginsOpendistrosecurityJacksonAnno",
+      "inputs": {
+        "timeoutSeconds": 10800 ,
+        "runCommand": ["Remove-Item 'C:\\Program Files\\Precisely\\Spectrum\\index\\plugins\\opendistro_security\\jackson-annotations-2.11.2.jar' -Force"]
+      }
+    },
+    {
+      "action": "aws:runPowerShellScript",
+      "name": "deleteIndexPluginsOpendistrosecurityJacksonData",
+      "inputs": {
+        "timeoutSeconds": 10800 ,
+        "runCommand": ["Remove-Item 'C:\\Program Files\\Precisely\\Spectrum\\index\\plugins\\opendistro_security\\jackson-databind-2.11.2.jar' -Force"]
+      }
+    },
+    {
+      "action": "aws:runPowerShellScript",
+      "name": "deleteIndexPluginsOpendistrosecurityNettyBuffer",
+      "inputs": {
+        "timeoutSeconds": 10800 ,
+        "runCommand": ["Remove-Item 'C:\\Program Files\\Precisely\\Spectrum\\index\\plugins\\opendistro_security\\netty-buffer-4.1.71.Final.jar' -Force"]
+      }
+    },
+    {
+      "action": "aws:runPowerShellScript",
+      "name": "deleteIndexPluginsOpendistrosecurityNettyCodec",
+      "inputs": {
+        "timeoutSeconds": 10800 ,
+        "runCommand": ["Remove-Item 'C:\\Program Files\\Precisely\\Spectrum\\index\\plugins\\opendistro_security\\netty-codec-4.1.71.Final.jar' -Force"]
+      }
+    },
+    {
+      "action": "aws:runPowerShellScript",
+      "name": "deleteIndexPluginsOpendistrosecurityNettyCodecHttp",
+      "inputs": {
+        "timeoutSeconds": 10800 ,
+        "runCommand": ["Remove-Item 'C:\\Program Files\\Precisely\\Spectrum\\index\\plugins\\opendistro_security\\netty-codec-http-4.1.71.Final.jar' -Force"]
+      }
+    },
+    {
+      "action": "aws:runPowerShellScript",
+      "name": "deleteIndexPluginsOpendistrosecurityNettyCommon",
+      "inputs": {
+        "timeoutSeconds": 10800 ,
+        "runCommand": ["Remove-Item 'C:\\Program Files\\Precisely\\Spectrum\\index\\plugins\\opendistro_security\\netty-common-4.1.71.Final.jar' -Force"]
+      }
+    },
+    {
+      "action": "aws:runPowerShellScript",
+      "name": "deleteIndexPluginsOpendistrosecurityNettyHandler",
+      "inputs": {
+        "timeoutSeconds": 10800 ,
+        "runCommand": ["Remove-Item 'C:\\Program Files\\Precisely\\Spectrum\\index\\plugins\\opendistro_security\\netty-handler-4.1.71.Final.jar' -Force"]
+      }
+    },
+    {
+      "action": "aws:runPowerShellScript",
+      "name": "deleteIndexPluginsOpendistrosecurityNettyResolver",
+      "inputs": {
+        "timeoutSeconds": 10800 ,
+        "runCommand": ["Remove-Item 'C:\\Program Files\\Precisely\\Spectrum\\index\\plugins\\opendistro_security\\netty-resolver-4.1.71.Final.jar' -Force"]
+      }
+    },
+    {
+      "action": "aws:runPowerShellScript",
+      "name": "deleteIndexPluginsOpendistrosecurityNettyTransport",
+      "inputs": {
+        "timeoutSeconds": 10800 ,
+        "runCommand": ["Remove-Item 'C:\\Program Files\\Precisely\\Spectrum\\index\\plugins\\opendistro_security\\netty-transport-4.1.71.Final.jar' -Force"]
+      }
+    },
+    {
+      "action": "aws:runPowerShellScript",
+      "name": "deleteIndexPluginsOpendistrosqlCommons",
+      "inputs": {
+        "timeoutSeconds": 10800 ,
+        "runCommand": ["Remove-Item 'C:\\Program Files\\Precisely\\Spectrum\\index\\plugins\\opendistro-sql\\commons-codec-1.13.jar' -Force"]
+      }
+    },
+    {
+      "action": "aws:runPowerShellScript",
+      "name": "deleteIndexPluginsOpendistrosqlDruid",
+      "inputs": {
+        "timeoutSeconds": 10800 ,
+        "runCommand": ["Remove-Item 'C:\\Program Files\\Precisely\\Spectrum\\index\\plugins\\opendistro-sql\\druid-1.0.15.jar' -Force"]
+      }
+    },
+    {
+      "action": "aws:runPowerShellScript",
+      "name": "deleteIndexPluginsOpendistrosqlGson",
+      "inputs": {
+        "timeoutSeconds": 10800 ,
+        "runCommand": ["Remove-Item 'C:\\Program Files\\Precisely\\Spectrum\\index\\plugins\\opendistro-sql\\gson-2.8.6.jar' -Force"]
+      }
+    },
+    {
+      "action": "aws:runPowerShellScript",
+      "name": "deleteIndexPluginsOpendistrosqlHttpclient",
+      "inputs": {
+        "timeoutSeconds": 10800 ,
+        "runCommand": ["Remove-Item 'C:\\Program Files\\Precisely\\Spectrum\\index\\plugins\\opendistro-sql\\httpclient-4.5.10.jar' -Force"]
+      }
+    },
+    {
+      "action": "aws:runPowerShellScript",
+      "name": "deleteIndexPluginsOpendistrosqlJackson",
+      "inputs": {
+        "timeoutSeconds": 10800 ,
+        "runCommand": ["Remove-Item 'C:\\Program Files\\Precisely\\Spectrum\\index\\plugins\\opendistro-sql\\jackson-databind-2.11.4.jar' -Force"]
+      }
+    },
+    {
+      "action": "aws:runPowerShellScript",
+      "name": "deleteIndexPluginsOpendistrosqlSpringBean",
+      "inputs": {
+        "timeoutSeconds": 10800 ,
+        "runCommand": ["Remove-Item 'C:\\Program Files\\Precisely\\Spectrum\\index\\plugins\\opendistro-sql\\spring-beans-5.2.19.RELEASE.jar' -Force"]
+      }
+    },
+    {
+      "action": "aws:runPowerShellScript",
+      "name": "deleteIndexPluginsOpendistrosqlSpringCon",
+      "inputs": {
+        "timeoutSeconds": 10800 ,
+        "runCommand": ["Remove-Item 'C:\\Program Files\\Precisely\\Spectrum\\index\\plugins\\opendistro-sql\\spring-context-5.2.19.RELEASE.jar' -Force"]
+      }
+    },
+    {
+      "action": "aws:runPowerShellScript",
+      "name": "deleteIndexPluginsOpendistrosqlSpringex",
+      "inputs": {
+        "timeoutSeconds": 10800 ,
+        "runCommand": ["Remove-Item 'C:\\Program Files\\Precisely\\Spectrum\\index\\plugins\\opendistro-sql\\spring-expression-5.2.19.RELEASE.jar' -Force"]
+      }
+    },
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+    {
+      "action": "aws:runPowerShellScript",
+      "name": "expandCLIZip",
+      "inputs": {
+        "timeoutSeconds": 10800 ,
+        "runCommand": ["Expand-Archive -LiteralPath 'C:\\Program Files\\Precisely\\spectrum\\server\\exports\\spectrum-cli-22.1.zip' -DestinationPath 'C:\\Program Files\\Precisely\\spectrum\\server\\exports\\spectrum-cli-22.1' -Force"]
+      }
+    },
+    {
+      "action": "aws:runPowerShellScript",
+      "name": "deleteG1Assemblies",
+      "inputs": {
+        "timeoutSeconds": 10800 ,
+        "runCommand": ["Move-Item 'C:\\Users\\Administrator\\AppData\\Local\\Temp\\g1Assemblies' -Destination 'C:\\Program Files\\Precisely\\PatchesBackups\\PatchS02' "]
+      }
+    },
+    {
+      "action": "aws:runPowerShellScript",
+      "name": "expandPatchCLIZip",
+      "inputs": {
+        "timeoutSeconds": 10800 ,
+        "runCommand": ["Expand-Archive -LiteralPath 'C:\\Program Files\\Precisely\\Patches\\cdq20221s02\\server\\exports\\spectrum-cli-22.1.zip' -DestinationPath 'C:\\Program Files\\Precisely\\Patches\\cdq20221s02\\server\\exports\\spectrum-cli-22.1' -Force"]
+      }
+    },
+    {
+      "action": "aws:runPowerShellScript",
+      "name": "moveJarFile",
+      "inputs": {
+        "timeoutSeconds": 10800 ,
+        "runCommand": ["Move-Item 'C:\\Program Files\\Precisely\\Patches\\cdq20221s02\\server\\exports\\spectrum-cli-22.1\\lib\\spectrum-sgi-cli-22.1.jar' -Destination 'C:\\Program Files\\Precisely\\spectrum\\server\\exports\\spectrum-cli-22.1' -Force "]
+      }
+    },
+    {
+      "action": "aws:runPowerShellScript",
+      "name": "zipCLIZip",
+      "inputs": {
+        "timeoutSeconds": 10800 ,
+        "runCommand": ["Compress-Archive -Path 'C:\\Program Files\\Precisely\\spectrum\\server\\exports\\spectrum-cli-22.1' -DestinationPath 'C:\\Program Files\\Precisely\\spectrum\\server\\exports\\spectrum-cli-22.1.zip'"]
+      }
+    },
+    {
+      "action": "aws:runPowerShellScript",
+      "name": "startServer",
+      "inputs": {
+        "timeoutSeconds": 10800 ,
+        "runCommand": ["Start-Service -Name 'spectrum-server'"]
+      }
+    },
+    {
+      "action": "aws:runPowerShellScript",
+      "name": "listenForServerStart",
+      "inputs": {
+        "timeoutSeconds": 10800 ,
+        "runCommand": ["while($true){ Get-Content 'C:\\Program Files\\Precisely\\Spectrum\\server\\logs\\spectrum-server.log' -Tail 1 -Wait | Select-String 'Precisely Spectrum Technology Platform (Version 22.1 119) Started' | %{write-host Found $_; break}}"]
+      }
+    }
+  ]
+}

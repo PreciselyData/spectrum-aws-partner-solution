@@ -1,0 +1,64 @@
+{
+  "schemaVersion": "2.2",
+  "description": "RunCommandInstallPatchS01-22-1-Windows",
+  "parameters": {
+  },
+  "mainSteps": [
+    {
+      "action": "aws:runPowerShellScript",
+      "name": "lookForPatchS01",
+      "inputs": {
+        "timeoutSeconds": 300 ,
+        "runCommand": ["while (!(Test-Path -Path 'C:\\Program Files\\Precisely\\Patches\\cdq20221s01')) {Start-Sleep 10}"]
+      }
+    },
+    {
+      "action": "aws:runPowerShellScript",
+      "name": "stopServer",
+      "inputs": {
+        "timeoutSeconds": 10800 ,
+        "runCommand": ["Stop-Service -Name 'spectrum-server' -Force"]
+      }
+    },
+    {
+      "action": "aws:runPowerShellScript",
+      "name": "listenForServerStop",
+      "inputs": {
+        "timeoutSeconds": 10800 ,
+        "runCommand": ["while($true){ Get-Content 'C:\\Program Files\\Precisely\\Spectrum\\server\\logs\\spectrum-server.log' -Tail 1 -Wait | Select-String 'Precisely Spectrum Technology Platform shutdown complete' | %{write-host Found $_; break}}"]
+      }
+    },
+    {
+      "action": "aws:runPowerShellScript",
+      "name": "backupFiles",
+      "inputs": {
+        "timeoutSeconds": 10800 ,
+        "runCommand": ["Move-Item -Path 'C:\\Program Files\\Precisely\\spectrum\\modules\\c1p\\lib\\C1PCKDBX.acu' -Destination 'C:\\Program Files\\Precisely\\PatchesBackups\\PatchS01' "]
+      }
+    },
+    {
+      "action": "aws:runPowerShellScript",
+      "name": "moveNewFiles",
+      "inputs": {
+        "timeoutSeconds": 10800 ,
+        "runCommand": ["Move-Item -Path 'C:\\Program Files\\Precisely\\Patches\\cdq20221s01\\server\\modules\\c1p\\libC1PCKDBX.acu' -Destination 'C:\\Program Files\\Precisely\\spectrum\\modules\\c1p\\lib\\'"]
+      }
+    },
+    {
+      "action": "aws:runPowerShellScript",
+      "name": "startServer",
+      "inputs": {
+        "timeoutSeconds": 10800 ,
+        "runCommand": ["Start-Service -Name 'spectrum-server'"]
+      }
+    },
+    {
+      "action": "aws:runPowerShellScript",
+      "name": "listenForServerStart",
+      "inputs": {
+        "timeoutSeconds": 10800 ,
+        "runCommand": ["while($true){ Get-Content 'C:\\Program Files\\Precisely\\Spectrum\\server\\logs\\spectrum-server.log' -Tail 1 -Wait | Select-String 'Precisely Spectrum Technology Platform (Version 22.1 119) Started' | %{write-host Found $_; break}}"]
+      }
+    }
+  ]
+}

@@ -1,40 +1,40 @@
 {
   "schemaVersion": "2.2",
-  "description": "RunCommandPatchesInstall-22-1-Windows",
+  "description": "RunCommandPatchesMainDocument-22-1-Windows",
   "parameters": {
     "GGMInstalled": {
-      "default": "false",
+      "default": "False",
       "type": "String",
       "allowedValues": [
-        "true",
-        "false"
+        "True",
+        "False"
       ]
     },
     "UAMInstalled": {
-      "default": "false",
+      "default": "False",
       "type": "String",
       "allowedValues": [
-        "true",
-        "false"
+        "True",
+        "False"
       ]
     },
     "GAVInstalled": {
-      "default": "false",
+      "default": "False",
       "type": "String",
       "allowedValues": [
-        "true",
-        "false"
+        "True",
+        "False"
       ]
     }
   },
   "mainSteps": [
     {
-      "name": "InstallGGMPatches",
+      "name": "DownloadGGMPatches",
       "action": "aws:runDocument",
       "precondition": {
         "StringEquals": [
           "{{GGMInstalled}}",
-          "true"
+          "True"
         ]
       },
       "inputs": {
@@ -43,12 +43,12 @@
       }
     },
     {
-      "name": "InstallUAMPatches",
+      "name": "DownloadUAMPatches",
       "action": "aws:runDocument",
       "precondition": {
         "StringEquals": [
-          "{{UAMInstalled}}", 
-          "true"
+          "{{UAMInstalled}}",
+          "True"
         ]
       },
       "inputs": {
@@ -57,12 +57,12 @@
       }
     },
     {
-      "name": "InstallGAVPatches",
+      "name": "DownloadGAVPatches",
       "action": "aws:runDocument",
       "precondition": {
         "StringEquals": [
-          "{{GAVInstalled}}", 
-          "true"
+          "{{GAVInstalled}}",
+          "True"
         ]
       },
       "inputs": {
@@ -71,15 +71,42 @@
       }
     },
     {
-      "name": "InstallPlatformPatches",
+      "name": "DownloadPlatformPatches",
       "action": "aws:runDocument",
       "inputs": {
         "documentType": "SSMDocument",
         "documentPath": "InstallPlatformPatches-22-1-Windows"
       }
     }
+
   ]
 }
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
 
 
