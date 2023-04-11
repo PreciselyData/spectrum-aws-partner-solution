@@ -29,10 +29,18 @@
     },
     {
       "action": "aws:runPowerShellScript",
+      "name": "createPatchS03Backup",
+      "inputs": {
+        "timeoutSeconds": 10800 ,
+        "runCommand": ["New-Item -Path 'C:\\Program Files\\Precisely\\PatchesBackups' -Name 'PatchS03' -ItemType 'directory' "]
+      }
+    },
+    {
+      "action": "aws:runPowerShellScript",
       "name": "backupIndexLib",
       "inputs": {
         "timeoutSeconds": 10800 ,
-        "runCommand": ["Copy-Item -Path 'C:\\Program Files\\Precisely\\Spectrum\\index\\lib' -Destination 'C:\\Program Files\\Precisely\\PatchesBackups\\PatchS03' "]
+        "runCommand": ["Copy-Item -Path 'C:\\Program Files\\Precisely\\Spectrum\\index\\lib' -Destination 'C:\\Program Files\\Precisely\\PatchesBackups\\PatchS03\\index\\lib' -Recurse "]
       }
     },
     {
@@ -40,7 +48,7 @@
       "name": "backupIndexModules",
       "inputs": {
         "timeoutSeconds": 10800 ,
-        "runCommand": ["Copy-Item -Path 'C:\\Program Files\\Precisely\\Spectrum\\index\\modules' -Destination 'C:\\Program Files\\Precisely\\PatchesBackups\\PatchS03' "]
+        "runCommand": ["Copy-Item -Path 'C:\\Program Files\\Precisely\\Spectrum\\index\\modules' -Destination 'C:\\Program Files\\Precisely\\PatchesBackups\\PatchS03\\index\\modules' -Recurse"]
       }
     },
     {
@@ -48,7 +56,7 @@
       "name": "backupIndexPlugins",
       "inputs": {
         "timeoutSeconds": 10800 ,
-        "runCommand": ["Copy-Item -Path 'C:\\Program Files\\Precisely\\Spectrum\\index\\plugins' -Destination 'C:\\Program Files\\Precisely\\PatchesBackups\\PatchS03' "]
+        "runCommand": ["Copy-Item -Path 'C:\\Program Files\\Precisely\\Spectrum\\index\\plugins' -Destination 'C:\\Program Files\\Precisely\\PatchesBackups\\PatchS03\\index\\plugins' -Recurse"]
       }
     },
     {
@@ -56,7 +64,7 @@
       "name": "backupRepository",
       "inputs": {
         "timeoutSeconds": 10800 ,
-        "runCommand": ["Copy-Item -Path 'C:\\Program Files\\Precisely\\Spectrum\\repository' -Destination 'C:\\Program Files\\Precisely\\PatchesBackups\\PatchS03' "]
+        "runCommand": ["Copy-Item -Path 'C:\\Program Files\\Precisely\\Spectrum\\repository' -Destination 'C:\\Program Files\\Precisely\\PatchesBackups\\PatchS03' -Recurse"]
       }
     },
     {
@@ -64,7 +72,7 @@
       "name": "backupServerDeploy",
       "inputs": {
         "timeoutSeconds": 10800 ,
-        "runCommand": ["Copy-Item -Path 'C:\\Program Files\\Precisely\\Spectrum\\server\\deploy' -Destination 'C:\\Program Files\\Precisely\\PatchesBackups\\PatchS03' "]
+        "runCommand": ["Copy-Item -Path 'C:\\Program Files\\Precisely\\Spectrum\\server\\deploy' -Destination 'C:\\Program Files\\Precisely\\PatchesBackups\\PatchS03\\server\\deploy' -Recurse"]
       }
     },
     {
@@ -72,7 +80,7 @@
       "name": "backupserverExports",
       "inputs": {
         "timeoutSeconds": 10800 ,
-        "runCommand": ["Copy-Item -Path 'C:\\Program Files\\Precisely\\Spectrum\\server\\exports' -Destination 'C:\\Program Files\\Precisely\\PatchesBackups\\PatchS03' "]
+        "runCommand": ["Copy-Item -Path 'C:\\Program Files\\Precisely\\Spectrum\\server\\exports' -Destination 'C:\\Program Files\\Precisely\\PatchesBackups\\PatchS03\\server\\exports' -Recurse"]
       }
     },
     {
@@ -80,7 +88,7 @@
       "name": "backupServerLib",
       "inputs": {
         "timeoutSeconds": 10800 ,
-        "runCommand": ["Copy-Item -Path 'C:\\Program Files\\Precisely\\Spectrum\\server\\lib' -Destination 'C:\\Program Files\\Precisely\\PatchesBackups\\PatchS03' "]
+        "runCommand": ["Copy-Item -Path 'C:\\Program Files\\Precisely\\Spectrum\\server\\lib' -Destination 'C:\\Program Files\\Precisely\\PatchesBackups\\PatchS03\\server\\lib' -Recurse"]
       }
     },
     {
@@ -88,7 +96,7 @@
       "name": "deleteRepository",
       "inputs": {
         "timeoutSeconds": 10800 ,
-        "runCommand": ["Remove-Item 'C:\\Program Files\\Precisely\\Spectrum\\repository' -Force"]
+        "runCommand": ["Remove-Item 'C:\\Program Files\\Precisely\\Spectrum\\repository' -Force -Recurse"]
       }
     },
     {
@@ -96,7 +104,7 @@
       "name": "deleteServerLib",
       "inputs": {
         "timeoutSeconds": 10800 ,
-        "runCommand": ["Remove-Item 'C:\\Program Files\\Precisely\\Spectrum\\server\\lib' -Force"]
+        "runCommand": ["Remove-Item 'C:\\Program Files\\Precisely\\Spectrum\\server\\lib' -Force -Recurse"]
       }
     },
     {
@@ -120,7 +128,7 @@
       "name": "deleteIndexLibToolsPluginBcprov",
       "inputs": {
         "timeoutSeconds": 10800 ,
-        "runCommand": ["Remove-Item 'C:\\Program Files\\Precisely\\Spectrum\\index\\lib\\tools\\plugin-cli\bc-fips-1.0.2.jar' -Force"]
+        "runCommand": ["Remove-Item 'C:\\Program Files\\Precisely\\Spectrum\\index\\lib\\tools\\plugin-cli\\bcprov-jdk15on-1.64.jar' -Force"]
       }
     },
     {
@@ -379,75 +387,36 @@
         "runCommand": ["Remove-Item 'C:\\Program Files\\Precisely\\Spectrum\\index\\plugins\\opendistro-sql\\spring-expression-5.2.19.RELEASE.jar' -Force"]
       }
     },
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
     {
       "action": "aws:runPowerShellScript",
-      "name": "expandCLIZip",
+      "name": "replaceIndex",
       "inputs": {
         "timeoutSeconds": 10800 ,
-        "runCommand": ["Expand-Archive -LiteralPath 'C:\\Program Files\\Precisely\\spectrum\\server\\exports\\spectrum-cli-22.1.zip' -DestinationPath 'C:\\Program Files\\Precisely\\spectrum\\server\\exports\\spectrum-cli-22.1' -Force"]
+        "runCommand": ["Copy-Item -Path 'C:\\Program Files\\Precisely\\Patches\\cdq20221s03\\index' -Destination 'C:\\Program Files\\Precisely\\Spectrum' -Recurse -Force"]
       }
     },
     {
       "action": "aws:runPowerShellScript",
-      "name": "deleteG1Assemblies",
+      "name": "replaceRepo",
       "inputs": {
         "timeoutSeconds": 10800 ,
-        "runCommand": ["Move-Item 'C:\\Users\\Administrator\\AppData\\Local\\Temp\\g1Assemblies' -Destination 'C:\\Program Files\\Precisely\\PatchesBackups\\PatchS02' "]
+        "runCommand": ["Copy-Item -Path 'C:\\Program Files\\Precisely\\Patches\\cdq20221s03\\repository' -Destination 'C:\\Program Files\\Precisely\\Spectrum' -Recurse -Force"]
       }
     },
     {
       "action": "aws:runPowerShellScript",
-      "name": "expandPatchCLIZip",
+      "name": "replaceServer",
       "inputs": {
         "timeoutSeconds": 10800 ,
-        "runCommand": ["Expand-Archive -LiteralPath 'C:\\Program Files\\Precisely\\Patches\\cdq20221s02\\server\\exports\\spectrum-cli-22.1.zip' -DestinationPath 'C:\\Program Files\\Precisely\\Patches\\cdq20221s02\\server\\exports\\spectrum-cli-22.1' -Force"]
+        "runCommand": ["Copy-Item -Path 'C:\\Program Files\\Precisely\\Patches\\cdq20221s03\\server' -Destination 'C:\\Program Files\\Precisely\\Spectrum' -Recurse -Force"]
       }
     },
     {
       "action": "aws:runPowerShellScript",
-      "name": "moveJarFile",
+      "name": "replaceRepoData",
       "inputs": {
         "timeoutSeconds": 10800 ,
-        "runCommand": ["Move-Item 'C:\\Program Files\\Precisely\\Patches\\cdq20221s02\\server\\exports\\spectrum-cli-22.1\\lib\\spectrum-sgi-cli-22.1.jar' -Destination 'C:\\Program Files\\Precisely\\spectrum\\server\\exports\\spectrum-cli-22.1' -Force "]
-      }
-    },
-    {
-      "action": "aws:runPowerShellScript",
-      "name": "zipCLIZip",
-      "inputs": {
-        "timeoutSeconds": 10800 ,
-        "runCommand": ["Compress-Archive -Path 'C:\\Program Files\\Precisely\\spectrum\\server\\exports\\spectrum-cli-22.1' -DestinationPath 'C:\\Program Files\\Precisely\\spectrum\\server\\exports\\spectrum-cli-22.1.zip'"]
+        "runCommand": ["Copy-Item -Path 'C:\\Program Files\\Precisely\\PatchesBackups\\PatchS03\\repository\\data' -Destination 'C:\\Program Files\\Precisely\\Spectrum\\repository' -Recurse -Force"]
       }
     },
     {
@@ -463,7 +432,7 @@
       "name": "listenForServerStart",
       "inputs": {
         "timeoutSeconds": 10800 ,
-        "runCommand": ["while($true){ Get-Content 'C:\\Program Files\\Precisely\\Spectrum\\server\\logs\\spectrum-server.log' -Tail 1 -Wait | Select-String 'Precisely Spectrum Technology Platform (Version 22.1 119) Started' | %{write-host Found $_; break}}"]
+        "runCommand": ["while($true){ Get-Content 'C:\\Program Files\\Precisely\\Spectrum\\server\\logs\\spectrum-server.log' -Tail 1 -Wait | Select-String 'Precisely Spectrum Technology Platform' | %{write-host Found $_; break}}"]
       }
     }
   ]

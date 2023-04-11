@@ -7,8 +7,8 @@
       "action": "aws:runPowerShellScript",
       "name": "lookForPatchS15",
       "inputs": {
-        "timeoutSeconds": 10800 ,
-        "runCommand": [""]
+        "timeoutSeconds": 300 ,
+        "runCommand": ["while (!(Test-Path -Path 'C:\\Program Files\\Precisely\\Patches\\cdq20221s15')) {Start-Sleep 10}"]
       }
     },
     {
@@ -16,7 +16,7 @@
       "name": "stopServer",
       "inputs": {
         "timeoutSeconds": 10800 ,
-        "runCommand": [""]
+        "runCommand": ["Stop-Service -Name 'spectrum-server' -Force"]
       }
     },
     {
@@ -24,23 +24,134 @@
       "name": "listenForServerStop",
       "inputs": {
         "timeoutSeconds": 10800 ,
-        "runCommand": [""]
+        "runCommand": ["while($true){ Get-Content 'C:\\Program Files\\Precisely\\Spectrum\\server\\logs\\spectrum-server.log' -Tail 1 -Wait | Select-String 'Precisely Spectrum Technology Platform shutdown complete' | %{write-host Found $_; break}}"]
       }
     },
     {
       "action": "aws:runPowerShellScript",
-      "name": "backupFiles",
+      "name": "createPatchS15Backup",
       "inputs": {
         "timeoutSeconds": 10800 ,
-        "runCommand": [""]
+        "runCommand": ["New-Item -Path 'C:\\Program Files\\Precisely\\PatchesBackups' -Name 'PatchS15' -ItemType 'directory' "]
       }
     },
     {
       "action": "aws:runPowerShellScript",
-      "name": "moveData",
+      "name": "backupIndexPlugOpenSec",
       "inputs": {
         "timeoutSeconds": 10800 ,
-        "runCommand": [""]
+        "runCommand": ["Copy-Item -Path 'C:\\Program Files\\Precisely\\Spectrum\\index\\plugins\\opendistro_security' -Destination 'C:\\Program Files\\Precisely\\PatchesBackups\\PatchS15\\index\\plugins\\opendistro_security' -Recurse "]
+      }
+    },
+    {
+      "action": "aws:runPowerShellScript",
+      "name": "backupRepository",
+      "inputs": {
+        "timeoutSeconds": 10800 ,
+        "runCommand": ["Copy-Item -Path 'C:\\Program Files\\Precisely\\Spectrum\\repository' -Destination 'C:\\Program Files\\Precisely\\PatchesBackups\\PatchS15\\repository' -Recurse "]
+      }
+    },{
+      "action": "aws:runPowerShellScript",
+      "name": "backupServerDeploy",
+      "inputs": {
+        "timeoutSeconds": 10800 ,
+        "runCommand": ["Copy-Item -Path 'C:\\Program Files\\Precisely\\Spectrum\\server\\deploy' -Destination 'C:\\Program Files\\Precisely\\PatchesBackups\\PatchS15\\server\\deploy' -Recurse "]
+      }
+    },
+    {
+      "action": "aws:runPowerShellScript",
+      "name": "backupServerLib",
+      "inputs": {
+        "timeoutSeconds": 10800 ,
+        "runCommand": ["Copy-Item -Path 'C:\\Program Files\\Precisely\\Spectrum\\server\\lib' -Destination 'C:\\Program Files\\Precisely\\PatchesBackups\\PatchS15\\server\\lib' -Recurse "]
+      }
+    },
+    {
+      "action": "aws:runPowerShellScript",
+      "name": "deleteRepository",
+      "inputs": {
+        "timeoutSeconds": 10800 ,
+        "runCommand": ["Remove-Item -Path 'C:\\Program Files\\Precisely\\Spectrum\\repository' -Recurse -Force -Confirm:$false"]
+      }
+    },
+    {
+      "action": "aws:runPowerShellScript",
+      "name": "deleteLib",
+      "inputs": {
+        "timeoutSeconds": 10800 ,
+        "runCommand": ["Remove-Item -Path 'C:\\Program Files\\Precisely\\Spectrum\\server\\lib' -Recurse -Force -Confirm:$false"]
+      }
+    },
+    {
+      "action": "aws:runPowerShellScript",
+      "name": "deleteIndexPlugOpenSecurityCxfCore",
+      "inputs": {
+        "timeoutSeconds": 10800 ,
+        "runCommand": ["Remove-Item -Path 'C:\\Program Files\\Precisely\\Spectrum\\index\\plugins\\opendistro_security\\cxf-core-3.4.5.jar' -Recurse -Force -Confirm:$false"]
+      }
+    },
+    {
+      "action": "aws:runPowerShellScript",
+      "name": "deleteIndexPlugOpenSecurityCxfRtRsJson",
+      "inputs": {
+        "timeoutSeconds": 10800 ,
+        "runCommand": ["Remove-Item -Path 'C:\\Program Files\\Precisely\\Spectrum\\index\\plugins\\opendistro_security\\cxf-rt-rs-json-basic-3.4.5.jar' -Recurse -Force -Confirm:$false"]
+      }
+    },
+    {
+      "action": "aws:runPowerShellScript",
+      "name": "deleteIndexPlugOpenSecurityCxfRtRsSec",
+      "inputs": {
+        "timeoutSeconds": 10800 ,
+        "runCommand": ["Remove-Item -Path 'C:\\Program Files\\Precisely\\Spectrum\\index\\plugins\\opendistro_security\\cxf-rt-rs-security-jose-3.4.5.jar' -Recurse -Force -Confirm:$false"]
+      }
+    },
+    {
+      "action": "aws:runPowerShellScript",
+      "name": "deleteIndexPlugOpenSecurityCxfRtSec",
+      "inputs": {
+        "timeoutSeconds": 10800 ,
+        "runCommand": ["Remove-Item -Path 'C:\\Program Files\\Precisely\\Spectrum\\index\\plugins\\opendistro_security\\cxf-rt-security-3.4.5.jar' -Recurse -Force -Confirm:$false"]
+      }
+    },
+    {
+      "action": "aws:runPowerShellScript",
+      "name": "deleteIndexPlugOpenSecurityWood",
+      "inputs": {
+        "timeoutSeconds": 10800 ,
+        "runCommand": ["Remove-Item -Path 'C:\\Program Files\\Precisely\\Spectrum\\index\\plugins\\opendistro_security\\woodstox-core-6.2.1.jar' -Recurse -Force -Confirm:$false"]
+      }
+    },
+    {
+      "action": "aws:runPowerShellScript",
+      "name": "replaceIndex",
+      "inputs": {
+        "timeoutSeconds": 10800 ,
+        "runCommand": ["Copy-Item -Path 'C:\\Program Files\\Precisely\\Patches\\cdq20221s15\\index' -Destination 'C:\\Program Files\\Precisely\\Spectrum' -Recurse -Force"]
+      }
+    },
+    {
+      "action": "aws:runPowerShellScript",
+      "name": "replaceRepository",
+      "inputs": {
+        "timeoutSeconds": 10800 ,
+        "runCommand": ["Copy-Item -Path 'C:\\Program Files\\Precisely\\Patches\\cdq20221s15\\repository' -Destination 'C:\\Program Files\\Precisely\\Spectrum' -Recurse -Force"]
+      }
+    },
+    {
+      "action": "aws:runPowerShellScript",
+      "name": "replaceServer",
+      "inputs": {
+        "timeoutSeconds": 10800 ,
+        "runCommand": ["Copy-Item -Path 'C:\\Program Files\\Precisely\\Patches\\cdq20221s15\\server' -Destination 'C:\\Program Files\\Precisely\\Spectrum' -Recurse -Force"]
+      }
+    },
+    {
+      "action": "aws:runPowerShellScript",
+      "name": "replaceRepoData",
+      "inputs": {
+        "timeoutSeconds": 10800 ,
+        "runCommand": ["Copy-Item -Path 'C:\\Program Files\\Precisely\\PatchesBackups\\PatchS15\\repository\\data' -Destination 'C:\\Program Files\\Precisely\\Spectrum\\repository' -Recurse -Force"]
       }
     },
     {
@@ -48,7 +159,7 @@
       "name": "startServer",
       "inputs": {
         "timeoutSeconds": 10800 ,
-        "runCommand": [""]
+        "runCommand": ["Start-Service -Name 'spectrum-server'"]
       }
     },
     {
@@ -56,7 +167,7 @@
       "name": "listenForServerStart",
       "inputs": {
         "timeoutSeconds": 10800 ,
-        "runCommand": [""]
+        "runCommand": ["while($true){ Get-Content 'C:\\Program Files\\Precisely\\Spectrum\\server\\logs\\spectrum-server.log' -Tail 1 -Wait | Select-String -Pattern 'Precisely Spectrum Technology Platform' | %{write-host Found $_; break}}"]
       }
     }
   ]

@@ -25,7 +25,15 @@
       "name": "listenForServerStop",
       "inputs": {
         "timeoutSeconds": 10800 ,
-        "runCommand": ["while($true){ Get-Content 'C:\\Program Files\\Precisely\\Spectrum\\server\\logs\\spectrum-server.log' -Tail 1 -Wait | Select-String 'Precisely Spectrum Technology Platform shutdown complete' | %{write-host Found $_; break}}"]
+        "runCommand": ["while($true){ Get-Content 'C:\\Program Files\\Precisely\\Spectrum\\server\\logs\\spectrum-server.log' -Tail 10 -Wait | Select-String 'Precisely Spectrum Technology Platform shutdown complete' | %{write-host Found $_; break}}"]
+      }
+    },
+    {
+      "action": "aws:runPowerShellScript",
+      "name": "createPatchS02Backup",
+      "inputs": {
+        "timeoutSeconds": 10800 ,
+        "runCommand": ["New-Item -Path 'C:\\Program Files\\Precisely\\PatchesBackups' -Name 'PatchS02' -ItemType 'directory' "]
       }
     },
     {
@@ -33,7 +41,7 @@
       "name": "backupCLI",
       "inputs": {
         "timeoutSeconds": 10800 ,
-        "runCommand": ["Copy-Item -Path 'C:\\Program Files\\Precisely\\Spectrum\\server\\exports' -Destination 'C:\\Program Files\\Precisely\\PatchesBackups\\PatchS02' "]
+        "runCommand": ["Copy-Item -Path 'C:\\Program Files\\Precisely\\Spectrum\\server\\exports' -Destination 'C:\\Program Files\\Precisely\\PatchesBackups\\PatchS02' -Recurse "]
       }
     },
     {
@@ -65,7 +73,7 @@
       "name": "moveJarFile",
       "inputs": {
         "timeoutSeconds": 10800 ,
-        "runCommand": ["Move-Item 'C:\\Program Files\\Precisely\\Patches\\cdq20221s02\\server\\exports\\spectrum-cli-22.1\\lib\\spectrum-sgi-cli-22.1.jar' -Destination 'C:\\Program Files\\Precisely\\spectrum\\server\\exports\\spectrum-cli-22.1' -Force "]
+        "runCommand": ["Move-Item 'C:\\Program Files\\Precisely\\Patches\\cdq20221s02\\server\\exports\\spectrum-cli-22.1\\lib\\spectrum-sgi-cli-22.1.jar' -Destination 'C:\\Program Files\\Precisely\\spectrum\\server\\exports\\spectrum-cli-22.1\\lib\\spectrum-sgi-cli-22.1.jar' -Force "]
       }
     },
     {
@@ -73,7 +81,7 @@
       "name": "zipCLIZip",
       "inputs": {
         "timeoutSeconds": 10800 ,
-        "runCommand": ["Compress-Archive -Path 'C:\\Program Files\\Precisely\\spectrum\\server\\exports\\spectrum-cli-22.1' -DestinationPath 'C:\\Program Files\\Precisely\\spectrum\\server\\exports\\spectrum-cli-22.1.zip'"]
+        "runCommand": ["Compress-Archive -Path 'C:\\Program Files\\Precisely\\spectrum\\server\\exports\\spectrum-cli-22.1' -DestinationPath 'C:\\Program Files\\Precisely\\spectrum\\server\\exports\\spectrum-cli-22.1.zip' -Force"]
       }
     },
     {
@@ -89,7 +97,15 @@
       "name": "listenForServerStart",
       "inputs": {
         "timeoutSeconds": 10800 ,
-        "runCommand": ["while($true){ Get-Content 'C:\\Program Files\\Precisely\\Spectrum\\server\\logs\\spectrum-server.log' -Tail 1 -Wait | Select-String 'Precisely Spectrum Technology Platform (Version 22.1 119) Started' | %{write-host Found $_; break}}"]
+        "runCommand": ["while($true){ Get-Content 'C:\\Program Files\\Precisely\\Spectrum\\server\\logs\\spectrum-server.log' -Tail 1 -Wait | Select-String -Pattern 'Precisely Spectrum Technology Platform' | %{write-host Found $_; break}}"]
+      }
+    },
+    {
+      "action": "aws:runPowerShellScript",
+      "name": "deleteExpandedArchive",
+      "inputs": {
+        "timeoutSeconds": 10800 ,
+        "runCommand": ["Remove-Item 'C:\\Program Files\\Precisely\\Spectrum\\server\\exports\\spectrum-cli-22.1' -Recurse -Force -Confirm:$false"]
       }
     }
   ]

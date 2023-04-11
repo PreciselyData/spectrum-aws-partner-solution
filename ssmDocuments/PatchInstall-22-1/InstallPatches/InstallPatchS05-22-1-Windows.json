@@ -7,8 +7,8 @@
       "action": "aws:runPowerShellScript",
       "name": "lookForPatchS05",
       "inputs": {
-        "timeoutSeconds": 10800 ,
-        "runCommand": [""]
+        "timeoutSeconds": 300 ,
+        "runCommand": ["while (!(Test-Path -Path 'C:\\Program Files\\Precisely\\Patches\\cdq20221s05')) {Start-Sleep 10}"]
       }
     },
     {
@@ -16,7 +16,7 @@
       "name": "stopServer",
       "inputs": {
         "timeoutSeconds": 10800 ,
-        "runCommand": [""]
+        "runCommand": ["Stop-Service -Name 'spectrum-server' -Force"]
       }
     },
     {
@@ -24,23 +24,191 @@
       "name": "listenForServerStop",
       "inputs": {
         "timeoutSeconds": 10800 ,
-        "runCommand": [""]
+        "runCommand": ["while($true){ Get-Content 'C:\\Program Files\\Precisely\\Spectrum\\server\\logs\\spectrum-server.log' -Tail 1 -Wait | Select-String 'Precisely Spectrum Technology Platform shutdown complete' | %{write-host Found $_; break}}"]
       }
     },
     {
       "action": "aws:runPowerShellScript",
-      "name": "backupFiles",
+      "name": "createPatchS05Backup",
       "inputs": {
         "timeoutSeconds": 10800 ,
-        "runCommand": [""]
+        "runCommand": ["New-Item -Path 'C:\\Program Files\\Precisely\\PatchesBackups' -Name 'PatchS05' -ItemType 'directory' "]
       }
     },
     {
       "action": "aws:runPowerShellScript",
-      "name": "moveData",
+      "name": "backupServerTypes",
       "inputs": {
         "timeoutSeconds": 10800 ,
-        "runCommand": [""]
+        "runCommand": ["Copy-Item -Path 'C:\\Program Files\\Precisely\\Spectrum\\server\\types' -Destination 'C:\\Program Files\\Precisely\\PatchesBackups\\PatchS05\\server\\types' -Recurse "]
+      }
+    },
+    {
+      "action": "aws:runPowerShellScript",
+      "name": "deleteServerTypesJacksonData",
+      "inputs": {
+        "timeoutSeconds": 10800 ,
+        "runCommand": ["Remove-Item -Path 'C:\\Program Files\\Precisely\\Spectrum\\server\\types\\jackson-datatype-json-org-2.11.2.jar' -Recurse -Force -Confirm:$false"]
+      }
+    },
+    {
+      "action": "aws:runPowerShellScript",
+      "name": "deleteServerTypesJacksonJaxBase",
+      "inputs": {
+        "timeoutSeconds": 10800 ,
+        "runCommand": ["Remove-Item -Path 'C:\\Program Files\\Precisely\\Spectrum\\server\\types\\jackson-jaxrs-base-2.11.2.jar' -Recurse -Force -Confirm:$false"]
+      }
+    },
+    {
+      "action": "aws:runPowerShellScript",
+      "name": "deleteServerTypesJacksonJaxJson",
+      "inputs": {
+        "timeoutSeconds": 10800 ,
+        "runCommand": ["Remove-Item -Path 'C:\\Program Files\\Precisely\\Spectrum\\server\\types\\jackson-jaxrs-json-provider-2.11.2.jar' -Recurse -Force -Confirm:$false"]
+      }
+    },
+    {
+      "action": "aws:runPowerShellScript",
+      "name": "deleteServerTypesJacksonModule",
+      "inputs": {
+        "timeoutSeconds": 10800 ,
+        "runCommand": ["Remove-Item -Path 'C:\\Program Files\\Precisely\\Spectrum\\server\\types\\jackson-module-jaxb-annotations-2.11.2.jar' -Recurse -Force -Confirm:$false"]
+      }
+    },
+    {
+      "action": "aws:runPowerShellScript",
+      "name": "deleteServerTypesJson",
+      "inputs": {
+        "timeoutSeconds": 10800 ,
+        "runCommand": ["Remove-Item -Path 'C:\\Program Files\\Precisely\\Spectrum\\server\\types\\json-20090211.jar' -Recurse -Force -Confirm:$false"]
+      }
+    },
+    {
+      "action": "aws:runPowerShellScript",
+      "name": "deleteServerTypesLiSdkCommon",
+      "inputs": {
+        "timeoutSeconds": 10800 ,
+        "runCommand": ["Remove-Item -Path 'C:\\Program Files\\Precisely\\Spectrum\\server\\types\\li-sdk-common-1.15.0.jar' -Recurse -Force -Confirm:$false"]
+      }
+    },
+    {
+      "action": "aws:runPowerShellScript",
+      "name": "deleteServerTypesLiSdkCoorCore",
+      "inputs": {
+        "timeoutSeconds": 10800 ,
+        "runCommand": ["Remove-Item -Path 'C:\\Program Files\\Precisely\\Spectrum\\server\\types\\li-sdk-coordsys-core-1.15.0.jar' -Recurse -Force -Confirm:$false"]
+      }
+    },
+    {
+      "action": "aws:runPowerShellScript",
+      "name": "deleteServerTypesLiSdkCoorIrsh",
+      "inputs": {
+        "timeoutSeconds": 10800 ,
+        "runCommand": ["Remove-Item -Path 'C:\\Program Files\\Precisely\\Spectrum\\server\\types\\li-sdk-coordsys-irishtm-1.15.0.jar' -Recurse -Force -Confirm:$false"]
+      }
+    },
+    {
+      "action": "aws:runPowerShellScript",
+      "name": "deleteServerTypesLiSdkCoorJgd",
+      "inputs": {
+        "timeoutSeconds": 10800 ,
+        "runCommand": ["Remove-Item -Path 'C:\\Program Files\\Precisely\\Spectrum\\server\\types\\li-sdk-coordsys-jgd2000-1.15.0.jar' -Recurse -Force -Confirm:$false"]
+      }
+    },
+    {
+      "action": "aws:runPowerShellScript",
+      "name": "deleteServerTypesLiSdkCoorNad",
+      "inputs": {
+        "timeoutSeconds": 10800 ,
+        "runCommand": ["Remove-Item -Path 'C:\\Program Files\\Precisely\\Spectrum\\server\\types\\li-sdk-coordsys-nadcon-1.15.0.jar' -Recurse -Force -Confirm:$false"]
+      }
+    },
+    {
+      "action": "aws:runPowerShellScript",
+      "name": "deleteServerTypesLiSdkCoorNtv",
+      "inputs": {
+        "timeoutSeconds": 10800 ,
+        "runCommand": ["Remove-Item -Path 'C:\\Program Files\\Precisely\\Spectrum\\server\\types\\li-sdk-coordsys-ntv2-1.15.0.jar' -Recurse -Force -Confirm:$false"]
+      }
+    },
+    {
+      "action": "aws:runPowerShellScript",
+      "name": "deleteServerTypesLiSdkCoorRgf",
+      "inputs": {
+        "timeoutSeconds": 10800 ,
+        "runCommand": ["Remove-Item -Path 'C:\\Program Files\\Precisely\\Spectrum\\server\\types\\li-sdk-coordsys-rgf93-1.15.0.jar' -Recurse -Force -Confirm:$false"]
+      }
+    },
+    {
+      "action": "aws:runPowerShellScript",
+      "name": "deleteServerTypesLiSdkGeo",
+      "inputs": {
+        "timeoutSeconds": 10800 ,
+        "runCommand": ["Remove-Item -Path 'C:\\Program Files\\Precisely\\Spectrum\\server\\types\\li-sdk-geometry-1.15.0.jar' -Recurse -Force -Confirm:$false"]
+      }
+    },
+    {
+      "action": "aws:runPowerShellScript",
+      "name": "deleteServerTypesLiSdkPerJsonComm",
+      "inputs": {
+        "timeoutSeconds": 10800 ,
+        "runCommand": ["Remove-Item -Path 'C:\\Program Files\\Precisely\\Spectrum\\server\\types\\li-sdk-persistence-json-common-1.15.0.jar' -Recurse -Force -Confirm:$false"]
+      }
+    },
+    {
+      "action": "aws:runPowerShellScript",
+      "name": "deleteServerTypesLiSdkPerJsonFeat",
+      "inputs": {
+        "timeoutSeconds": 10800 ,
+        "runCommand": ["Remove-Item -Path 'C:\\Program Files\\Precisely\\Spectrum\\server\\types\\li-sdk-persistence-json-feature-1.15.0.jar' -Recurse -Force -Confirm:$false"]
+      }
+    },
+    {
+      "action": "aws:runPowerShellScript",
+      "name": "deleteServerTypesLiSdkPerJsonGeo",
+      "inputs": {
+        "timeoutSeconds": 10800 ,
+        "runCommand": ["Remove-Item -Path 'C:\\Program Files\\Precisely\\Spectrum\\server\\types\\li-sdk-persistence-json-geometry-1.15.0.jar' -Recurse -Force -Confirm:$false"]
+      }
+    },
+    {
+      "action": "aws:runPowerShellScript",
+      "name": "deleteServerTypesLiSdkPerJsonStyle",
+      "inputs": {
+        "timeoutSeconds": 10800 ,
+        "runCommand": ["Remove-Item -Path 'C:\\Program Files\\Precisely\\Spectrum\\server\\types\\li-sdk-persistence-json-style-1.15.0.jar' -Recurse -Force -Confirm:$false"]
+      }
+    },
+    {
+      "action": "aws:runPowerShellScript",
+      "name": "deleteServerTypesLiSdkStyle",
+      "inputs": {
+        "timeoutSeconds": 10800 ,
+        "runCommand": ["Remove-Item -Path 'C:\\Program Files\\Precisely\\Spectrum\\server\\types\\li-sdk-style-1.15.0.jar' -Recurse -Force -Confirm:$false"]
+      }
+    },
+    {
+      "action": "aws:runPowerShellScript",
+      "name": "deleteServerTypesLiSdkUnit",
+      "inputs": {
+        "timeoutSeconds": 10800 ,
+        "runCommand": ["Remove-Item -Path 'C:\\Program Files\\Precisely\\Spectrum\\server\\types\\li-sdk-unit-1.15.0.jar' -Recurse -Force -Confirm:$false"]
+      }
+    },
+    {
+      "action": "aws:runPowerShellScript",
+      "name": "deleteG1Assemblies",
+      "inputs": {
+        "timeoutSeconds": 10800 ,
+        "runCommand": ["Remove-Item 'C:\\Users\\Administrator\\AppData\\Local\\Temp\\g1Assemblies' -Recurse -Force -Confirm:$false"]
+      }
+    },
+    {
+      "action": "aws:runPowerShellScript",
+      "name": "replaceType",
+      "inputs": {
+        "timeoutSeconds": 10800 ,
+        "runCommand": ["Copy-Item -Path 'C:\\Program Files\\Precisely\\Patches\\cdq20221s05\\server\\types\\' -Destination 'C:\\Program Files\\Precisely\\Spectrum\\server' -Recurse -Force"]
       }
     },
     {
@@ -48,7 +216,7 @@
       "name": "startServer",
       "inputs": {
         "timeoutSeconds": 10800 ,
-        "runCommand": [""]
+        "runCommand": ["Start-Service -Name 'spectrum-server'"]
       }
     },
     {
@@ -56,7 +224,7 @@
       "name": "listenForServerStart",
       "inputs": {
         "timeoutSeconds": 10800 ,
-        "runCommand": [""]
+        "runCommand": ["while($true){ Get-Content 'C:\\Program Files\\Precisely\\Spectrum\\server\\logs\\spectrum-server.log' -Tail 1 -Wait | Select-String -Pattern 'Precisely Spectrum Technology Platform' | %{write-host Found $_; break}}"]
       }
     }
   ]

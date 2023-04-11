@@ -7,8 +7,8 @@
       "action": "aws:runPowerShellScript",
       "name": "lookForPatchS18",
       "inputs": {
-        "timeoutSeconds": 10800 ,
-        "runCommand": [""]
+        "timeoutSeconds": 300 ,
+        "runCommand": ["while (!(Test-Path -Path 'C:\\Program Files\\Precisely\\Patches\\cdq20221s18')) {Start-Sleep 10}"]
       }
     },
     {
@@ -16,7 +16,7 @@
       "name": "stopServer",
       "inputs": {
         "timeoutSeconds": 10800 ,
-        "runCommand": [""]
+        "runCommand": ["Stop-Service -Name 'spectrum-server' -Force"]
       }
     },
     {
@@ -24,23 +24,55 @@
       "name": "listenForServerStop",
       "inputs": {
         "timeoutSeconds": 10800 ,
-        "runCommand": [""]
+        "runCommand": ["while($true){ Get-Content 'C:\\Program Files\\Precisely\\Spectrum\\server\\logs\\spectrum-server.log' -Tail 1 -Wait | Select-String 'Precisely Spectrum Technology Platform shutdown complete' | %{write-host Found $_; break}}"]
       }
     },
     {
       "action": "aws:runPowerShellScript",
-      "name": "backupFiles",
+      "name": "createPatchS18Backup",
       "inputs": {
         "timeoutSeconds": 10800 ,
-        "runCommand": [""]
+        "runCommand": ["New-Item -Path 'C:\\Program Files\\Precisely\\PatchesBackups' -Name 'PatchS18' -ItemType 'directory' "]
       }
     },
     {
       "action": "aws:runPowerShellScript",
-      "name": "moveData",
+      "name": "backupServerDeploy",
       "inputs": {
         "timeoutSeconds": 10800 ,
-        "runCommand": [""]
+        "runCommand": ["Copy-Item -Path 'C:\\Program Files\\Precisely\\Spectrum\\server\\deploy' -Destination 'C:\\Program Files\\Precisely\\PatchesBackups\\PatchS18\\server\\deploy' -Recurse "]
+      }
+    },
+    {
+      "action": "aws:runPowerShellScript",
+      "name": "backupServerModules",
+      "inputs": {
+        "timeoutSeconds": 10800 ,
+        "runCommand": ["Copy-Item -Path 'C:\\Program Files\\Precisely\\Spectrum\\server\\modules' -Destination 'C:\\Program Files\\Precisely\\PatchesBackups\\PatchS18\\server\\modules' -Recurse "]
+      }
+    },
+    {
+      "action": "aws:runPowerShellScript",
+      "name": "deleteGAVUS",
+      "inputs": {
+        "timeoutSeconds": 10800 ,
+        "runCommand": ["Remove-Item -Path 'C:\\Program Files\\Precisely\\Spectrum\\server\\modules\\GlobalAddressValidationUS' -Recurse -Force -Confirm:$false"]
+      }
+    },
+    {
+      "action": "aws:runPowerShellScript",
+      "name": "deleteGAV",
+      "inputs": {
+        "timeoutSeconds": 10800 ,
+        "runCommand": ["Remove-Item -Path 'C:\\Program Files\\Precisely\\Spectrum\\server\\modules\\GlobalAddressValidation' -Recurse -Force -Confirm:$false"]
+      }
+    },
+    {
+      "action": "aws:runPowerShellScript",
+      "name": "replaceDeployModules",
+      "inputs": {
+        "timeoutSeconds": 10800 ,
+        "runCommand": ["Copy-Item -Path 'C:\\Program Files\\Precisely\\Patches\\cdq20221s18\\server' -Destination 'C:\\Program Files\\Precisely\\Spectrum\\server' -Recurse -Force"]
       }
     },
     {
@@ -48,7 +80,7 @@
       "name": "startServer",
       "inputs": {
         "timeoutSeconds": 10800 ,
-        "runCommand": [""]
+        "runCommand": ["Start-Service -Name 'spectrum-server'"]
       }
     },
     {
@@ -56,7 +88,7 @@
       "name": "listenForServerStart",
       "inputs": {
         "timeoutSeconds": 10800 ,
-        "runCommand": [""]
+        "runCommand": ["while($true){ Get-Content 'C:\\Program Files\\Precisely\\Spectrum\\server\\logs\\spectrum-server.log' -Tail 1 -Wait | Select-String -Pattern 'Precisely Spectrum Technology Platform' | %{write-host Found $_; break}}"]
       }
     }
   ]

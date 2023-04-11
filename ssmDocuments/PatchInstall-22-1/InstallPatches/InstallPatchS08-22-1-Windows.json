@@ -7,8 +7,8 @@
       "action": "aws:runPowerShellScript",
       "name": "lookForPatchS08",
       "inputs": {
-        "timeoutSeconds": 10800 ,
-        "runCommand": [""]
+        "timeoutSeconds": 300 ,
+        "runCommand": ["while (!(Test-Path -Path 'C:\\Program Files\\Precisely\\Patches\\cdq20221s08')) {Start-Sleep 10}"]
       }
     },
     {
@@ -16,7 +16,7 @@
       "name": "stopServer",
       "inputs": {
         "timeoutSeconds": 10800 ,
-        "runCommand": [""]
+        "runCommand": ["Stop-Service -Name 'spectrum-server' -Force"]
       }
     },
     {
@@ -24,23 +24,72 @@
       "name": "listenForServerStop",
       "inputs": {
         "timeoutSeconds": 10800 ,
-        "runCommand": [""]
+        "runCommand": ["while($true){ Get-Content 'C:\\Program Files\\Precisely\\Spectrum\\server\\logs\\spectrum-server.log' -Tail 1 -Wait | Select-String 'Precisely Spectrum Technology Platform shutdown complete' | %{write-host Found $_; break}}"]
       }
     },
     {
       "action": "aws:runPowerShellScript",
-      "name": "backupFiles",
+      "name": "createPatchS08Backup",
       "inputs": {
         "timeoutSeconds": 10800 ,
-        "runCommand": [""]
+        "runCommand": ["New-Item -Path 'C:\\Program Files\\Precisely\\PatchesBackups' -Name 'PatchS08' -ItemType 'directory' "]
       }
     },
     {
       "action": "aws:runPowerShellScript",
-      "name": "moveData",
+      "name": "backupServerModulesGGLib",
       "inputs": {
         "timeoutSeconds": 10800 ,
-        "runCommand": [""]
+        "runCommand": ["Copy-Item -Path 'C:\\Program Files\\Precisely\\Spectrum\\server\\modules\\GlobalGeocode\\lib' -Destination 'C:\\Program Files\\Precisely\\PatchesBackups\\PatchS08\\server\\modules\\GlobalGeocode\\lib' -Recurse "]
+      }
+    },
+    {
+      "action": "aws:runPowerShellScript",
+      "name": "backupServerModulesGGSdk",
+      "inputs": {
+        "timeoutSeconds": 10800 ,
+        "runCommand": ["Copy-Item -Path 'C:\\Program Files\\Precisely\\Spectrum\\server\\modules\\GlobalGeocode\\sdk' -Destination 'C:\\Program Files\\Precisely\\PatchesBackups\\PatchS08\\server\\modules\\GlobalGeocode\\sdk' -Recurse "]
+      }
+    },
+    {
+      "action": "aws:runPowerShellScript",
+      "name": "deleteServerModulesGGLib",
+      "inputs": {
+        "timeoutSeconds": 10800 ,
+        "runCommand": ["Remove-Item -Path 'C:\\Program Files\\Precisely\\Spectrum\\server\\modules\\GlobalGeocode\\lib' -Recurse -Force -Confirm:$false"]
+      }
+    },
+    {
+      "action": "aws:runPowerShellScript",
+      "name": "deleteServerModulesGGSdk",
+      "inputs": {
+        "timeoutSeconds": 10800 ,
+        "runCommand": ["Remove-Item -Path 'C:\\Program Files\\Precisely\\Spectrum\\server\\modules\\GlobalGeocode\\sdk' -Recurse -Force -Confirm:$false"]
+      }
+    },
+    {
+      "action": "aws:runPowerShellScript",
+      "name": "deleteG1Assemblies",
+      "inputs": {
+        "timeoutSeconds": 10800 ,
+        "runCommand": ["Remove-Item 'C:\\Users\\Administrator\\AppData\\Local\\Temp\\g1Assemblies' -Recurse -Force -Confirm:$false"]
+      }
+    },
+    {
+      "action": "aws:runPowerShellScript",
+      "name": "replaceServerModulesGGLib",
+      "inputs": {
+        "timeoutSeconds": 10800 ,
+        "runCommand": ["Copy-Item -Path 'C:\\Program Files\\Precisely\\Patches\\cdq20221s08\\server\\modules\\GlobalGeocode\\lib' -Destination 'C:\\Program Files\\Precisely\\Spectrum\\server\\modules\\GlobalGeocode' -Recurse -Force"]
+      }
+    },
+
+    {
+      "action": "aws:runPowerShellScript",
+      "name": "replaceServerModulesGGSdk",
+      "inputs": {
+        "timeoutSeconds": 10800 ,
+        "runCommand": ["Copy-Item -Path 'C:\\Program Files\\Precisely\\Patches\\cdq20221s08\\server\\modules\\GlobalGeocode\\sdk' -Destination 'C:\\Program Files\\Precisely\\Spectrum\\server\\modules\\GlobalGeocode' -Recurse -Force"]
       }
     },
     {
@@ -48,7 +97,7 @@
       "name": "startServer",
       "inputs": {
         "timeoutSeconds": 10800 ,
-        "runCommand": [""]
+        "runCommand": ["Start-Service -Name 'spectrum-server'"]
       }
     },
     {
@@ -56,7 +105,7 @@
       "name": "listenForServerStart",
       "inputs": {
         "timeoutSeconds": 10800 ,
-        "runCommand": [""]
+        "runCommand": ["while($true){ Get-Content 'C:\\Program Files\\Precisely\\Spectrum\\server\\logs\\spectrum-server.log' -Tail 1 -Wait | Select-String -Pattern 'Precisely Spectrum Technology Platform' | %{write-host Found $_; break}}"]
       }
     }
   ]

@@ -114,6 +114,14 @@
       }
     },
     {
+      "action": "aws:runPowerShellScript",
+      "name": "createBackupFolder",
+      "inputs": {
+        "timeoutSeconds": 10800 ,
+        "runCommand": ["New-Item -Path 'C:\\Program Files\\Precisely\\' -Name 'PatchesBackups' -ItemType 'directory'"]
+      }
+    },
+    {
       "name": "installPatchS01",
       "action": "aws:runDocument",
       "precondition": {

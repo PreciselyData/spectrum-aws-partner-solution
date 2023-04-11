@@ -30,10 +30,18 @@
     },
     {
       "action": "aws:runPowerShellScript",
+      "name": "createBackupFolder",
+      "inputs": {
+        "timeoutSeconds": 10800 ,
+        "runCommand": ["New-Item -Path 'C:\\Program Files\\Precisely\\PatchesBackups' -Name 'PatchS01' -ItemType 'directory'"]
+      }
+    },
+    {
+      "action": "aws:runPowerShellScript",
       "name": "backupFiles",
       "inputs": {
         "timeoutSeconds": 10800 ,
-        "runCommand": ["Move-Item -Path 'C:\\Program Files\\Precisely\\spectrum\\modules\\c1p\\lib\\C1PCKDBX.acu' -Destination 'C:\\Program Files\\Precisely\\PatchesBackups\\PatchS01' "]
+        "runCommand": ["Move-Item -Path 'C:\\Program Files\\Precisely\\Spectrum\\server\\modules\\c1p\\lib\\C1PCKDBX.acu' -Destination 'C:\\Program Files\\Precisely\\PatchesBackups\\PatchS01\\C1PCKDBX.acu' "]
       }
     },
     {
@@ -41,7 +49,7 @@
       "name": "moveNewFiles",
       "inputs": {
         "timeoutSeconds": 10800 ,
-        "runCommand": ["Move-Item -Path 'C:\\Program Files\\Precisely\\Patches\\cdq20221s01\\server\\modules\\c1p\\libC1PCKDBX.acu' -Destination 'C:\\Program Files\\Precisely\\spectrum\\modules\\c1p\\lib\\'"]
+        "runCommand": ["Move-Item -Path 'C:\\Program Files\\Precisely\\Patches\\cdq20221s01\\server\\modules\\c1p\\lib\\C1PCKDBX.acu' -Destination 'C:\\Program Files\\Precisely\\Spectrum\\server\\modules\\c1p\\lib\\C1PCKDBX.acu'"]
       }
     },
     {
@@ -57,7 +65,7 @@
       "name": "listenForServerStart",
       "inputs": {
         "timeoutSeconds": 10800 ,
-        "runCommand": ["while($true){ Get-Content 'C:\\Program Files\\Precisely\\Spectrum\\server\\logs\\spectrum-server.log' -Tail 1 -Wait | Select-String 'Precisely Spectrum Technology Platform (Version 22.1 119) Started' | %{write-host Found $_; break}}"]
+        "runCommand": ["while($true){ Get-Content 'C:\\Program Files\\Precisely\\Spectrum\\server\\logs\\spectrum-server.log' -Tail 1 -Wait | Select-String -Pattern 'Precisely Spectrum Technology Platform' | %{write-host Found $_; break}}"]
       }
     }
   ]
