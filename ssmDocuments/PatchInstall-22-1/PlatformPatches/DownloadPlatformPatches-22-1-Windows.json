@@ -1,0 +1,88 @@
+{
+  "schemaVersion": "2.2",
+  "description": "RunCommandDownloadPlatformPatches-22-1-Windows",
+  "parameters": {},
+  "mainSteps": [
+    {
+      "action": "aws:downloadContent",
+      "name": "downloadPatchS03",
+      "inputs": {
+        "sourceType": "S3",
+        "sourceInfo": {
+          "path": "https://cim-spectrum-platform-and-bigdata.s3.amazonaws.com/cdq20221s03_Windows.zip"
+        },
+        "destinationPath": "C:\\Program Files\\Precisely\\PatchesDownload\\"
+      }
+    },
+    {
+      "action": "aws:downloadContent",
+      "name": "downloadPatchS12",
+      "inputs": {
+        "sourceType": "S3",
+        "sourceInfo": {
+          "path": "https://cim-spectrum-platform-and-bigdata.s3.amazonaws.com/cdq20221s12_Windows.zip"
+        },
+        "destinationPath": "C:\\Program Files\\Precisely\\PatchesDownload\\"
+      }
+    },
+    {
+      "action": "aws:downloadContent",
+      "name": "downloadPatchS15",
+      "inputs": {
+        "sourceType": "S3",
+        "sourceInfo": {
+          "path": "https://cim-spectrum-platform-and-bigdata.s3.amazonaws.com/cdq20221s15_Windows.zip"
+        },
+        "destinationPath": "C:\\Program Files\\Precisely\\PatchesDownload\\"
+      }
+    },
+    {
+      "action": "aws:runPowerShellScript",
+      "name": "extractPatchS03",
+      "inputs": {
+        "timeoutSeconds": 10800 ,
+        "runCommand": ["Expand-Archive -LiteralPath 'C:\\Program Files\\Precisely\\PatchesDownload\\cdq20221s03_Windows.zip' -DestinationPath 'C:\\Program Files\\Precisely\\ExtractedPatches' -Force"]
+      }
+    },
+    {
+      "action": "aws:runPowerShellScript",
+      "name": "extractPatchS12",
+      "inputs": {
+        "timeoutSeconds": 10800 ,
+        "runCommand": ["Expand-Archive -LiteralPath 'C:\\Program Files\\Precisely\\PatchesDownload\\cdq20221s12_Windows.zip' -DestinationPath 'C:\\Program Files\\Precisely\\ExtractedPatches' -Force"]
+      }
+    },
+    {
+      "action": "aws:runPowerShellScript",
+      "name": "extractPatchS15",
+      "inputs": {
+        "timeoutSeconds": 10800 ,
+        "runCommand": ["Expand-Archive -LiteralPath 'C:\\Program Files\\Precisely\\PatchesDownload\\cdq20221s15_Windows.zip' -DestinationPath 'C:\\Program Files\\Precisely\\ExtractedPatches' -Force"]
+      }
+    },
+    {
+      "action": "aws:runPowerShellScript",
+      "name": "extractPatchS032",
+      "inputs": {
+        "timeoutSeconds": 10800 ,
+        "runCommand": ["Expand-Archive -LiteralPath 'C:\\Program Files\\Precisely\\ExtractedPatches\\cdq20221s03.zip' -DestinationPath 'C:\\Program Files\\Precisely\\Patches\\cdq20221s03' -Force"]
+      }
+    },
+    {
+      "action": "aws:runPowerShellScript",
+      "name": "extractPatchS122",
+      "inputs": {
+        "timeoutSeconds": 10800 ,
+        "runCommand": ["Expand-Archive -LiteralPath 'C:\\Program Files\\Precisely\\ExtractedPatches\\cdq20221s12.zip' -DestinationPath 'C:\\Program Files\\Precisely\\Patches\\cdq20221s12' -Force"]
+      }
+    },
+    {
+      "action": "aws:runPowerShellScript",
+      "name": "extractPatchS152",
+      "inputs": {
+        "timeoutSeconds": 10800 ,
+        "runCommand": ["Expand-Archive -LiteralPath 'C:\\Program Files\\Precisely\\ExtractedPatches\\cdq20221s15.zip' -DestinationPath 'C:\\Program Files\\Precisely\\Patches\\cdq20221s15' -Force"]
+      }
+    }
+  ]
+}
