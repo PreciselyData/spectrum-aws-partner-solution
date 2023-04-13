@@ -85,6 +85,14 @@
     },
     {
       "action": "aws:runPowerShellScript",
+      "name": "startSleepServer",
+      "inputs": {
+        "timeoutSeconds": 10800 ,
+        "runCommand": ["Start-Sleep -Seconds 15"]
+      }
+    },
+    {
+      "action": "aws:runPowerShellScript",
       "name": "listenForServerStart",
       "inputs": {
         "timeoutSeconds": 10800 ,

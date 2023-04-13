@@ -57,7 +57,7 @@
       "name": "deleteG1Assemblies",
       "inputs": {
         "timeoutSeconds": 10800 ,
-        "runCommand": ["Move-Item 'C:\\Users\\Administrator\\AppData\\Local\\Temp\\g1Assemblies' -Destination 'C:\\Program Files\\Precisely\\PatchesBackups\\PatchS02' "]
+        "runCommand": ["if (Test-Path -Path 'C:\\Users\\Administrator\\AppData\\Local\\Temp\\2\\g1Assemblies') {Remove-Item 'C:\\Users\\Administrator\\AppData\\Local\\Temp\\2\\g1Assemblies' -Recurse -Force -Confirm:$false} else {break}"]
       }
     },
     {
@@ -73,7 +73,7 @@
       "name": "moveJarFile",
       "inputs": {
         "timeoutSeconds": 10800 ,
-        "runCommand": ["Move-Item 'C:\\Program Files\\Precisely\\Patches\\cdq20221s02\\server\\exports\\spectrum-cli-22.1\\lib\\spectrum-sgi-cli-22.1.jar' -Destination 'C:\\Program Files\\Precisely\\spectrum\\server\\exports\\spectrum-cli-22.1\\lib\\spectrum-sgi-cli-22.1.jar' -Force "]
+        "runCommand": ["Copy-Item 'C:\\Program Files\\Precisely\\Patches\\cdq20221s02\\server\\exports\\spectrum-cli-22.1\\lib\\spectrum-sgi-cli-22.1.jar' -Destination 'C:\\Program Files\\Precisely\\spectrum\\server\\exports\\spectrum-cli-22.1\\lib\\spectrum-sgi-cli-22.1.jar' -Force "]
       }
     },
     {
@@ -90,6 +90,14 @@
       "inputs": {
         "timeoutSeconds": 10800 ,
         "runCommand": ["Start-Service -Name 'spectrum-server'"]
+      }
+    },
+    {
+      "action": "aws:runPowerShellScript",
+      "name": "startSleepServer",
+      "inputs": {
+        "timeoutSeconds": 10800 ,
+        "runCommand": ["Start-Sleep -Seconds 15"]
       }
     },
     {

@@ -29,7 +29,7 @@
     },
     {
       "action": "aws:runPowerShellScript",
-      "name": "createPatchS08Backup",
+      "name": "createPatchS09Backup",
       "inputs": {
         "timeoutSeconds": 10800 ,
         "runCommand": ["New-Item -Path 'C:\\Program Files\\Precisely\\PatchesBackups' -Name 'PatchS09' -ItemType 'directory' "]
@@ -56,7 +56,7 @@
       "name": "deleteG1Assemblies",
       "inputs": {
         "timeoutSeconds": 10800 ,
-        "runCommand": ["Remove-Item 'C:\\Users\\Administrator\\AppData\\Local\\Temp\\g1Assemblies' -Recurse -Force -Confirm:$false"]
+        "runCommand": ["if (Test-Path -Path 'C:\\Users\\Administrator\\AppData\\Local\\Temp\\2\\g1Assemblies') {Remove-Item 'C:\\Users\\Administrator\\AppData\\Local\\Temp\\2\\g1Assemblies' -Recurse -Force -Confirm:$false} else {break}"]
       }
     },
     {
@@ -73,6 +73,14 @@
       "inputs": {
         "timeoutSeconds": 10800 ,
         "runCommand": ["Start-Service -Name 'spectrum-server'"]
+      }
+    },
+    {
+      "action": "aws:runPowerShellScript",
+      "name": "startSleepServer",
+      "inputs": {
+        "timeoutSeconds": 10800 ,
+        "runCommand": ["Start-Sleep -Seconds 15"]
       }
     },
     {
