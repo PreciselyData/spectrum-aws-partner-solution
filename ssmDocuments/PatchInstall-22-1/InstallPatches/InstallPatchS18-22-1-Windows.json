@@ -12,6 +12,61 @@
       }
     },
     {
+      "action": "aws:downloadContent",
+      "name": "downloadV10Data",
+      "inputs": {
+        "sourceType": "S3",
+        "sourceInfo": {
+          "path": "https://cloudformation-spectrum.s3.amazonaws.com/Modules/GAV/S18PatchDataUS/"
+        },
+        "destinationPath": "C:\\Program Files\\Precisely\\GAV\\S18PatchDataUS"
+      }
+    },
+    {
+      "action": "aws:downloadContent",
+      "name": "downloadV10Scripts",
+      "inputs": {
+        "sourceType": "S3",
+        "sourceInfo": {
+          "path": "https://cloudformation-spectrum.s3.amazonaws.com/Modules/GAV/GAV-Windows/moduleScriptsUSWindowsPatchS18/"
+        },
+        "destinationPath": "C:\\Program Files\\Precisely\\GAV\\moduleScriptsUSWindowsPatchS18"
+      }
+    },
+    {
+      "action": "aws:runPowerShellScript",
+      "name": "deleteV3GAVUS",
+      "inputs": {
+        "timeoutSeconds": 10800 ,
+        "runCommand": ["cd 'C:/Program Files/Precisely/spectrum-cli-22.1'",
+        "./cli.cmd --cmdfile 'C:/Program Files/Precisely/GAV/moduleScriptsUSWindowsPatchS18/GAVUSv3ResourceDelete.cli'"]
+      }
+    },
+    {
+      "action": "aws:runPowerShellScript",
+      "name": "moveV10Data",
+      "inputs": {
+        "timeoutSeconds": 10800 ,
+        "runCommand": ["Move-Item -Path 'C:\\Program Files\\Precisely\\GAV\\S18PatchDataUS\\*.spd' -Destination 'C:\\Program Files\\Precisely\\Spectrum\\server\\import'"]
+      }
+    },
+    {
+      "action": "aws:runPowerShellScript",
+      "name": "listenForV10DataUploadGAVUSDOM",
+      "inputs": {
+        "timeoutSeconds": 10800 ,
+        "runCommand": ["while($true){ Get-Content 'C:\\Program Files\\Precisely\\Spectrum\\server\\logs\\spectrum-server.log' -Wait | Select-String 'Registered GAV_US_DOM_032023.spd' | %{write-host Found $_; break}}"]
+      }
+    },
+    {
+      "action": "aws:runPowerShellScript",
+      "name": "listenForV10DataUploadGAVUSNONDOM",
+      "inputs": {
+        "timeoutSeconds": 10800 ,
+        "runCommand": ["while($true){ Get-Content 'C:\\Program Files\\Precisely\\Spectrum\\server\\logs\\spectrum-server.log' -Wait | Select-String 'Registered GAV_US_NON_DOM_032023.spd' | %{write-host Found $_; break}}"]
+      }
+    },
+    {
       "action": "aws:runPowerShellScript",
       "name": "stopServer",
       "inputs": {
@@ -72,7 +127,15 @@
       "name": "replaceDeployModules",
       "inputs": {
         "timeoutSeconds": 10800 ,
-        "runCommand": ["Copy-Item -Path 'C:\\Program Files\\Precisely\\Patches\\cdq20221s18\\server' -Destination 'C:\\Program Files\\Precisely\\Spectrum\\server' -Recurse -Force"]
+        "runCommand": ["Copy-Item -Path 'C:\\Program Files\\Precisely\\Patches\\cdq20221s18\\server\\modules' -Destination 'C:\\Program Files\\Precisely\\Spectrum\\server' -Recurse -Force"]
+      }
+    },
+    {
+      "action": "aws:runPowerShellScript",
+      "name": "replaceDeploy",
+      "inputs": {
+        "timeoutSeconds": 10800 ,
+        "runCommand": ["Copy-Item -Path 'C:\\Program Files\\Precisely\\Patches\\cdq20221s18\\server\\deploy' -Destination 'C:\\Program Files\\Precisely\\Spectrum\\server' -Recurse -Force"]
       }
     },
     {
@@ -97,6 +160,15 @@
       "inputs": {
         "timeoutSeconds": 10800 ,
         "runCommand": ["while($true){ Get-Content 'C:\\Program Files\\Precisely\\Spectrum\\server\\logs\\spectrum-server.log' -Tail 1 -Wait | Select-String -Pattern 'Precisely Spectrum Technology Platform' | %{write-host Found $_; break}}"]
+      }
+    },
+    {
+      "action": "aws:runPowerShellScript",
+      "name": "createV10GAVUS",
+      "inputs": {
+        "timeoutSeconds": 10800 ,
+        "runCommand": ["cd 'C:/Program Files/Precisely/spectrum-cli-22.1'",
+        "./cli.cmd --cmdfile 'C:/Program Files/Precisely/GAV/moduleScriptsUSWindowsPatchS18/GAVUSv10ResourceCreate.cli'"]
       }
     }
   ]

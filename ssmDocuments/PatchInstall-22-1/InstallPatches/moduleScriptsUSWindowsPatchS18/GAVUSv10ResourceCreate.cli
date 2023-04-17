@@ -1,0 +1,16 @@
+//GAVUSv10ResourceCreate
+
+//Connect with Spectrum Server
+connect --h localhost:8080 --u admin --p admin
+//connect --h localhost:8443 --u admin --p admin --s true
+
+
+//Delete an existing GAM Resource and create a new GAM Resource
+//gamdb delete --n Name --g Group
+//gamdb create --n Name --d Dataset Name --v Dataset Vintage --c Country --t Type --g Group --p Poolsize--mn minimum_memory_size --mx maximum_memory_size
+//gamdb delete --n GAV_DEU
+//gamdb create --n GAV-US-DOM --d GAV_US_DOM --v MAR2023 --c Guam --t GAV --g US --p 5 --mn 12200 --mx 65536
+gamdb import --f 'C:/Program Files/Precisely/GAV/moduleScriptsUSWindowsPatchS18/GAVUSv10DbResource.txt'
+
+//close connection to the server
+close

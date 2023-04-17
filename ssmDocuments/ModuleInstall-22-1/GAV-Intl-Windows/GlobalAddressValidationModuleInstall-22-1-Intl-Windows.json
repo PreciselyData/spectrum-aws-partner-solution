@@ -84,7 +84,7 @@
         "inputs": {
           "timeoutSeconds": 10800 ,
           "runCommand": ["cd 'C:/Program Files/Precisely/spectrum-cli-22.1'",
-                "./cli.cmd --cmdfile 'C:/Program Files/Precisely/GAV/moduleScriptsIntlWindows/GAVIntlResourceCreate.cli'"]
+                "./cli.cmd --cmdfile 'C:/Program Files/Precisely/GAV/moduleScriptsIntlWindows/GAVIntlv3ResourceCreate.cli'"]
         }
       },
       {

@@ -128,7 +128,7 @@
       "name": "replaceIndex",
       "inputs": {
         "timeoutSeconds": 10800 ,
-        "runCommand": ["Copy-Item -Path 'C:\\Program Files\\Precisely\\Patches\\cdq20221s15\\index' -Destination 'C:\\Program Files\\Precisely\\Spectrum' -Recurse -Force"]
+        "runCommand": ["Copy-Item -Path 'C:\\Program Files\\Precisely\\Patches\\cdq20221s15\\index\\plugins\\opendistro_security' -Destination 'C:\\Program Files\\Precisely\\Spectrum\\index\\plugins' -Recurse -Force"]
       }
     },
     {
