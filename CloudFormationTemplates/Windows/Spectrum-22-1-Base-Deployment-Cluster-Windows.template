@@ -21,7 +21,6 @@
      "Parameters":[
         "NetworkInterface",
         "VpcId",
-        "SubnetId",
         "SecurityGroupIds"
      ]
     },
@@ -34,8 +33,27 @@
       "Scheme",
       "IpAddressType",
       "SubnetMappings",
-      "Subnet1",
-      "Subnet2"
+      "SubnetId1",
+      "SubnetId2"
+     ]
+    },
+    {
+     "Label": {
+      "default": "Elastic Load Balancer Target Group Configuration"
+     },
+     "Parameters": [
+      "TargetGroupName",
+      "Protocol",
+      "TargetType",
+      "TargetVpcId"
+     ]
+    },
+    {
+     "Label": {
+      "default": "Elastic Load Balancer Target Group Listener Configuration"
+     },
+     "Parameters": [
+      "ListenerType"
      ]
     },
     {
@@ -64,9 +82,6 @@
     "VpcId": {
     "default": "VPC ID (Required)"
     },
-    "SubnetId": {
-    "default": "Subnet ID (Required)"
-    },
     "SecurityGroupIds": {
     "default": "Security Groups ID"
     },
@@ -78,6 +93,21 @@
     },
     "Scheme": {
     "default": "Elastic Load Balancer Scheme (Required)"
+    },
+    "TargetGroupName": {
+     "default": "Elastic Load Balancer Target Group Name (Required)"
+    },
+    "Protocol": {
+     "default": "Elastic Load Balancer Target Protocol Type (Required)"
+    },
+    "TargetType": {
+     "default": "Elastic Load Balancer Target Group Type (Required)"
+    },
+    "TargetVpcId": {
+    "default": "Elastic Load Balancer Target Group VPC Id (Required)"
+    },
+    "ListenerType": {
+    "default": "Elastic Load Balancer Target Group Listener Type (Required)"
     },
     "InstanceType": {
      "default": "EC2 Instance Type (Required)"
@@ -93,21 +123,21 @@
      "Type": "String",
      "AllowedValues": [
       "Windows 2019",
-      "Windows 2016",
-      "Windows 2012 RC"
+      "Windows 2016 - Under Development",
+      "Windows 2012 RC - Under Development"
      ],
      "ConstraintDescription": "You must specify Windows Server version.",
      "Description": "Choose the Windows Server version. Supported versions are Windows Server 2019, Windows Server 2016 & Windows Server 2012 R2. For supported operating systems refer to https://docs.precisely.com/docs/sftw/spectrum-all-supportview/22.1/en-us/pdf/Spectrum_2022.1.0_InstallationGuide_Windows.pdf."
     },
     "AMIId": {
      "Type": "String",
-     "Default": "ami-0ca52f6ceba7bf321",
+     "Default": "ami-000b27729471491b1",
      "AllowedValues": [
-        "ami-0ca52f6ceba7bf321",
-        "ami-0349cf370f160a930",
-        "ami-0d65d4e8869538dc3"
+        "ami-000b27729471491b1",
+        "ami - Under Development",
+        "ami - Under Development"
        ],
-     "Description": "For Windows Server 2019, use ami id: ami-0ca52f6ceba7bf321. For Windows Server 2016, use ami id: ami-0349cf370f160a930. For Windows Server 2012 RC, use ami id: ami-0d65d4e8869538dc3"
+     "Description": "For Windows Server 2019, use ami id: ami-000b27729471491b1. For Windows Server 2016, use ami id: ami-TBD. For Windows Server 2012 RC, use ami id: ami-TBD"
     },
     "KeypairName": {
      "Type": "AWS::EC2::KeyPair::KeyName",
@@ -117,15 +147,11 @@
     },
     "InstanceCount": {
      "Type": "Number",
-     "Default": "3",
-     "MinValue" : "3",
-     "MaxValue" : "7",
+     "Default": 3,
+     "MinValue" : 3,
+     "MaxValue" : 7,
      "ConstraintDescription": "Must be a number between 3-7",
      "Description": "Choose how many EC2 instances will be in the clustered deployment."
-    },
-    "SubnetId": {
-     "Type": "AWS::EC2::Subnet::Id",
-     "Description": "Choose a Subnet ID."
     },
     "SecurityGroupIds": {
      "Type": "List<AWS::EC2::SecurityGroup::Id>",
@@ -153,13 +179,55 @@
          ],
      "Description": "Choose the scheme of your ELB."
     },
-    "Subnet1": {
+    "SubnetId1": {
      "Type": "AWS::EC2::Subnet::Id",
      "Description": "Choose a Subnet ID for your ELB."
     },
-    "Subnet2": {
+    "SubnetId2": {
      "Type": "AWS::EC2::Subnet::Id",
      "Description": "Choose a Subnet ID for your ELB."
+    },
+    "TargetGroupName": {
+     "Type": "String",
+     "Description": "Choose a name for the target group"
+    },
+    "Protocol": {
+     "Type": "String",
+     "AllowedValues": [
+         "GENEVE",
+         "HTTP",
+         "HTTPS",
+         "TCP",
+         "TCP_UDP",
+         "TLS",
+         "UDP"
+         ],
+     "Description": "Choose a target type for the target group"
+    },
+    "TargetType": {
+     "Type": "String",
+     "AllowedValues": [
+         "alb",
+         "instance",
+         "ip",
+         "lambda"
+         ],
+     "Description": "Choose a target type for the target group"
+    },
+    "TargetVpcId": {
+     "Type": "AWS::EC2::VPC::Id",
+     "Description": "Choose the VPC of your target group."
+    },
+    "ListenerType": {
+     "Type": "String",
+     "AllowedValues": [
+         "authenticate-cognito",
+         "authenticate-oidc",
+         "fixed-response",
+         "forward",
+         "redirect"
+         ],
+     "Description": "Choose a target type for the target group"
     },
     "InstanceType": {
      "Type": "String",
@@ -272,10 +340,13 @@
                 {"Ref" : "InstanceCount"}
             ]
         }]},
-        {"Fn::Equals" : [
-          "4", {"Ref" : "InstanceCount"}
-          ]
-        }]
+        {"Fn::Not" : [{
+            "Fn::Equals" : [
+                "4", 
+                {"Ref" : "InstanceCount"}
+            ]
+        }]}
+    ]
     },
   "Launch6" : {
    "Fn::Or" : [
@@ -319,7 +390,7 @@
           "AssociatePublicIpAddress": "true",
           "DeviceIndex": "0",
           "GroupSet" : { "Ref" : "SecurityGroupIds" },
-          "SubnetId": { "Ref" : "SubnetId" }
+          "SubnetId": { "Ref" : "SubnetId1" }
           } ]
       }
       },
@@ -346,7 +417,7 @@
           "AssociatePublicIpAddress": "true",
           "DeviceIndex": "0",
           "GroupSet" : { "Ref" : "SecurityGroupIds" },
-          "SubnetId": { "Ref" : "SubnetId" }
+          "SubnetId": { "Ref" : "SubnetId2" }
           } ]
       }
       },
@@ -374,7 +445,7 @@
           "AssociatePublicIpAddress": "true",
           "DeviceIndex": "0",
           "GroupSet" : { "Ref" : "SecurityGroupIds" },
-          "SubnetId": { "Ref" : "SubnetId" }
+          "SubnetId": { "Ref" : "SubnetId1" }
           } ]
       }
       },
@@ -402,7 +473,7 @@
           "AssociatePublicIpAddress": "true",
           "DeviceIndex": "0",
           "GroupSet" : { "Ref" : "SecurityGroupIds" },
-          "SubnetId": { "Ref" : "SubnetId" }
+          "SubnetId": { "Ref" : "SubnetId2" }
           } ]
       }
       },
@@ -430,7 +501,7 @@
           "AssociatePublicIpAddress": "true",
           "DeviceIndex": "0",
           "GroupSet" : { "Ref" : "SecurityGroupIds" },
-          "SubnetId": { "Ref" : "SubnetId" }
+          "SubnetId": { "Ref" : "SubnetId1" }
           } ]
       }
       },
@@ -458,7 +529,7 @@
           "AssociatePublicIpAddress": "true",
           "DeviceIndex": "0",
           "GroupSet" : { "Ref" : "SecurityGroupIds" },
-          "SubnetId": { "Ref" : "SubnetId" }
+          "SubnetId": { "Ref" : "SubnetId2" }
           } ]
       }
       },
@@ -486,7 +557,7 @@
           "AssociatePublicIpAddress": "true",
           "DeviceIndex": "0",
           "GroupSet" : { "Ref" : "SecurityGroupIds" },
-          "SubnetId": { "Ref" : "SubnetId" }
+          "SubnetId": { "Ref" : "SubnetId1" }
           } ]
       }
       },
@@ -498,13 +569,245 @@
         "Scheme" : { "Ref" : "Scheme" },
         "SecurityGroups" : { "Ref" : "SecurityGroupIds" },
         "SubnetMappings" : [ {
-          "SubnetId" : { "Ref" : "Subnet1" }
+          "SubnetId" : { "Ref" : "SubnetId1" }
         },
-          {"SubnetId" : { "Ref" : "Subnet2" }
+          {"SubnetId" : { "Ref" : "SubnetId2" }
               
           }]
         }
+      },
+    "TargetGroup3" : {
+      "Condition" : "Launch3",
+      "Type" : "AWS::ElasticLoadBalancingV2::TargetGroup",
+        "Properties" : {
+          "Name" : { "Ref" : "TargetGroupName" },
+          "Port" : 80,
+          "Protocol" : { "Ref" : "Protocol" },
+          "Targets" : [{
+            "Id" : { "Fn::GetAtt" : [ "SpectrumDeployment1" , "PrivateIp" ] }
+          },
+          {
+            "Id" : { "Fn::GetAtt" : [ "SpectrumDeployment2" , "PrivateIp" ] }
+          },
+          {
+            "Id" : { "Fn::GetAtt" : [ "SpectrumDeployment3" , "PrivateIp" ] }
+          }
+           ],
+          "TargetType" : { "Ref" : "TargetType" },
+          "VpcId" : { "Ref" : "TargetVpcId" }
+        }
+      },
+      "TargetGroup4" : {
+        "Condition" : "Launch4",
+      "Type" : "AWS::ElasticLoadBalancingV2::TargetGroup",
+        "Properties" : {
+          "Name" : { "Ref" : "TargetGroupName" },
+          "Port" : 80,
+          "Protocol" : { "Ref" : "Protocol" },
+          "Targets" : [{
+            "Id" : { "Fn::GetAtt" : [ "SpectrumDeployment1" , "PrivateIp" ] }
+          },
+          {
+            "Id" : { "Fn::GetAtt" : [ "SpectrumDeployment2" , "PrivateIp" ] }
+          },
+          {
+            "Id" : { "Fn::GetAtt" : [ "SpectrumDeployment3" , "PrivateIp" ] }
+          },
+          {
+            "Id" : { "Fn::GetAtt" : [ "SpectrumDeployment4" , "PrivateIp" ] }
+          }
+           ],
+          "TargetType" : { "Ref" : "TargetType" },
+          "VpcId" : { "Ref" : "TargetVpcId" }
+        }
+      },
+      "TargetGroup5" : {
+        "Condition" : "Launch5",
+      "Type" : "AWS::ElasticLoadBalancingV2::TargetGroup",
+        "Properties" : {
+          "Name" : { "Ref" : "TargetGroupName" },
+          "Port" : 80,
+          "Protocol" : { "Ref" : "Protocol" },
+          "Targets" : [{
+            "Id" : { "Fn::GetAtt" : [ "SpectrumDeployment1" , "PrivateIp" ] }
+          },
+          {
+            "Id" : { "Fn::GetAtt" : [ "SpectrumDeployment2" , "PrivateIp" ] }
+          },
+          {
+            "Id" : { "Fn::GetAtt" : [ "SpectrumDeployment3" , "PrivateIp" ] }
+          },
+          {
+            "Id" : { "Fn::GetAtt" : [ "SpectrumDeployment4" , "PrivateIp" ] }
+          },
+          {
+            "Id" : { "Fn::GetAtt" : [ "SpectrumDeployment5" , "PrivateIp" ] }
+          }
+           ],
+          "TargetType" : { "Ref" : "TargetType" },
+          "VpcId" : { "Ref" : "TargetVpcId" }
+        }
+      },
+      "TargetGroup6" : {
+        "Condition" : "Launch6",
+      "Type" : "AWS::ElasticLoadBalancingV2::TargetGroup",
+        "Properties" : {
+          "Name" : { "Ref" : "TargetGroupName" },
+          "Port" : 80,
+          "Protocol" : { "Ref" : "Protocol" },
+          "Targets" : [{
+            "Id" : { "Fn::GetAtt" : [ "SpectrumDeployment1" , "PrivateIp" ] }
+          },
+          {
+            "Id" : { "Fn::GetAtt" : [ "SpectrumDeployment2" , "PrivateIp" ] }
+          },
+          {
+            "Id" : { "Fn::GetAtt" : [ "SpectrumDeployment3" , "PrivateIp" ] }
+          },
+          {
+            "Id" : { "Fn::GetAtt" : [ "SpectrumDeployment4" , "PrivateIp" ] }
+          },
+          {
+            "Id" : { "Fn::GetAtt" : [ "SpectrumDeployment5" , "PrivateIp" ] }
+          },
+          {
+            "Id" : { "Fn::GetAtt" : [ "SpectrumDeployment6" , "PrivateIp" ] }
+          }
+           ],
+          "TargetType" : { "Ref" : "TargetType" },
+          "VpcId" : { "Ref" : "TargetVpcId" }
+        }
+      },
+      "TargetGroup7" : {
+        "Condition" : "Launch7",
+      "Type" : "AWS::ElasticLoadBalancingV2::TargetGroup",
+        "Properties" : {
+          "Name" : { "Ref" : "TargetGroupName" },
+          "Port" : 80,
+          "Protocol" : { "Ref" : "Protocol" },
+          "Targets" : [{
+            "Id" : { "Fn::GetAtt" : [ "SpectrumDeployment1" , "PrivateIp" ] }
+          },
+          {
+            "Id" : { "Fn::GetAtt" : [ "SpectrumDeployment2" , "PrivateIp" ] }
+          },
+          {
+            "Id" : { "Fn::GetAtt" : [ "SpectrumDeployment3" , "PrivateIp" ] }
+          },
+          {
+            "Id" : { "Fn::GetAtt" : [ "SpectrumDeployment4" , "PrivateIp" ] }
+          },
+          {
+            "Id" : { "Fn::GetAtt" : [ "SpectrumDeployment5" , "PrivateIp" ] }
+          },
+          {
+            "Id" : { "Fn::GetAtt" : [ "SpectrumDeployment6" , "PrivateIp" ] }
+          },
+          {
+            "Id" : { "Fn::GetAtt" : [ "SpectrumDeployment7" , "PrivateIp" ] }
+          }
+           ],
+          "TargetType" : { "Ref" : "TargetType" },
+          "VpcId" : { "Ref" : "TargetVpcId" }
+        }
+      },
+      
+    "Listener3" :{
+      "Condition" : "Launch3",
+      "Type" : "AWS::ElasticLoadBalancingV2::Listener",
+        "Properties" : {
+          "DefaultActions" : [{
+            "ForwardConfig" : {
+              "TargetGroups" : [{
+                "TargetGroupArn": { "Ref" : "TargetGroup3" }, "Weight" : 1
+              }]
+            },
+            "TargetGroupArn" : { "Ref" : "TargetGroup3" },
+            "Type" : { "Ref" : "ListenerType" }
+            }
+          ],
+          "LoadBalancerArn" : { "Ref" : "ElasticLoadBalancer" },
+          "Port" : 80,
+          "Protocol" : { "Ref" : "Protocol" }
+        }
+      },
+      "Listener4" :{
+      "Condition" : "Launch4",
+      "Type" : "AWS::ElasticLoadBalancingV2::Listener",
+        "Properties" : {
+          "DefaultActions" : [{
+            "ForwardConfig" : {
+              "TargetGroups" : [{
+                "TargetGroupArn": { "Ref" : "TargetGroup4" }, "Weight" : 1
+              }]
+            },
+            "TargetGroupArn" : { "Ref" : "TargetGroup4" },
+            "Type" : { "Ref" : "ListenerType" }
+            }
+          ],
+          "LoadBalancerArn" : { "Ref" : "ElasticLoadBalancer" },
+          "Port" : 80,
+          "Protocol" : { "Ref" : "Protocol" }
+        }
+      },
+      "Listener5" :{
+      "Condition" : "Launch5",
+      "Type" : "AWS::ElasticLoadBalancingV2::Listener",
+        "Properties" : {
+          "DefaultActions" : [{
+            "ForwardConfig" : {
+              "TargetGroups" : [{
+                "TargetGroupArn": { "Ref" : "TargetGroup5" }, "Weight" : 1
+              }]
+            },
+            "TargetGroupArn" : { "Ref" : "TargetGroup5" },
+            "Type" : { "Ref" : "ListenerType" }
+            }
+          ],
+          "LoadBalancerArn" : { "Ref" : "ElasticLoadBalancer" },
+          "Port" : 80,
+          "Protocol" : { "Ref" : "Protocol" }
+        }
+      },
+      "Listener6" :{
+      "Condition" : "Launch6",
+      "Type" : "AWS::ElasticLoadBalancingV2::Listener",
+        "Properties" : {
+          "DefaultActions" : [{
+            "ForwardConfig" : {
+              "TargetGroups" : [{
+                "TargetGroupArn": { "Ref" : "TargetGroup6" }, "Weight" : 1
+              }]
+            },
+            "TargetGroupArn" : { "Ref" : "TargetGroup6" },
+            "Type" : { "Ref" : "ListenerType" }
+            }
+          ],
+          "LoadBalancerArn" : { "Ref" : "ElasticLoadBalancer" },
+          "Port" : 80,
+          "Protocol" : { "Ref" : "Protocol" }
+        }
+      },
+      "Listener7" :{
+      "Condition" : "Launch7",
+      "Type" : "AWS::ElasticLoadBalancingV2::Listener",
+        "Properties" : {
+          "DefaultActions" : [{
+            "ForwardConfig" : {
+              "TargetGroups" : [{
+                "TargetGroupArn": { "Ref" : "TargetGroup7" }, "Weight" : 1
+              }]
+            },
+            "TargetGroupArn" : { "Ref" : "TargetGroup7" },
+            "Type" : { "Ref" : "ListenerType" }
+            }
+          ],
+          "LoadBalancerArn" : { "Ref" : "ElasticLoadBalancer" },
+          "Port" : 80,
+          "Protocol" : { "Ref" : "Protocol" }
+        }
       }
+      
   },
 "Outputs" : {
     "InstanceId" : {

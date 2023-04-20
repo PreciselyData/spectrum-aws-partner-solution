@@ -1,0 +1,91 @@
+{
+  "schemaVersion": "2.2",
+  "description": "RunCommandGlobalAddressValidationModuleInstall-22-1-US-Windows-Cluster",
+  "parameters": {},
+  "mainSteps": [
+    {
+      "action": "aws:downloadContent",
+      "name": "downloadInstaller",
+      "inputs": {
+        "sourceType": "S3",
+        "sourceInfo": {
+          "path": "https://cloudformation-spectrum.s3.amazonaws.com/Modules/GAV/GAV-Windows-Cluster/installers-22.1-nt/"
+        },
+        "destinationPath": "C:\\Program Files\\Precisely\\GAV\\GAV-Windows-Cluster\\installers-22.1-nt"
+      }
+    },
+    {
+      "action": "aws:downloadContent",
+      "name": "downloadData",
+      "inputs": {
+        "sourceType": "S3",
+        "sourceInfo": {
+          "path": "https://cloudformation-spectrum.s3.amazonaws.com/Modules/GAV/dataUS/"
+        },
+        "destinationPath": "C:\\Program Files\\Precisely\\GAV\\dataUS"
+      }
+    },
+    {
+      "action": "aws:downloadContent",
+      "name": "downloadScripts",
+      "inputs": {
+        "sourceType": "S3",
+        "sourceInfo": {
+          "path": "https://cloudformation-spectrum.s3.amazonaws.com/Modules/GAV/GAV-Windows-Cluster/moduleScriptsUSWindows-Cluster/"
+        },
+        "destinationPath": "C:\\Program Files\\Precisely\\GAV\\GAV-Windows-Cluster\\moduleScriptsUSWindows-Cluster"
+      }
+    },
+    {
+      "action": "aws:runPowerShellScript",
+      "name": "runInstaller",
+      "inputs": {
+        "timeoutSeconds": 10800 ,
+        "runCommand": ["cd 'C:\\Program Files\\Precisely\\GAV\\GAV-Windows-Cluster\\installers-22.1-nt'", 
+        "./install.exe"
+        ]
+      }
+    },
+    {
+      "action": "aws:runPowerShellScript",
+      "name": "moveData",
+      "inputs": {
+        "timeoutSeconds": 10800 ,
+        "runCommand": ["Move-Item -Path 'C:\\Program Files\\Precisely\\GAV\\dataUS\\*.spd' -Destination 'C:\\Program Files\\Precisely\\Spectrum\\server\\import'"]
+      }
+    },
+    {
+      "action": "aws:runPowerShellScript",
+      "name": "listenForDataUploadGAVUSDOM",
+      "inputs": {
+        "timeoutSeconds": 10800 ,
+        "runCommand": ["while($true){ Get-Content 'C:\\Program Files\\Precisely\\Spectrum\\server\\logs\\spectrum-server.log' -Wait | Select-String 'Registered GAV_US_DOM_042023.spd' | %{write-host Found $_; break}}"]
+      }
+    },
+    {
+      "action": "aws:runPowerShellScript",
+      "name": "listenForDataUploadGAVUSNONDOM",
+      "inputs": {
+        "timeoutSeconds": 10800 ,
+        "runCommand": ["while($true){ Get-Content 'C:\\Program Files\\Precisely\\Spectrum\\server\\logs\\spectrum-server.log' -Wait | Select-String 'Registered GAV_US_NON_DOM_042023.spd' | %{write-host Found $_; break}}"]
+      }
+    },
+    {
+      "action": "aws:runPowerShellScript",
+      "name": "createDBConnection",
+      "inputs": {
+        "timeoutSeconds": 10800 ,
+        "runCommand": ["cd 'C:/Program Files/Precisely/spectrum-cli-22.1'",
+              "./cli.cmd --cmdfile 'C:/Program Files/Precisely/GAV/moduleScriptsUSWindows-Cluster/GAVUSv3ResourceCreate.cli'"]
+      }
+    },
+    {
+      "action": "aws:runPowerShellScript",
+      "name": "deleteEverything",
+      "inputs": {
+        "timeoutSeconds": 10800 ,
+        "runCommand": ["Remove-Item 'C:\\Program Files\\Precisely\\GAV' -Recurse -Force -Confirm:$false"]
+      }
+    }
+  ]
+}

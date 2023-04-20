@@ -1,0 +1,159 @@
+{
+    "schemaVersion": "2.2",
+    "description": "RunCommandConfigureSpectrumWindowsClusterDeployment22-1",
+    "parameters": {
+      "GGMInstall": {
+        "default": "False",
+        "description": "Do you want Global Geocoding Module installed on the Spectrum Cluster?",
+        "type": "String",
+        "allowedValues": [
+          "True",
+          "False"
+        ]
+      },
+      "UAMInstall": {
+        "default": "False",
+        "description": "Do you want Universal Addressing Module installed on the Spectrum Cluster?",
+        "type": "String",
+        "allowedValues": [
+          "True",
+          "False"
+        ]
+      },
+      "GAVInstall": {
+        "default": "False",
+        "description": "Do you want Global Address Validation Module installed on the Spectrum Cluster?",
+        "type": "String",
+        "allowedValues": [
+          "True",
+          "False"
+        ]
+      },
+      "EGMInstall": {
+        "default": "False",
+        "description": "Do you want Enterprise Geocoding Module installed on the Spectrum Cluster?",
+        "type": "String",
+        "allowedValues": [
+          "False"
+        ]
+      },
+      "CGInstall": {
+        "default": "False",
+        "description": "Do you want Context Graph Module installed on the Spectrum Cluster?",
+        "type": "String",
+        "allowedValues": [
+          "False"
+        ]
+      },
+      "SSAInstall": {
+        "default": "False",
+        "description": "Do you want Spectrum Spatial Analyst installed on the Spectrum Cluster?",
+        "type": "String",
+        "allowedValues": [
+          "False"
+        ]
+      },
+      "SSInstall": {
+        "default": "False",
+        "description": "Do you want Spectrum Spatial installed on the Spectrum Cluster?",
+        "type": "String",
+        "allowedValues": [
+          "False"
+        ]
+      }
+    },
+    "mainSteps": [
+      {
+        "action": "aws:downloadContent",
+        "name": "downloadInstaller",
+        "inputs": {
+          "sourceType": "S3",
+          "sourceInfo": {
+            "path": "https://cloudformation-spectrum.s3.amazonaws.com/Modules/GGM/GGM-Windows/installers-22.1-nt/"
+          },
+          "destinationPath": "C:\\Program Files\\Precisely\\GGM\\installers-22.1-nt"
+        }
+      },
+      {
+        "action": "aws:downloadContent",
+        "name": "downloadData",
+        "inputs": {
+          "sourceType": "S3",
+          "sourceInfo": {
+            "path": "https://cloudformation-spectrum.s3.amazonaws.com/Modules/GGM/data/"
+          },
+          "destinationPath": "C:\\Program Files\\Precisely\\GGM\\data"
+        }
+      },
+      {
+        "action": "aws:downloadContent",
+        "name": "downloadScripts",
+        "inputs": {
+          "sourceType": "S3",
+          "sourceInfo": {
+            "path": "https://cloudformation-spectrum.s3.amazonaws.com/Modules/GGM/GGM-Windows/moduleScriptsIntlWindows/"
+          },
+          "destinationPath": "C:\\Program Files\\Precisely\\GGM\\moduleScriptsIntlWindows"
+        }
+      },
+      {
+        "action": "aws:runPowerShellScript",
+        "name": "runInstaller",
+        "inputs": {
+          "timeoutSeconds": 10800 ,
+          "runCommand": ["cd 'C:\\Program Files\\Precisely\\GGM\\installers-22.1-nt'", 
+          "./install.exe"
+          ]
+        }
+      },
+      {
+        "action": "aws:runPowerShellScript",
+        "name": "moveData",
+        "inputs": {
+          "timeoutSeconds": 10800 ,
+          "runCommand": ["Move-Item -Path 'C:\\Program Files\\Precisely\\GGM\\data\\*.spd' -Destination 'C:\\Program Files\\Precisely\\Spectrum\\server\\import'"]
+        }
+      },
+      {
+        "action": "aws:runPowerShellScript",
+        "name": "listenForDataUploadEGMWORLDAP",
+        "inputs": {
+          "timeoutSeconds": 10800 ,
+          "runCommand": ["while($true){ Get-Content 'C:\\Program Files\\Precisely\\Spectrum\\server\\logs\\spectrum-server.log' -Wait | Select-String 'Registered EGM-WORLD-AP-WLD-136-202212-GEOCODING.spd' | %{write-host Found $_; break}}"]
+        }
+      },
+      {
+        "action": "aws:runPowerShellScript",
+        "name": "listenForDataUploadEGMWORLDMLD",
+        "inputs": {
+          "timeoutSeconds": 10800 ,
+          "runCommand": ["while($true){ Get-Content 'C:\\Program Files\\Precisely\\Spectrum\\server\\logs\\spectrum-server.log' -Wait | Select-String 'Registered EGM-WORLD-MLD-GLB-136-202212-GEOCODING.spd' | %{write-host Found $_; break}}"]
+        }
+      },
+      {
+        "action": "aws:runPowerShellScript",
+        "name": "listenForDataUploadEGMWORLDSTREET",
+        "inputs": {
+          "timeoutSeconds": 10800 ,
+          "runCommand": ["while($true){ Get-Content 'C:\\Program Files\\Precisely\\Spectrum\\server\\logs\\spectrum-server.log' -Wait | Select-String 'Registered EGM-WORLD-STREET-WBL-136-202212-GEOCODING.spd' | %{write-host Found $_; break}}"]
+        }
+      },
+      {
+        "action": "aws:runPowerShellScript",
+        "name": "createDBConnection",
+        "inputs": {
+          "timeoutSeconds": 10800 ,
+          "runCommand": ["cd 'C:/Program Files/Precisely/spectrum-cli-22.1'",
+                "./cli.cmd --cmdfile 'C:/Program Files/Precisely/GGM/moduleScriptsIntlWindows/GgmIntlResourceImport.cli'"]
+        }
+      },
+      {
+        "action": "aws:runPowerShellScript",
+        "name": "deleteEverything",
+        "inputs": {
+          "timeoutSeconds": 10800 ,
+          "runCommand": ["Remove-Item 'C:\\Program Files\\Precisely\\GGM' -Recurse -Force -Confirm:$false"]
+        }
+      }
+    ]
+  }
