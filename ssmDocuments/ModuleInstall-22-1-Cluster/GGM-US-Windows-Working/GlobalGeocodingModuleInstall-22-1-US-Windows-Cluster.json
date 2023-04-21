@@ -1,6 +1,6 @@
 {
     "schemaVersion": "2.2",
-    "description": "RunCommandGlobalGeocodingModuleInstall-22-1-US-Windows",
+    "description": "RunCommandGlobalGeocodingModuleInstall-22-1-US-Windows-Cluster",
     "parameters": {},
     "mainSteps": [
       {
@@ -9,7 +9,7 @@
         "inputs": {
           "sourceType": "S3",
           "sourceInfo": {
-            "path": "https://cloudformation-spectrum.s3.amazonaws.com/Modules/GGM/GGM-Windows/installers-22.1-nt/"
+            "path": "https://cloudformation-spectrum.s3.amazonaws.com/Modules/GGM/GGM-Windows-Cluster/installers-22.1-nt/"
           },
           "destinationPath": "C:\\Program Files\\Precisely\\GGM\\installers-22.1-nt"
         }
@@ -31,9 +31,9 @@
         "inputs": {
           "sourceType": "S3",
           "sourceInfo": {
-            "path": "https://cloudformation-spectrum.s3.amazonaws.com/Modules/GGM/GGM-Windows/moduleScriptsUSWindows/"
+            "path": "https://cloudformation-spectrum.s3.amazonaws.com/Modules/GGM/GGM-Windows-Cluster/moduleScriptsUSWindows/"
           },
-          "destinationPath": "C:\\Program Files\\Precisely\\GGM\\moduleScriptsUSWindows"
+          "destinationPath": "C:\\Program Files\\Precisely\\GGM\\moduleScriptsUSWindows-Cluster"
         }
       },
       {
@@ -84,7 +84,7 @@
         "inputs": {
           "timeoutSeconds": 10800 ,
           "runCommand": ["cd 'C:/Program Files/Precisely/spectrum-cli-22.1'",
-                "./cli.cmd --cmdfile 'C:/Program Files/Precisely/GGM/moduleScriptsUSWindows/GgmUSResourceImport.cli'"]
+                "./cli.cmd --cmdfile 'C:/Program Files/Precisely/GGM/moduleScriptsUSWindows-Cluster/GgmUSResourceImport.cli'"]
         }
       },
       {

@@ -1,6 +1,6 @@
 {
     "schemaVersion": "2.2",
-    "description": "RunCommandUniversalAddressingModuleInstall-22-1-US-Windows",
+    "description": "RunCommandUniversalAddressingModuleInstall-22-1-US-Windows-Cluster",
     "parameters": {},
     "mainSteps": [
       {
@@ -9,7 +9,7 @@
         "inputs": {
           "sourceType": "S3",
           "sourceInfo": {
-            "path": "https://cloudformation-spectrum.s3.amazonaws.com/Modules/UAM/UAM-Windows/installers-22.1-nt/"
+            "path": "https://cloudformation-spectrum.s3.amazonaws.com/Modules/UAM/UAM-Windows-Cluster/installers-22.1-nt/"
           },
           "destinationPath": "C:\\Program Files\\Precisely\\UAM\\installers-22.1-nt"
         }
@@ -31,9 +31,9 @@
         "inputs": {
           "sourceType": "S3",
           "sourceInfo": {
-            "path": "https://cloudformation-spectrum.s3.amazonaws.com/Modules/UAM/UAM-Windows/moduleScriptsUSWindows/"
+            "path": "https://cloudformation-spectrum.s3.amazonaws.com/Modules/UAM/UAM-Windows-Cluster/moduleScriptsUSWindows/"
           },
-          "destinationPath": "C:\\Program Files\\Precisely\\UAM\\moduleScriptsUSWindows"
+          "destinationPath": "C:\\Program Files\\Precisely\\UAM\\moduleScriptsUSWindows-Cluster"
         }
       },
       {
@@ -101,7 +101,7 @@
         "inputs": {
           "timeoutSeconds": 10800 ,
           "runCommand": ["cd 'C:/Program Files/Precisely/spectrum-cli-22.1'",
-                "./cli.cmd --cmdfile 'C:/Program Files/Precisely/UAM/moduleScriptsUSWindows/UamUSResourceCreate.cli'"]
+                "./cli.cmd --cmdfile 'C:/Program Files/Precisely/UAM/moduleScriptsUSWindows-Cluster/UamUSResourceCreate.cli'"]
         }
       },
       {
