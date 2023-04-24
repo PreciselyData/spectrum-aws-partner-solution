@@ -59,7 +59,7 @@
         "name": "listenForDataUploadGAVUSDOM",
         "inputs": {
           "timeoutSeconds": 10800 ,
-          "runCommand": ["while($true){ Get-Content 'C:\\Program Files\\Precisely\\Spectrum\\server\\logs\\spectrum-server.log' -Wait | Select-String 'Registered GAV_US_DOM_042023.spd' | %{write-host Found $_; break}}"]
+          "runCommand": ["while($true){ Get-Content 'C:\\Program Files\\Precisely\\Spectrum\\server\\logs\\spectrum-server.log' -Wait | Select-String 'Registered GAV_US_DOM_052023.spd' | %{write-host Found $_; break}}"]
         }
       },
       {
@@ -67,7 +67,7 @@
         "name": "listenForDataUploadGAVUSNONDOM",
         "inputs": {
           "timeoutSeconds": 10800 ,
-          "runCommand": ["while($true){ Get-Content 'C:\\Program Files\\Precisely\\Spectrum\\server\\logs\\spectrum-server.log' -Wait | Select-String 'Registered GAV_US_NON_DOM_042023.spd' | %{write-host Found $_; break}}"]
+          "runCommand": ["while($true){ Get-Content 'C:\\Program Files\\Precisely\\Spectrum\\server\\logs\\spectrum-server.log' -Wait | Select-String 'Registered GAV_US_NON_DOM_052023.spd' | %{write-host Found $_; break}}"]
         }
       },
       {

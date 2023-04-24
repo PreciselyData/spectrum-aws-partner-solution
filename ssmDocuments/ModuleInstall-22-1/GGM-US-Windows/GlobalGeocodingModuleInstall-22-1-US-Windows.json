@@ -59,7 +59,7 @@
         "name": "listenForDataUploadEGMWORLDAP",
         "inputs": {
           "timeoutSeconds": 10800 ,
-          "runCommand": ["while($true){ Get-Content 'C:\\Program Files\\Precisely\\Spectrum\\server\\logs\\spectrum-server.log' -Wait | Select-String 'Registered EGM-WORLD-AP-WLD-136-202212-GEOCODING.spd' | %{write-host Found $_; break}}"]
+          "runCommand": ["while($true){ Get-Content 'C:\\Program Files\\Precisely\\Spectrum\\server\\logs\\spectrum-server.log' -Wait | Select-String 'Registered EGM-WORLD-AP-WLD-139-202303-GEOCODING.spd' | %{write-host Found $_; break}}"]
         }
       },
       {
@@ -67,7 +67,7 @@
         "name": "listenForDataUploadEGMWORLDMLD",
         "inputs": {
           "timeoutSeconds": 10800 ,
-          "runCommand": ["while($true){ Get-Content 'C:\\Program Files\\Precisely\\Spectrum\\server\\logs\\spectrum-server.log' -Wait | Select-String 'Registered EGM-WORLD-MLD-GLB-136-202212-GEOCODING.spd' | %{write-host Found $_; break}}"]
+          "runCommand": ["while($true){ Get-Content 'C:\\Program Files\\Precisely\\Spectrum\\server\\logs\\spectrum-server.log' -Wait | Select-String 'Registered EGM-WORLD-MLD-GLB-139-202303-GEOCODING.spd' | %{write-host Found $_; break}}"]
         }
       },
       {
@@ -75,7 +75,7 @@
         "name": "listenForDataUploadEGMWORLDSTREET",
         "inputs": {
           "timeoutSeconds": 10800 ,
-          "runCommand": ["while($true){ Get-Content 'C:\\Program Files\\Precisely\\Spectrum\\server\\logs\\spectrum-server.log' -Wait | Select-String 'Registered EGM-WORLD-STREET-WBL-136-202212-GEOCODING.spd' | %{write-host Found $_; break}}"]
+          "runCommand": ["while($true){ Get-Content 'C:\\Program Files\\Precisely\\Spectrum\\server\\logs\\spectrum-server.log' -Wait | Select-String 'Registered EGM-WORLD-STREET-WBL-139-202303-GEOCODING.spd' | %{write-host Found $_; break}}"]
         }
       },
       {

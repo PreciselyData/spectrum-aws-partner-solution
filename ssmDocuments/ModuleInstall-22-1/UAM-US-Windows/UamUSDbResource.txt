@@ -7,12 +7,12 @@
   "name" : "UAM_USA",
   "maxActive" : 4,
   "properties" : {
-    "RDI_DB_PATH" : "${spectrum.spd.Universal_Addressing_Module/c1p/UAM-US-RDI_APR2023}/UAM-US-RDI",
-    "LACS_DB_PATH" : "${spectrum.spd.Universal_Addressing_Module/c1p/UAM-US-LACS_APR2023}/UAM-US-LACS",
-    "DPV_DB_PATH" : "${spectrum.spd.Universal_Addressing_Module/c1p/UAM-US-DPV_APR2023}/UAM-US-DPV",
+    "RDI_DB_PATH" : "${spectrum.spd.Universal_Addressing_Module/c1p/UAM-US-RDI_MAY2023}/UAM-US-RDI",
+    "LACS_DB_PATH" : "${spectrum.spd.Universal_Addressing_Module/c1p/UAM-US-LACS_MAY2023}/UAM-US-LACS",
+    "DPV_DB_PATH" : "${spectrum.spd.Universal_Addressing_Module/c1p/UAM-US-DPV_MAY2023}/UAM-US-DPV",
     "EWS_DB_PATH" : "",
-    "SUITELINK_DB_PATH" : "${spectrum.spd.Universal_Addressing_Module/c1p/UAM-US-SLK_APR2023}/UAM-US-SLK",
-    "BASE_DB_PATH" : "${spectrum.spd.Universal_Addressing_Module/c1p/UAM-US_APR2023}/UAM-US"
+    "SUITELINK_DB_PATH" : "${spectrum.spd.Universal_Addressing_Module/c1p/UAM-US-SLK_MAY2023}/UAM-US-SLK",
+    "BASE_DB_PATH" : "${spectrum.spd.Universal_Addressing_Module/c1p/UAM-US_MAY2023}/UAM-US"
   },
   "minimumMemory" : 0,
   "maximumMemory" : 0,
