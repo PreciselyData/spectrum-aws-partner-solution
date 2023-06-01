@@ -10,10 +10,10 @@
     "DICTIONARY_COUNT" : "1",
     "SPD_TYPE0" : "GAV",
     "SPD_KEYS" : "BASE_DB,SPD_TYPE,SPD_VINTAGE,SELECTED_COUNTRIES,SPD_QUALIFIER",
-    "BASE_DB0" : "${spectrum.spd.Global_Address_Validation_Coder/GlobalAddressValidationUS/GAV_US_DOM_MAY2023}",
+    "BASE_DB0" : "${spectrum.spd.Global_Address_Validation_Coder/GlobalAddressValidationUS/GAV_US_DOM_JUN2023}",
     "SPD_QUALIFIER0" : "GAV_US_DOM",
     "SELECTED_COUNTRIES0" : "ALL",
-    "SPD_VINTAGE0" : "MAY2023"
+    "SPD_VINTAGE0" : "JUN2023"
   },
   "minimumMemory" : 512,
   "maximumMemory" : 1024,
@@ -39,10 +39,10 @@
     "DICTIONARY_COUNT" : "1",
     "SPD_TYPE0" : "GAV",
     "SPD_KEYS" : "BASE_DB,SPD_TYPE,SPD_VINTAGE,SELECTED_COUNTRIES,SPD_QUALIFIER",
-    "BASE_DB0" : "${spectrum.spd.Global_Address_Validation_Coder/GlobalAddressValidationUS/GAV_US_NON_DOM_MAY2023}",
+    "BASE_DB0" : "${spectrum.spd.Global_Address_Validation_Coder/GlobalAddressValidationUS/GAV_US_NON_DOM_JUN2023}",
     "SPD_QUALIFIER0" : "GAV_US_NON_DOM",
     "SELECTED_COUNTRIES0" : "ALL",
-    "SPD_VINTAGE0" : "MAY2023"
+    "SPD_VINTAGE0" : "JUN2023"
   },
   "minimumMemory" : 512,
   "maximumMemory" : 1024,

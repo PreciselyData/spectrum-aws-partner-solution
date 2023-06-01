@@ -59,7 +59,7 @@
         "name": "listenForDataUpload2LL",
         "inputs": {
           "timeoutSeconds": 10800 ,
-          "runCommand": ["while($true){ Get-Content 'C:\\Program Files\\Precisely\\Spectrum\\server\\logs\\spectrum-server.log' -Wait | Select-String 'Registered 2LL052023_201910.spd' | %{write-host Found $_; break}}"]
+          "runCommand": ["while($true){ Get-Content 'C:\\Program Files\\Precisely\\Spectrum\\server\\logs\\spectrum-server.log' -Wait | Select-String 'Registered 2LL062023_201910.spd' | %{write-host Found $_; break}}"]
         }
       },
       {
@@ -67,7 +67,7 @@
         "name": "listenForDataUploadDPU",
         "inputs": {
           "timeoutSeconds": 10800 ,
-          "runCommand": ["while($true){ Get-Content 'C:\\Program Files\\Precisely\\Spectrum\\server\\logs\\spectrum-server.log' -Wait | Select-String 'Registered DPU052023_201910.spd' | %{write-host Found $_; break}}"]
+          "runCommand": ["while($true){ Get-Content 'C:\\Program Files\\Precisely\\Spectrum\\server\\logs\\spectrum-server.log' -Wait | Select-String 'Registered DPU062023_201910.spd' | %{write-host Found $_; break}}"]
         }
       },
       {
@@ -75,7 +75,7 @@
         "name": "listenForDataUploadRDI",
         "inputs": {
           "timeoutSeconds": 10800 ,
-          "runCommand": ["while($true){ Get-Content 'C:\\Program Files\\Precisely\\Spectrum\\server\\logs\\spectrum-server.log' -Wait | Select-String 'Registered RDI052023_201910.spd' | %{write-host Found $_; break}}"]
+          "runCommand": ["while($true){ Get-Content 'C:\\Program Files\\Precisely\\Spectrum\\server\\logs\\spectrum-server.log' -Wait | Select-String 'Registered RDI062023_201910.spd' | %{write-host Found $_; break}}"]
         }
       },
       {
@@ -83,7 +83,7 @@
         "name": "listenForDataUploadSLK",
         "inputs": {
           "timeoutSeconds": 10800 ,
-          "runCommand": ["while($true){ Get-Content 'C:\\Program Files\\Precisely\\Spectrum\\server\\logs\\spectrum-server.log' -Wait | Select-String 'Registered SLK052023_201910.spd' | %{write-host Found $_; break}}"]
+          "runCommand": ["while($true){ Get-Content 'C:\\Program Files\\Precisely\\Spectrum\\server\\logs\\spectrum-server.log' -Wait | Select-String 'Registered SLK062023_201910.spd' | %{write-host Found $_; break}}"]
         }
       },
       
@@ -92,7 +92,7 @@
         "name": "listenForDataUploadUSS",
         "inputs": {
           "timeoutSeconds": 10800 ,
-          "runCommand": ["while($true){ Get-Content 'C:\\Program Files\\Precisely\\Spectrum\\server\\logs\\spectrum-server.log' -Wait | Select-String 'Registered USS052023_201910.spd' | %{write-host Found $_; break}}"]
+          "runCommand": ["while($true){ Get-Content 'C:\\Program Files\\Precisely\\Spectrum\\server\\logs\\spectrum-server.log' -Wait | Select-String 'Registered USS062023_201910.spd' | %{write-host Found $_; break}}"]
         }
       },
       {

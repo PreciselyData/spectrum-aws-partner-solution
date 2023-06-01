@@ -8,3 +8,133 @@ Go to AWS SSM Documents and create a new version of the applicable document.
 create a new Default to set it to the new version
 Upload new template to s3://cloudformation-spectrum/templates/
 Upload updated cli or txt documents to s3://cloudformation-spectrum/Modules/[Module]/[ModuleOS]/moduleScripts[region]
+
+
+New data released:
+    Download the newest data on an AWS box (US-Working-box-east or west)
+        UAM data (US only) - PDX
+            UAM US Database
+            SuiteLink Database
+            Residential Delivery Indicator
+            LACSLink Database
+            DPV Split
+        GGM data (US and Intl) - PDT
+            EGM-WORLD-AP-WLD - Product ID = 
+            EGM-WORLD-STREET-WBL - Product ID = 
+            EGM-WORLD-MLD-GLB - Product ID = 
+        GAV data (US and Intl) - PDT and PDX
+            GAV_US_NON_DOM - Product ID = 5C66EA9FB88FF226797FDF60 - Pull down both Version 3 and 10
+            GAV_US_DOM - Product ID = 5C65B87837E77426A64DDF85 - Pull down both Version 3 and 10
+            GGL - PDX - Trillium World
+
+UAM scripts update:
+    Create in AWS S3:
+        Create a folder in s3://cloudformation-spectrum/Modules/UAM/ called "datedataUS" example: 062023dataUS
+    Upload to AWS S3:
+        Upload all data to that folder
+    Modify in VS Code:
+        Under ssmDocuments in Git repo, you'll modify: 
+            ModuleInstall-20-1/UAM-US-Windows/UamUSDbResource.txt---------Not needed, just update 22.1 script
+            ModuleInstall-22-1/UAM-US-Windows/UamUSDbResource.txt
+                Dates of the files. These are 3 letter months, example June is JUN
+            ModuleInstall-20-1/UAM-US-Windows/UniversalAddressingModuleInstall-20-1-US-Windows.json
+                5 listeners with updated dates
+            ModuleInstall-22-1/UAM-US-Windows/UniversalAddressingModuleInstall-22-1-US-Windows.json
+                5 listeners with updated dates
+    Upload to AWS S3: 
+        Upload ModuleInstall-22-1/UAM-US-Windows/UamUSDbResource.txt to s3://cloudformation-spectrum/Modules/UAM/UAM-Windows/moduleScriptsUSWindows/
+        Upload ModuleInstall-20-1/UAM-US-Windows/UniversalAddressingModuleInstall-20-1-US-Windows.json and ModuleInstall-22-1/UAM-US-Windows/UniversalAddressingModuleInstall-22-1-US-Windows.json to s3://cloudformation-spectrum/templates/UAM/
+    Modify AWS SSM Documents:
+        Update the following SSM documents by just copying, pasting the JSON. Then update the Default Version:
+            UniversalAddressingModuleInstall-22-1-US-Windows
+            UniversalAddressingModuleInstall-20-1-US-Windows
+    Move data in AWS S3:
+        Move old data to dated folder in S3
+        Move new data to dataUS folder
+    Test:
+
+GAV scripts update:
+    Create in AWS S3:
+        Create a folder in s3://cloudformation-spectrum/Modules/GAV/ called "datedata" example: 062023data
+        Create 3 folders inside above folder, intl, v10US, v3US
+    Upload to AWS S3:
+        Upload appropriate data to each folder. Make sure v3 data goes in v3 folder, v10 data goes in v10 folder
+    Modify in VS Code:
+        Under ssmDocuments in Git repo, you'll modify:
+            ModuleInstall-20-1/GAV-US-Windows/GAVUSv3DbResource.txt---------Not needed, just update 22.1 script
+            ModuleInstall-22-1/GAV-US-Windows/GAVUSv3DbResource.txt
+                Both Base DBO and SPD vintage.
+            ModuleInstall-20-1/GAV-Intl-Windows/GAVIntlv3DbResource.txt---------Not needed, just update 22.1 script
+            ModuleInstall-22-1/GAV-Intl-Windows/GAVIntlv3DbResource.txt
+                Both Base DBO and SPD vintage.
+                Intl data date might not be modified if data isn't updated yet
+            ModuleInstall-20-1/GAV-US-Windows/GlobalAddressValidationModuleInstall-20-1-US-Windows.json
+                Update 2 listeners per US install
+            ModuleInstall-22-1/GAV-US-Windows/GlobalAddressValidationModuleInstall-22-1-US-Windows.json
+                Update 2 listeners per US install
+            ModuleInstall-20-1/GAV-Intl-Windows/GlobalAddressValidationModuleInstall-20-1-Intl-Windows.json
+                Update 3 listeners per Intl install
+                Intl data date might not be modified if data isn't updated yet
+            ModuleInstall-22-1/GAV-Intl-Windows/GlobalAddressValidationModuleInstall-22-1-Intl-Windows.json
+                Update 3 listeners per Intl install
+                Intl data date might not be modified if data isn't updated yet
+            PatchInstall-22-1/InstallPatches/moduleScriptsUSWindowsPatchS18/GAVUSv3ResourceDelete.cli
+                Modify the date to match the data (this will be the same date as the updated data. remember it's deleting the updated data v3, and loading in updated v10)
+            PatchInstall-22-1/InstallPatches/moduleScriptsUSWindowsPatchS18/GAVUSv10DbResource.txt
+                SPD_VINTAGE and DBO Base. (this will be the same date as the updated data. remember it's deleting the updated data v3, and loading in updated v10)
+    Upload to AWS S3:
+        Upload ModuleInstall-22-1/GAV-US-Windows/GAVUSv3DbResource.txt to s3://cloudformation-spectrum/Modules/GAV/GAV-Windows/moduleScriptsUSWindows/ 
+        Upload ModuleInstall-22-1/GAV-Intl-Windows/GAVIntlv3DbResource.txt to s3://cloudformation-spectrum/Modules/GAV/GAV-Windows/moduleScriptsIntlWindows/
+        Upload PatchInstall-22-1/InstallPatches/moduleScriptsUSWindowsPatchS18/GAVUSv3ResourceDelete.cli to s3://cloudformation-spectrum/Modules/GAV/GAV-Windows/moduleScriptsUSWindowsPatchS18/
+        Upload PatchInstall-22-1/InstallPatches/moduleScriptsUSWindowsPatchS18/GAVUSv10DbResource.txt to s3://cloudformation-spectrum/Modules/GAV/GAV-Windows/moduleScriptsUSWindowsPatchS18/
+        Upload ModuleInstall-20-1/GAV-US-Windows/GlobalAddressValidationModuleInstall-20-1-US-Windows.json, ModuleInstall-22-1/GAV-US-Windows/GlobalAddressValidationModuleInstall-22-1-US-Windows.json, ModuleInstall-20-1/GAV-Intl-Windows/GlobalAddressValidationModuleInstall-20-1-Intl-Windows.json, ModuleInstall-22-1/GAV-Intl-Windows/GlobalAddressValidationModuleInstall-22-1-Intl-Windows.json to s3://cloudformation-spectrum/templates/GAV/
+    Modify AWS SSM Documents:
+        Update the following SSM documents by just copying, pasting the JSON. Then update the Default Version:
+            GlobalAddressValidationModuleInstall-20-1-Intl-Windows
+            GlobalAddressValidationModuleInstall-20-1-US-Windows
+            GlobalAddressValidationModuleInstall-22-1-Intl-Windows
+            GlobalAddressValidationModuleInstall-22-1-US-Windows
+    Move data in AWS S3:
+        dataUS data goes into previous data's v3 folder
+        S18PatchDataUS goes into previous data's v10 folder
+        If updating Intl data, move Intl data into previous data's Intl folder
+        Copy data from Current US data v3 to dataIntl
+        Move data from Current US data v3 to dataUS
+        Move data from Current US data v10 to S18PatchDataUS
+    Test:
+
+GGM scripts update:
+    Create in AWS S3:
+        Create a folder in s3://cloudformation-spectrum/Modules/GGM/ called "datedata" example: 202306data
+    Upload to AWS S3:
+        Upload all data to that folder
+    Modify in VS Code:
+        Under ssmDocuments in Git repo, you'll modify: 
+            ModuleInstall-20-1/GGM-US-Windows/GgmUSDbResource.txt---------Not needed, just update 22.1 script
+            ModuleInstall-22-1/GGM-US-Windows/GgmUSDbResource.txt
+                BASE_DB_PATH gets updated with correct dates. Look at the SPD names
+            ModuleInstall-20-1/GGM-Intl-Windows/GgmIntlDbResource.txt---------Not needed, just update 22.1 script
+            ModuleInstall-22-1/GGM-Intl-Windows/GgmIntlDbResource.txt
+                BASE_DB_PATH gets updated with correct dates in 2 spots. Look at the SPD names
+            ModuleInstall-20-1/GGM-US-Windows/GlobalGeocodingModuleInstall-20-1-US-Windows.json
+                3 listeners with updated dates
+            ModuleInstall-22-1/GGM-US-Windows/GlobalGeocodingModuleInstall-22-1-US-Windows.json
+                3 listeners with updated dates
+            ModuleInstall-20-1/GGM-Intl-Windows/GlobalGeocodingModuleInstall-20-1-Intl-Windows.json
+                3 listeners with updated dates
+            ModuleInstall-22-1/GGM-Intl-Windows/GlobalGeocodingModuleInstall-22-1-Intl-Windows.json
+                3 listeners with updated dates
+    Upload to AWS S3: 
+        Upload ModuleInstall-22-1/GGM-US-Windows/GgmUSDbResource.txt to s3://cloudformation-spectrum/Modules/GGM/GGM-Windows/moduleScriptsUSWindows/
+        Upload ModuleInstall-22-1/GGM-Intl-Windows/GgmIntlDbResource.txt to s3://cloudformation-spectrum/Modules/GGM/GGM-Windows/moduleScriptsIntlWindows/
+        Upload ModuleInstall-20-1/GGM-US-Windows/GlobalGeocodingModuleInstall-20-1-US-Windows.json and ModuleInstall-22-1/GGM-US-Windows/GlobalGeocodingModuleInstall-22-1-US-Windows.json, ModuleInstall-20-1/GGM-Intl-Windows/GlobalGeocodingModuleInstall-20-1-Intl-Windows.json, ModuleInstall-22-1/GGM-Intl-Windows/GlobalGeocodingModuleInstall-22-1-Intl-Windows.json to s3://cloudformation-spectrum/templates/GGM/
+    Modify AWS SSM Documents:
+        Update the following SSM documents by just copying, pasting the JSON. Then update the Default Version:
+            GlobalGeocodeModuleInstall-20-1-Intl-Windows
+            GlobalGeocodeModuleInstall-20-1-US-Windows
+            GlobalGeocodeModuleInstall-22-1-Intl-Windows
+            GlobalGeocodeModuleInstall-22-1-US-Windows
+    Move data in AWS S3:
+        Move old data to dated folder in S3
+        Move new data to data folder
+    Test:
