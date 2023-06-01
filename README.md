@@ -45,6 +45,5 @@ There are 4 components to a Spectrum deployment:
 # Prerequesites
 Before starting to deploy your EC2 with Spectrum, there's a few important considerations to make
   1) 
-# Deploying the initial application
-Use an AWS CloudFormation tempate to create a base Spectrum 22.1 deployment on a single EC2 instance. This is the minimal all-in-one configuration, where all the components are installed on a single instance. 
+
 
