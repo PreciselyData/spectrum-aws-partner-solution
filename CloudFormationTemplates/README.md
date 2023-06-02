@@ -27,3 +27,19 @@ When the AWS CloudFormation template has successfully created the stack. Go to y
 
 # Customer responsibility
 After you deploy a Partner Solution, confirm that your resources and services are updated and configured—including any required patches—to meet your security and other needs. For more information, refer to the [Shared Responsibility Model](https://aws.amazon.com/compliance/shared-responsibility-model/).
+
+# Feedback
+To submit feature ideas and report bugs, use the Issues section of the [GitHub repository](LINK-TO-PRECISELY-GITHUB) for this Partner Solution. To submit code, refer to the [Partner Solution Contributor’s Guide](https://aws-quickstart.github.io/). To submit feedback on this deployment guide, use the following GitHub links:
+
+[Grammar or spelling](LINK-TO-PRECISELY-GITHUB)
+
+[Broken link](LINK-TO-PRECISELY-GITHUB)
+
+[Inaccurate content](LINK-TO-PRECISELY-GITHUB)
+
+[Display or design](LINK-TO-PRECISELY-GITHUB)
+
+# Notices
+This document is provided for informational purposes only. It represents current AWS product offerings and practices as of the date of issue of this document, which are subject to change without notice. Customers are responsible for making their own independent assessment of the information in this document and any use of AWS products or services, each of which is provided "as is" without warranty of any kind, whether expressed or implied. This document does not create any warranties, representations, contractual commitments, conditions, or assurances from AWS, its affiliates, suppliers, or licensors. The responsibilities and liabilities of AWS to its customers are controlled by AWS agreements, and this document is not part of, nor does it modify, any agreement between AWS and its customers.
+
+The software included with this paper is licensed under the Apache License, version 2.0 (the "License"). You may not use this file except in compliance with the License. A copy of the License is located at https://aws.amazon.com/apache2.0/ or in the accompanying "license" file. This code is distributed on an "as is" basis, without warranties or conditions of any kind, either expressed or implied. Refer to the License for specific language governing permissions and limitations.
