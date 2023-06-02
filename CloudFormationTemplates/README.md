@@ -18,3 +18,12 @@ This guide provides detailed instructions for deploying a single tenent Spectrum
 8) Monitor the stack’s status, and when the status is CREATE_COMPLETE, the Spectrum deployment is ready.
 
 9) To view the created resources, choose the Outputs tab. (CREATE BETTER OUTPUTS, IP ADDRESS, INSTANCE NAME, INSTANCE SIZE ETC0
+
+# Postdeployment steps
+## Testing the deployment
+When the AWS CloudFormation template has successfully created the stack. Go to your Instances console in AWS, or view the Outputs from the CloudFormation stack and find your IP address for the Spectrum deployment EC2 instance. Remote into the machine using your keypair that you selected during the deployment. Once you remote in, you'll notice in the Windows notification bar that Spectrum Server is starting. Once that's done starting, you can access the Management Console via Google Chrome. 
+
+# Troubleshooting
+
+# Customer responsibility
+After you deploy a Partner Solution, confirm that your resources and services are updated and configured—including any required patches—to meet your security and other needs. For more information, refer to the [Shared Responsibility Model](https://aws.amazon.com/compliance/shared-responsibility-model/).
