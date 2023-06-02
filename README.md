@@ -82,9 +82,9 @@ https//server:port/dcg/status or http//server:port/dcg/status
 
 Where:
 
-  server is the server name or IP address of your Spectrum Technology Platform server.
+server is the server name or IP address of your Spectrum Technology Platform server.
   
-  port is the HTTP or HTTPS port used by Spectrum Technology Platform.
+port is the HTTP or HTTPS port used by Spectrum Technology Platform.
 
 Note:
 By default, the server port is 8080 for HTTP and 8443 for HTTPS.
