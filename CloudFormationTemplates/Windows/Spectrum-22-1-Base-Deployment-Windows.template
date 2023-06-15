@@ -21,7 +21,8 @@
         "NetworkInterface",
         "VpcId",
         "SubnetId",
-        "SecurityGroupIds"
+        "SecurityGroupIds",
+        "SSMIAMRole"
      ]
     },
     {
@@ -98,6 +99,11 @@
      "AllowedPattern": "^sg-[a-z0-9]*$",
      "Description": "Choose one or multiple security groups."
     },
+    "SSMIAMRole": {
+      "Description": "Name of IAM role that will be created by this cloud formation template. The role name must _not_ already exist in your AWS account.",
+      "Type": "String",
+      "Default": "SSMIAMRole"
+  },
     "InstanceType": {
      "Type": "String",
      "Default": "t2.xlarge",
@@ -189,6 +195,112 @@
 "Conditions": {
    },
 "Resources" : {
+  "Role": {
+    "Type": "AWS::IAM::Role",
+    "Properties": {
+        "RoleName": {"Ref": "SSMIAMRole"},
+        "Policies": [
+            {
+                "PolicyName": "SSMPolicy",
+                "PolicyDocument": {
+                    "Version": "2012-10-17",
+                    "Statement": [
+                        {
+                            "Sid": "BasicSSMPolicy",
+                            "Effect": "Allow",
+                            "Action": [
+                              "ssm:DescribeAssociation",
+                              "ssm:GetDeployablePatchSnapshotForInstance",
+                              "ssm:GetDocument",
+                              "ssm:DescribeDocument",
+                              "ssm:GetManifest",
+                              "ssm:GetParameter",
+                              "ssm:GetParameters",
+                              "ssm:ListAssociations",
+                              "ssm:ListInstanceAssociations",
+                              "ssm:PutInventory",
+                              "ssm:PutComplianceItems",
+                              "ssm:PutConfigurePackageResult",
+                              "ssm:UpdateAssociationStatus",
+                              "ssm:UpdateInstanceAssociationStatus",
+                              "ssm:UpdateInstanceInformation"
+                            ],
+                            "Resource": "*"
+                        },
+                        {
+                            "Effect": "Allow",
+                            "Action": [
+                              "ssmmessages:CreateControlChannel",
+                              "ssmmessages:CreateDataChannel",
+                              "ssmmessages:OpenControlChannel",
+                              "ssmmessages:OpenDataChannel"
+                            ],
+                            "Resource": "*"
+                        },
+                        {
+                            "Effect": "Allow",
+                            "Action": [
+                              "ec2messages:AcknowledgeMessage",
+                              "ec2messages:DeleteMessage",
+                              "ec2messages:FailMessage",
+                              "ec2messages:GetEndpoint",
+                              "ec2messages:GetMessages",
+                              "ec2messages:SendReply"
+                            ],
+                            "Resource": "*"
+                        },
+                        {
+                          "Sid": "AllowUsersToPerformUserActions",
+                            "Effect": "Allow",
+                            "Action": [
+                                "iam:ListPolicies",
+                                "iam:GetPolicy",
+                                "iam:ListEntitiesForPolicy",
+                                "iam:ListUserPolicies",
+                                "iam:GetUserPolicy",
+                                "iam:ListGroupsForUser",
+                                "iam:ListAttachedUserPolicies",
+                                "iam:ListUsers",
+                                "iam:GetUser"
+                            ],
+                            "Resource": "*"
+                        }
+                    ]
+                }
+            }
+        ],
+        "ManagedPolicyArns": [
+          "arn:aws:iam::aws:policy/AmazonS3FullAccess",
+          "arn:aws:iam::aws:policy/AmazonSSMFullAccess"
+        ],
+        "AssumeRolePolicyDocument": {
+            "Version": "2012-10-17",
+            "Statement": [
+                {
+                    "Effect": "Allow",
+                    "Principal": {
+                        "Service": [
+                            "ec2.amazonaws.com"
+                        ]
+                    },
+                    "Action": [
+                        "sts:AssumeRole"
+                    ]
+                }
+            ]
+        }
+    }
+},
+    "EC2InstanceProfile" : {
+      "Type" : "AWS::IAM::InstanceProfile",
+      "Properties" : {
+        "InstanceProfileName" : {"Ref" : "SSMIAMRole"},
+        "Path" : "/",
+        "Roles" : [
+          {"Ref": "SSMIAMRole"}
+        ]
+      }
+    },
     "SpectrumDeployment" : {
       "Type" : "AWS::EC2::Instance",
       "Properties" : {
@@ -197,14 +309,11 @@
              "DeviceName": "/dev/sda1",
              "Ebs": {
               "DeleteOnTermination": true,
-              "VolumeSize": {
-               "Ref": "InstanceDriveSize"
-              },
+              "VolumeSize": {"Ref": "InstanceDriveSize"},
               "VolumeType": "gp3"
              }
             }
            ],
-        "IamInstanceProfile" : "PRECISELY-BASIC-SSM-EC2-Role",
         "InstanceType" : { "Ref" : "InstanceType" },
         "KeyName" : { "Ref" : "KeypairName" },
         "ImageId" : { "Ref" : "AMIId" },
@@ -219,8 +328,20 @@
     },
 "Outputs" : {
     "InstanceId" : {
-      "Description" : "InstanceId of the newly created EC2 instance",
+      "Description" : "Instance Id of the newly created EC2 instance",
       "Value" : { "Ref" : "SpectrumDeployment" }
+    },
+    "InstanceType": {
+      "Description" : "Instance type of your new Spectrum Deployment",
+      "Value" : { "Ref" : "InstanceType" }
+    },
+    "StorageSize" : {
+      "Description": "EBS volume size of your new Spectrum Deployment",
+      "Value" : { "Ref": "InstanceDriveSize"}
+    },
+    "IAMRole" : {
+      "Description" : "Name of the IAM role that was created for the SSM module installs",
+      "Value" : {"Ref": "SSMIAMRole"}
     }
   }
 }
