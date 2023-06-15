@@ -25,7 +25,9 @@ This is a project done in collabortation with AWS to automate the deployment of 
   ## Features
 # Architecture
   ## Single Tenet
+  ![Single Tenet Architecture diagram](/images/spectrumSingleTenet.PNG)
   ## Clustered Deployment
+  ![Clustered Architecture diagram](/images/spectrumClustered.PNG)
 # Prerequisites
   ## Planning your deployment
   ## AWS considerations
