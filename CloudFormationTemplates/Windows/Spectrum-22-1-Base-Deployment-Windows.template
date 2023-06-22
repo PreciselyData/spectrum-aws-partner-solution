@@ -76,13 +76,13 @@
     },
     "AMIId": {
      "Type": "String",
-     "Default": "ami-0029db04c15baac18",
+     "Default": "ami-0f19072ea0305198f",
      "AllowedValues": [
-        "ami-0029db04c15baac18",
-        "ami-0c8f84077245211cd",
-        "ami-0d65d4e8869538dc3"
+        "ami-0f19072ea0305198f",
+        "ami-0c1520afdced83727",
+        "ami-09c33a1c2da3fdd82"
        ],
-     "Description": "For Windows Server 2019, use ami id: ami-0029db04c15baac18. For Windows Server 2016, use ami id: ami-0c8f84077245211cd. For Windows Server 2012 RC, use ami id: ami-0d65d4e8869538dc3"
+     "Description": "For Windows Server 2019, use ami id: ami-0f19072ea0305198f. For Windows Server 2016, use ami id: ami-0c1520afdced83727. For Windows Server 2012 RC, use ami id: ami-09c33a1c2da3fdd82"
     },
     "KeypairName": {
      "Type": "AWS::EC2::KeyPair::KeyName",
