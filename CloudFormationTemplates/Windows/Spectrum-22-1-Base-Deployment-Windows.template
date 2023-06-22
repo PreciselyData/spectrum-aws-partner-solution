@@ -76,13 +76,13 @@
     },
     "AMIId": {
      "Type": "String",
-     "Default": "ami-0ca52f6ceba7bf321",
+     "Default": "ami-0029db04c15baac18",
      "AllowedValues": [
-        "ami-0ca52f6ceba7bf321",
-        "ami-0349cf370f160a930",
+        "ami-0029db04c15baac18",
+        "ami-0c8f84077245211cd",
         "ami-0d65d4e8869538dc3"
        ],
-     "Description": "For Windows Server 2019, use ami id: ami-0ca52f6ceba7bf321. For Windows Server 2016, use ami id: ami-0349cf370f160a930. For Windows Server 2012 RC, use ami id: ami-0d65d4e8869538dc3"
+     "Description": "For Windows Server 2019, use ami id: ami-0029db04c15baac18. For Windows Server 2016, use ami id: ami-0c8f84077245211cd. For Windows Server 2012 RC, use ami id: ami-0d65d4e8869538dc3"
     },
     "KeypairName": {
      "Type": "AWS::EC2::KeyPair::KeyName",
@@ -314,6 +314,7 @@
              }
             }
            ],
+        "IamInstanceProfile" : {"Ref": "SSMIAMRole"},
         "InstanceType" : { "Ref" : "InstanceType" },
         "KeyName" : { "Ref" : "KeypairName" },
         "ImageId" : { "Ref" : "AMIId" },
