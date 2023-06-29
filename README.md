@@ -11,6 +11,7 @@ This is a project done in collabortation with AWS to automate the deployment of 
 
 # Spectrum Application
   ## Features
+  STILL NEED CONTENT FOR HERE
 # Architecture
   ## Single Tenet
   ![Single Tenet Architecture diagram](/images/spectrumSingleTenet.PNG)

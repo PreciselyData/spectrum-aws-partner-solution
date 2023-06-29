@@ -1,6 +1,6 @@
 # Configuring your Spectrum deployment
 After you've completed your Spectrum deployment, you'll want to come to these scripts to install modules, patch your deployment and update the data on the modules (when applicable).
-## Adding Modules and Data to the deployment
+## Module Options and Capabilities
 There's currently 3 Spectrum modules available, with different regional datasets. 
 1) Global Address Validation - United State and International datasets.
 2) Global Geocoding Module - United States and International datasets.
@@ -31,7 +31,22 @@ The Universal Addressing Module allows the user to utilize the following service
 - Get Postal Codes
 - Validate Address
 
-[Click here](https://docs.precisely.com/docs/sftw/spectrum/22.1/en/webhelp/WebServicesGuide/UNC/source/AutoCompleteLoqate/Component_AutoCompleteLoqate-1.html) for Documentation for these services. 
-# Patching the Spectrum deployment
+[Click here](https://docs.precisely.com/docs/sftw/spectrum/22.1/en/webhelp/WebServicesGuide/UNC/source/AutoCompleteLoqate/Component_AutoCompleteLoqate-1.html) for Documentation for these services.
+## Adding Modules and Data to the deployment
+Best practice is to add your desired modules one at a time. Make sure you note you note your Spectrum Deployment's Name in the EC2 window before you start. 
+1) To install a module, decided on the module and data context you would like to appy to your Spectrum deployment and click Launch Stack. 
+This opens AWS Systems Manager Run Command service which will run an install document on your instance. 
 
-# Updating the Module data when necessary
+2) Leave the Command document as default, and under Target Selection, select Choose instances manually. Check the box next to your Spectrum Deployment instance.
+
+3) Under Output options, you can select to Enable an S3 bucket for the log files. If you choose this, create or select a S3 bucket from the dropdown menu. You can also run this without logging if desired. 
+
+4) Leave SNS notifications and AWS command line interface command as they are, and click Run.
+
+5) The document will now start to install the selected module on your Spectrum instance. You can see the progress on the WHAT MENU? and you can also see additional details by clicking on the process number.
+
+6) Once the PROGRESS FIELD? says Completed, you can now remote into your Spectrum instance and apply the Spectrum license you received from Precisely Customer Support.
+
+## Patching the Spectrum deployment
+
+## Updating the Module data when necessary

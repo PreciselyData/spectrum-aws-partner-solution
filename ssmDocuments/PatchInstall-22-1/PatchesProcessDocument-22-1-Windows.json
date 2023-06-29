@@ -106,14 +106,6 @@
       }
     },
     {
-      "name": "DownloadPlatformPatches",
-      "action": "aws:runDocument",
-      "inputs": {
-        "documentType": "SSMDocument",
-        "documentPath": "DownloadPlatformPatches-22-1-Windows"
-      }
-    },
-    {
       "action": "aws:runPowerShellScript",
       "name": "createBackupFolder",
       "inputs": {
@@ -147,14 +139,6 @@
       "inputs": {
         "documentType": "SSMDocument",
         "documentPath": "InstallPatchS02-22-1-Windows"
-      }
-    },
-    {
-      "name": "installPatchS03",
-      "action": "aws:runDocument",
-      "inputs": {
-        "documentType": "SSMDocument",
-        "documentPath": "InstallPatchS03-22-1-Windows"
       }
     },
     {
@@ -270,14 +254,6 @@
       }
     },
     {
-      "name": "installPatchS12",
-      "action": "aws:runDocument",
-      "inputs": {
-        "documentType": "SSMDocument",
-        "documentPath": "InstallPatchS12-22-1-Windows"
-      }
-    },
-    {
       "name": "installPatchS13",
       "action": "aws:runDocument",
       "precondition": {
@@ -303,14 +279,6 @@
       "inputs": {
         "documentType": "SSMDocument",
         "documentPath": "InstallPatchS14-22-1-Windows"
-      }
-    },
-    {
-      "name": "installPatchS15",
-      "action": "aws:runDocument",
-      "inputs": {
-        "documentType": "SSMDocument",
-        "documentPath": "InstallPatchS15-22-1-Windows"
       }
     },
     {
@@ -353,6 +321,34 @@
       "inputs": {
         "documentType": "SSMDocument",
         "documentPath": "InstallPatchS18-22-1-Windows"
+      }
+    },
+    {
+      "name": "installPatchS20",
+      "action": "aws:runDocument",
+      "precondition": {
+        "StringEquals": [
+          "{{CGInstalled}}",
+          "True"
+        ]
+      },
+      "inputs": {
+        "documentType": "SSMDocument",
+        "documentPath": "InstallPatchS20-22-1-Windows"
+      }
+    },
+    {
+      "name": "installPatchS21",
+      "action": "aws:runDocument",
+      "precondition": {
+        "StringEquals": [
+          "{{UAMInstalled}}",
+          "True"
+        ]
+      },
+      "inputs": {
+        "documentType": "SSMDocument",
+        "documentPath": "InstallPatchS21-22-1-Windows"
       }
     }
   ]
