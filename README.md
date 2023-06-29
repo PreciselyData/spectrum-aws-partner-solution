@@ -11,7 +11,7 @@ This is a project done in collabortation with AWS to automate the deployment of 
 
 # Spectrum Application
   ## Features
-  STILL NEED CONTENT FOR HERE
+  Spectrum technology platform is a software application server used to deploy Spectrum Quality, Spectrum Context, Spectrum Spatial, and Spectrum Geocoding. Spectrum technology platform is the foundation of several products that together can be a complete enterprise data management solution or individually provide targeted data management capabilities.
 # Architecture
   ## Single Tenet
   ![Single Tenet Architecture diagram](/images/spectrumSingleTenet.PNG)
