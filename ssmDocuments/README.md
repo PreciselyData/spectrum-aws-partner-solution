@@ -48,5 +48,33 @@ This opens AWS Systems Manager Run Command service which will run an install doc
 6) Once the PROGRESS FIELD? says Completed, you can now remote into your Spectrum instance and apply the Spectrum license you received from Precisely Customer Support.
 
 ## Patching the Spectrum deployment
+Patching your Spectrum deployment is vital to stay up to date and compliant with the software requirements. Below is the process to do so:
+1) Click the Launch Stack button next to the Spectrum Patching option. This opens AWS Systems Manager Run Command service which will run a patch install document on your instance.
+
+2) Leave the Command document as default, and under Command Parameters, select the modules that you have installed on your Spectrum instance. This is very important, since it'll only install patches pertaining to your installed modules.
+
+3) Under Target Selection, select Choose instances manually. Check the box next to your Spectrum Deployment instance.
+
+4) Under Output options, you can select to Enable an S3 bucket for the log files. If you choose this, create or select a S3 bucket from the dropdown menu. You can also run this without logging if desired. 
+
+5) Leave SNS notifications and AWS command line interface command as they are, and click Run.
+
+6) The document will now start to install the patches on your Spectrum instance. You can see the progress on the WHAT MENU? and you can also see additional details by clicking on the process number.
+
+7) Once the PROGRESS FIELD? says Completed, you can now remote into your Spectrum instance and apply the Spectrum license you received from Precisely Customer Support.
 
 ## Updating the Module data when necessary
+Precisely releases monthly dataset updates for the following modules: Universal Addressing Module & Global Addressing Validation. Global Geocoding receives quarterly dataset updates. If you find yourself needing to update the data on your Spectrum deployment, you'll update the data for each module individually. To do this, follow the below instructions.
+
+1) To update the datasets for a module click Launch Stack next to the corresponding module you would like to update. 
+This opens AWS Systems Manager Run Command service which will run an update document on your instance. 
+
+2) Leave the Command document as default, and under Target Selection, select Choose instances manually. Check the box next to your Spectrum Deployment instance.
+
+3) Under Output options, you can select to Enable an S3 bucket for the log files. If you choose this, create or select a S3 bucket from the dropdown menu. You can also run this without logging if desired. 
+
+4) Leave SNS notifications and AWS command line interface command as they are, and click Run.
+
+5) The document will now start to update the data for the selected module on your Spectrum instance. You can see the progress on the WHAT MENU? and you can also see additional details by clicking on the process number.
+
+6) Once the PROGRESS FIELD? says Completed, you can now remote into your Spectrum instance and apply the Spectrum license you received from Precisely Customer Support.
