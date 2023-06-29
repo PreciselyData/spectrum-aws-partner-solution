@@ -1,1 +1,0 @@
-D:\CLI\cli.cmd --cmdfile D:\CLI\InstallSPD.cli
