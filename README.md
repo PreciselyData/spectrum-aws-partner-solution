@@ -11,7 +11,10 @@ This is a project done in collabortation with AWS to automate the deployment of 
 
 # Spectrum Application
   ## Features
-  Spectrum technology platform is a software application server used to deploy Spectrum Quality, Spectrum Context, Spectrum Spatial, and Spectrum Geocoding. Spectrum technology platform is the foundation of several products that together can be a complete enterprise data management solution or individually provide targeted data management capabilities.
+  The Spectrum Technology Platform is a solution that improves the completeness, validity, consistency, timeliness, and accuracy of your data through data standardisation, verification and enhancement. Spectrum uses a service-oriented architecture to ensure consistency in all operations. The Spectrum Technology Platform includes both batch and transactional systems for any implementation. The scalable architecture leverages distributed systems and multiple processors to support millions of transactions per hour satisfying the demands of the high volume data processing.
+ 
+  Rules-based engines and user-defined functions provide for flexibility and ease of use. Spectrum Technology Platform is a software and reference data solution delivered through a number of modules. These modules provide different functions, such as address validation, geocoding, routing, location intelligence and advanced parsing, among others. 
+
 # Architecture
   ## Single Tenet
   ![Single Tenet Architecture diagram](/images/spectrumSingleTenet.PNG)
@@ -21,11 +24,13 @@ This is a project done in collabortation with AWS to automate the deployment of 
   ## AWS considerations
   For the initial deployment, you'll want to make sure you have the following created before starting the deployment:
   
-  A Keypair
+  1) A Keypair
   
-  A VPC with a Subnet
+  2) A VPC with a Subnet
   
-  Security Groups within the VPC
+  3) Security Groups within the VPC
+
+  Once you have these created, make note of them as you'll need them during the deployment.
   
 # Additional Resources
 Follow this link to additional documentation on Spectrum:
