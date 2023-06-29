@@ -45,7 +45,7 @@ This opens AWS Systems Manager Run Command service which will run an install doc
 
 5) The document will now start to install the selected module on your Spectrum instance. You can see the progress on the WHAT MENU? and you can also see additional details by clicking on the process number.
 
-6) Once the PROGRESS FIELD? says Completed, you can now remote into your Spectrum instance and apply the Spectrum license you received from Precisely Customer Support.
+6) Once the --------------PROGRESS FIELD?---------------- says Completed, you can now remote into your Spectrum instance and apply the Spectrum license you received from Precisely Customer Support.
 
 ## Patching the Spectrum deployment
 Patching your Spectrum deployment is vital to stay up to date and compliant with the software requirements. Below is the process to do so:
@@ -61,7 +61,7 @@ Patching your Spectrum deployment is vital to stay up to date and compliant with
 
 6) The document will now start to install the patches on your Spectrum instance. You can see the progress on the WHAT MENU? and you can also see additional details by clicking on the process number.
 
-7) Once the PROGRESS FIELD? says Completed, you can now remote into your Spectrum instance and apply the Spectrum license you received from Precisely Customer Support.
+7) Once the -----------------PROGRESS FIELD?---------------- says Completed, you can now remote into your Spectrum instance and apply the Spectrum license you received from Precisely Customer Support.
 
 ## Updating the Module data when necessary
 Precisely releases monthly dataset updates for the following modules: Universal Addressing Module & Global Addressing Validation. Global Geocoding receives quarterly dataset updates. If you find yourself needing to update the data on your Spectrum deployment, you'll update the data for each module individually. To do this, follow the below instructions.
@@ -77,4 +77,4 @@ This opens AWS Systems Manager Run Command service which will run an update docu
 
 5) The document will now start to update the data for the selected module on your Spectrum instance. You can see the progress on the WHAT MENU? and you can also see additional details by clicking on the process number.
 
-6) Once the PROGRESS FIELD? says Completed, you can now remote into your Spectrum instance and apply the Spectrum license you received from Precisely Customer Support.
+6) Once the ------------PROGRESS FIELD?--------------- says Completed, you can now remote into your Spectrum instance and apply the Spectrum license you received from Precisely Customer Support.
