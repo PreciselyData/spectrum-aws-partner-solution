@@ -8,6 +8,7 @@ This is a project done in collabortation with AWS to automate the deployment of 
   - [Planning your deployment](#planning-your-deployment)
   - [AWS considerations](#aws-considerations)
 - [Additional Resources](#additional-resources)
+- [Use of Scripts](#use-of-scripts)
 
 # Spectrum Application
   ## Features
@@ -31,7 +32,8 @@ This is a project done in collabortation with AWS to automate the deployment of 
   3) Security Groups within the VPC
 
   Once you have these created, make note of them as you'll need them during the deployment.
-  
 # Additional Resources
 Follow this link to additional documentation on Spectrum:
 https://docs.precisely.com/docs/sftw/spectrum/22.1/en/webhelp/DocumentationDirectory/index.html
+# Use of Scripts
+The scripts shared at this location are for use by licensed users of Precisely's Spectrum software.  Use is governed by the Precisely Products and Services EULA found here:  https://www.precisely.com/EULA

@@ -68,21 +68,19 @@
      "Type": "String",
      "AllowedValues": [
       "Windows 2019",
-      "Windows 2016",
-      "Windows 2012 RC"
+      "Windows 2016"
      ],
      "ConstraintDescription": "You must specify Windows Server version.",
-     "Description": "Choose the Windows Server version. Supported versions are Windows Server 2019, Windows Server 2016 & Windows Server 2012 R2. For supported operating systems refer to https://docs.precisely.com/docs/sftw/spectrum-all-supportview/22.1/en-us/pdf/Spectrum_2022.1.0_InstallationGuide_Windows.pdf."
+     "Description": "Choose the Windows Server version. Supported versions are Windows Server 2019 & Windows Server 2016. For supported operating systems refer to https://docs.precisely.com/docs/sftw/spectrum-all-supportview/22.1/en-us/pdf/Spectrum_2022.1.0_InstallationGuide_Windows.pdf."
     },
     "AMIId": {
      "Type": "String",
-     "Default": "ami-0f19072ea0305198f",
+     "Default": "ami-0f44618a962bf7bd3",
      "AllowedValues": [
-        "ami-0f19072ea0305198f",
-        "ami-0c1520afdced83727",
-        "ami-09c33a1c2da3fdd82"
+        "ami-0f44618a962bf7bd3",
+        "ami-0fdbb9a78a490b036"
        ],
-     "Description": "For Windows Server 2019, use ami id: ami-0f19072ea0305198f. For Windows Server 2016, use ami id: ami-0c1520afdced83727. For Windows Server 2012 RC, use ami id: ami-09c33a1c2da3fdd82"
+     "Description": "For Windows Server 2019, use ami id: ami-0f44618a962bf7bd3. For Windows Server 2016, use ami id: ami-0fdbb9a78a490b036."
     },
     "KeypairName": {
      "Type": "AWS::EC2::KeyPair::KeyName",
