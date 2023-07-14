@@ -1,14 +1,15 @@
 {
   "schemaVersion": "2.2",
-  "description": "RunCommandInstallPatchS04-22-1-Windows",
-  "parameters": {},
+  "description": "RunCommandInstallPatchS21-22-1-Windows",
+  "parameters": {
+  },
   "mainSteps": [
     {
       "action": "aws:runPowerShellScript",
-      "name": "lookForPatchS04",
+      "name": "lookForPatchS21",
       "inputs": {
         "timeoutSeconds": 300 ,
-        "runCommand": ["while (!(Test-Path -Path 'C:\\Program Files\\Precisely\\ExtractedPatches\\cdq20221s04.zip')) {Start-Sleep 10}"]
+        "runCommand": ["while (!(Test-Path -Path 'C:\\Program Files\\Precisely\\ExtractedPatches\\cdq20221s21.zip')) {Start-Sleep 10}"]
       }
     },
     {
@@ -29,58 +30,42 @@
     },
     {
       "action": "aws:runPowerShellScript",
-      "name": "createPatchS04Backup",
+      "name": "createBackupFolder",
       "inputs": {
         "timeoutSeconds": 10800 ,
-        "runCommand": ["New-Item -Path 'C:\\Program Files\\Precisely\\PatchesBackups' -Name 'PatchS04' -ItemType 'directory' "]
+        "runCommand": ["New-Item -Path 'C:\\Program Files\\Precisely\\PatchesBackups' -Name 'PatchS21' -ItemType 'directory'"]
       }
     },
     {
       "action": "aws:runPowerShellScript",
-      "name": "backupServerModulesGGLib",
+      "name": "backupFilesLib",
       "inputs": {
         "timeoutSeconds": 10800 ,
-        "runCommand": ["Copy-Item -Path 'C:\\Program Files\\Precisely\\Spectrum\\server\\modules\\GlobalGeocode\\lib' -Destination 'C:\\Program Files\\Precisely\\PatchesBackups\\PatchS04\\server\\modules\\GlobalGeocode\\lib' -Recurse "]
+        "runCommand": ["Move-Item -Path 'C:\\Program Files\\Precisely\\Spectrum\\server\\modules\\c1p\\lib' -Destination 'C:\\Program Files\\Precisely\\PatchesBackups\\PatchS21\\lib' "]
       }
     },
     {
       "action": "aws:runPowerShellScript",
-      "name": "backupServerModulesGGSDK",
+      "name": "backupFilesUncCar",
       "inputs": {
         "timeoutSeconds": 10800 ,
-        "runCommand": ["Copy-Item -Path 'C:\\Program Files\\Precisely\\Spectrum\\server\\modules\\GlobalGeocode\\sdk' -Destination 'C:\\Program Files\\Precisely\\PatchesBackups\\PatchS04\\server\\modules\\GlobalGeocode\\sdk' -Recurse"]
+        "runCommand": ["Move-Item -Path 'C:\\Program Files\\Precisely\\Spectrum\\server\\deploy\\unc-22.1.car' -Destination 'C:\\Program Files\\Precisely\\PatchesBackups\\PatchS21\\' "]
       }
     },
     {
       "action": "aws:runPowerShellScript",
-      "name": "deleteServerModulesGGLib",
+      "name": "backupFilesUncConsole",
       "inputs": {
         "timeoutSeconds": 10800 ,
-        "runCommand": ["Remove-Item -Path 'C:\\Program Files\\Precisely\\Spectrum\\server\\modules\\GlobalGeocode\\lib' -Recurse -Force -Confirm:$false"]
+        "runCommand": ["Move-Item -Path 'C:\\Program Files\\Precisely\\Spectrum\\server\\deploy\\unc-22.1.console' -Destination 'C:\\Program Files\\Precisely\\PatchesBackups\\PatchS21\\' "]
       }
     },
     {
       "action": "aws:runPowerShellScript",
-      "name": "deleteServerModulesGGSDK",
+      "name": "extractPatchS21",
       "inputs": {
         "timeoutSeconds": 10800 ,
-        "runCommand": ["Remove-Item -Path 'C:\\Program Files\\Precisely\\Spectrum\\server\\modules\\GlobalGeocode\\sdk' -Recurse -Force -Confirm:$false"]
-      }
-    },
-    {
-      "action": "aws:runPowerShellScript",
-      "name": "deleteG1Assemblies",
-      "inputs": {
-        "timeoutSeconds": 10800 ,
-        "runCommand": ["if (Test-Path -Path 'C:\\Users\\Administrator\\AppData\\Local\\Temp\\2\\g1Assemblies') {Remove-Item 'C:\\Users\\Administrator\\AppData\\Local\\Temp\\2\\g1Assemblies' -Recurse -Force -Confirm:$false} else {break}"]
-      }
-    },
-    {
-      "action": "aws:runPowerShellScript",
-      "name": "extractPatchS04",
-      "inputs": {
-        "timeoutSeconds": 10800 ,
-        "runCommand": ["Expand-Archive -LiteralPath 'C:\\Program Files\\Precisely\\ExtractedPatches\\cdq20221s04.zip' -DestinationPath 'C:\\Program Files\\Precisely\\Spectrum' -Force"]
+        "runCommand": ["Expand-Archive -LiteralPath 'C:\\Program Files\\Precisely\\ExtractedPatches\\cdq20221s21.zip' -DestinationPath 'C:\\Program Files\\Precisely\\Spectrum' -Force"]
       }
     },
     {

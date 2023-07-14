@@ -8,7 +8,7 @@
       "name": "lookForPatchS18",
       "inputs": {
         "timeoutSeconds": 300 ,
-        "runCommand": ["while (!(Test-Path -Path 'C:\\Program Files\\Precisely\\Patches\\cdq20221s18')) {Start-Sleep 10}"]
+        "runCommand": ["while (!(Test-Path -Path 'C:\\Program Files\\Precisely\\ExtractedPatches\\cdq20221s18.zip')) {Start-Sleep 10}"]
       }
     },
     {
@@ -124,18 +124,10 @@
     },
     {
       "action": "aws:runPowerShellScript",
-      "name": "replaceDeployModules",
+      "name": "extractPatchS18",
       "inputs": {
         "timeoutSeconds": 10800 ,
-        "runCommand": ["Copy-Item -Path 'C:\\Program Files\\Precisely\\Patches\\cdq20221s18\\server\\modules' -Destination 'C:\\Program Files\\Precisely\\Spectrum\\server' -Recurse -Force"]
-      }
-    },
-    {
-      "action": "aws:runPowerShellScript",
-      "name": "replaceDeploy",
-      "inputs": {
-        "timeoutSeconds": 10800 ,
-        "runCommand": ["Copy-Item -Path 'C:\\Program Files\\Precisely\\Patches\\cdq20221s18\\server\\deploy' -Destination 'C:\\Program Files\\Precisely\\Spectrum\\server' -Recurse -Force"]
+        "runCommand": ["Expand-Archive -LiteralPath 'C:\\Program Files\\Precisely\\ExtractedPatches\\cdq20221s18.zip' -DestinationPath 'C:\\Program Files\\Precisely\\Spectrum' -Force"]
       }
     },
     {
@@ -169,6 +161,14 @@
         "timeoutSeconds": 10800 ,
         "runCommand": ["cd 'C:/Program Files/Precisely/spectrum-cli-22.1'",
         "./cli.cmd --cmdfile 'C:/Program Files/Precisely/GAV/moduleScriptsUSWindowsPatchS18/GAVUSv10ResourceCreate.cli'"]
+      }
+    },
+    {
+      "action": "aws:runPowerShellScript",
+      "name": "deleteGAVFolder",
+      "inputs": {
+        "timeoutSeconds": 10800 ,
+        "runCommand": ["Remove-Item 'C:\\Program Files\\Precisely\\GAV' -Recurse -Force -Confirm:$false"]
       }
     }
   ]

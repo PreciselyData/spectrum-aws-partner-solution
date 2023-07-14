@@ -9,7 +9,7 @@
       "name": "lookForPatchS01",
       "inputs": {
         "timeoutSeconds": 300 ,
-        "runCommand": ["while (!(Test-Path -Path 'C:\\Program Files\\Precisely\\Patches\\cdq20221s01')) {Start-Sleep 10}"]
+        "runCommand": ["while (!(Test-Path -Path 'C:\\Program Files\\Precisely\\ExtractedPatches\\cdq20221s01.zip')) {Start-Sleep 10}"]
       }
     },
     {
@@ -46,10 +46,10 @@
     },
     {
       "action": "aws:runPowerShellScript",
-      "name": "moveNewFiles",
+      "name": "extractPatchS01",
       "inputs": {
         "timeoutSeconds": 10800 ,
-        "runCommand": ["Copy-Item -Path 'C:\\Program Files\\Precisely\\Patches\\cdq20221s01\\server\\modules\\c1p\\lib\\C1PCKDBX.acu' -Destination 'C:\\Program Files\\Precisely\\Spectrum\\server\\modules\\c1p\\lib\\C1PCKDBX.acu'"]
+        "runCommand": ["Expand-Archive -LiteralPath 'C:\\Program Files\\Precisely\\ExtractedPatches\\cdq20221s01.zip' -DestinationPath 'C:\\Program Files\\Precisely\\Spectrum' -Force"]
       }
     },
     {

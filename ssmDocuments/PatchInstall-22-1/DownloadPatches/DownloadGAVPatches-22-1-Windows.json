@@ -40,22 +40,6 @@
         "timeoutSeconds": 10800 ,
         "runCommand": ["Expand-Archive -LiteralPath 'C:\\Program Files\\Precisely\\PatchesDownload\\cdq20221s18_Windows.zip' -DestinationPath 'C:\\Program Files\\Precisely\\ExtractedPatches' -Force"]
       }
-    },
-    {
-      "action": "aws:runPowerShellScript",
-      "name": "extractPatchS092",
-      "inputs": {
-        "timeoutSeconds": 10800 ,
-        "runCommand": ["Expand-Archive -LiteralPath 'C:\\Program Files\\Precisely\\ExtractedPatches\\cdq20221s09.zip' -DestinationPath 'C:\\Program Files\\Precisely\\Patches\\cdq20221s09' -Force"]
-      }
-    },
-    {
-      "action": "aws:runPowerShellScript",
-      "name": "extractPatchS182",
-      "inputs": {
-        "timeoutSeconds": 10800 ,
-        "runCommand": ["Expand-Archive -LiteralPath 'C:\\Program Files\\Precisely\\ExtractedPatches\\cdq20221s18.zip' -DestinationPath 'C:\\Program Files\\Precisely\\Patches\\cdq20221s18' -Force"]
-      }
     }
   ]
 }

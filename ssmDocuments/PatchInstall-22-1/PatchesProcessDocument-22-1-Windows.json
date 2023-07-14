@@ -350,6 +350,22 @@
         "documentType": "SSMDocument",
         "documentPath": "InstallPatchS21-22-1-Windows"
       }
+    },
+    {
+      "action": "aws:runPowerShellScript",
+      "name": "deleteExtractedFolder",
+      "inputs": {
+        "timeoutSeconds": 10800 ,
+        "runCommand": ["Remove-Item 'C:\\Program Files\\Precisely\\ExtractedPatches' -Recurse -Force -Confirm:$false"]
+      }
+    },
+    {
+      "action": "aws:runPowerShellScript",
+      "name": "deleteDownloadFolder",
+      "inputs": {
+        "timeoutSeconds": 10800 ,
+        "runCommand": ["Remove-Item 'C:\\Program Files\\Precisely\\PatchesDownload' -Recurse -Force -Confirm:$false"]
+      }
     }
   ]
 }

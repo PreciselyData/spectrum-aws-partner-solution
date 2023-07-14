@@ -8,7 +8,7 @@
       "name": "lookForPatchS09",
       "inputs": {
         "timeoutSeconds": 300 ,
-        "runCommand": ["while (!(Test-Path -Path 'C:\\Program Files\\Precisely\\Patches\\cdq20221s09')) {Start-Sleep 10}"]
+        "runCommand": ["while (!(Test-Path -Path 'C:\\Program Files\\Precisely\\ExtractedPatches\\cdq20221s09.zip')) {Start-Sleep 10}"]
       }
     },
     {
@@ -61,10 +61,10 @@
     },
     {
       "action": "aws:runPowerShellScript",
-      "name": "replaceServerModulesGGLib",
+      "name": "extractPatchS09",
       "inputs": {
         "timeoutSeconds": 10800 ,
-        "runCommand": ["Copy-Item -Path 'C:\\Program Files\\Precisely\\Patches\\cdq20221s09\\server\\modules\\GlobalAddressValidation\\sdk' -Destination 'C:\\Program Files\\Precisely\\Spectrum\\server\\modules\\GlobalAddressValidation' -Recurse -Force"]
+        "runCommand": ["Expand-Archive -LiteralPath 'C:\\Program Files\\Precisely\\ExtractedPatches\\cdq20221s09.zip' -DestinationPath 'C:\\Program Files\\Precisely\\Spectrum' -Force"]
       }
     },
     {

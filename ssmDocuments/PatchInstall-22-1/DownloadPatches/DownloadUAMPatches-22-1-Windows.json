@@ -15,6 +15,17 @@
       }
     },
     {
+      "action": "aws:downloadContent",
+      "name": "downloadPatchS21",
+      "inputs": {
+        "sourceType": "S3",
+        "sourceInfo": {
+          "path": "https://cim-spectrum-platform-and-bigdata.s3.amazonaws.com/cdq20221s21_Windows.zip"
+        },
+        "destinationPath": "C:\\Program Files\\Precisely\\PatchesDownload\\"
+      }
+    },
+    {
       "action": "aws:runPowerShellScript",
       "name": "extractPatchS01",
       "inputs": {
@@ -24,10 +35,10 @@
     },
     {
       "action": "aws:runPowerShellScript",
-      "name": "extractPatchS012",
+      "name": "extractPatchS21",
       "inputs": {
         "timeoutSeconds": 10800 ,
-        "runCommand": ["Expand-Archive -LiteralPath 'C:\\Program Files\\Precisely\\ExtractedPatches\\cdq20221s01.zip' -DestinationPath 'C:\\Program Files\\Precisely\\Patches\\cdq20221s01' -Force"]
+        "runCommand": ["Expand-Archive -LiteralPath 'C:\\Program Files\\Precisely\\PatchesDownload\\cdq20221s21_Windows.zip' -DestinationPath 'C:\\Program Files\\Precisely\\ExtractedPatches' -Force"]
       }
     }
   ]

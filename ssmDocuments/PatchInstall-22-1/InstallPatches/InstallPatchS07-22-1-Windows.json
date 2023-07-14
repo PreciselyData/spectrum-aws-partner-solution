@@ -8,7 +8,7 @@
       "name": "lookForPatchS07",
       "inputs": {
         "timeoutSeconds": 300 ,
-        "runCommand": ["while (!(Test-Path -Path 'C:\\Program Files\\Precisely\\Patches\\cdq20221s07')) {Start-Sleep 10}"]
+        "runCommand": ["while (!(Test-Path -Path 'C:\\Program Files\\Precisely\\ExtractedPatches\\cdq20221s07.zip')) {Start-Sleep 10}"]
       }
     },
     {
@@ -189,18 +189,10 @@
     },
     {
       "action": "aws:runPowerShellScript",
-      "name": "replaceServerModulesGGLib",
+      "name": "extractPatchS07",
       "inputs": {
         "timeoutSeconds": 10800 ,
-        "runCommand": ["Copy-Item -Path 'C:\\Program Files\\Precisely\\Patches\\cdq20221s07\\server\\modules\\GlobalGeocode\\lib' -Destination 'C:\\Program Files\\Precisely\\Spectrum\\server\\modules\\GlobalGeocode' -Recurse -Force"]
-      }
-    },
-    {
-      "action": "aws:runPowerShellScript",
-      "name": "replaceServerModulesGGSdk",
-      "inputs": {
-        "timeoutSeconds": 10800 ,
-        "runCommand": ["Copy-Item -Path 'C:\\Program Files\\Precisely\\Patches\\cdq20221s07\\server\\modules\\GlobalGeocode\\sdk' -Destination 'C:\\Program Files\\Precisely\\Spectrum\\server\\modules\\GlobalGeocode' -Recurse -Force"]
+        "runCommand": ["Expand-Archive -LiteralPath 'C:\\Program Files\\Precisely\\ExtractedPatches\\cdq20221s07.zip' -DestinationPath 'C:\\Program Files\\Precisely\\Spectrum' -Force"]
       }
     },
     {

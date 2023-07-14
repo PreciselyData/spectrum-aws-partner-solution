@@ -8,7 +8,7 @@
       "name": "lookForPatchS05",
       "inputs": {
         "timeoutSeconds": 300 ,
-        "runCommand": ["while (!(Test-Path -Path 'C:\\Program Files\\Precisely\\Patches\\cdq20221s05')) {Start-Sleep 10}"]
+        "runCommand": ["while (!(Test-Path -Path 'C:\\Program Files\\Precisely\\ExtractedPatches\\cdq20221s05.zip')) {Start-Sleep 10}"]
       }
     },
     {
@@ -205,10 +205,10 @@
     },
     {
       "action": "aws:runPowerShellScript",
-      "name": "replaceType",
+      "name": "extractPatchS05",
       "inputs": {
         "timeoutSeconds": 10800 ,
-        "runCommand": ["Copy-Item -Path 'C:\\Program Files\\Precisely\\Patches\\cdq20221s05\\server\\types\\' -Destination 'C:\\Program Files\\Precisely\\Spectrum\\server' -Recurse -Force"]
+        "runCommand": ["Expand-Archive -LiteralPath 'C:\\Program Files\\Precisely\\ExtractedPatches\\cdq20221s05.zip' -DestinationPath 'C:\\Program Files\\Precisely\\Spectrum' -Force"]
       }
     },
     {

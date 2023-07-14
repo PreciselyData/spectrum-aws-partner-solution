@@ -9,7 +9,7 @@
       "name": "lookForPatchS02",
       "inputs": {
         "timeoutSeconds": 300 ,
-        "runCommand": ["while (!(Test-Path -Path 'C:\\Program Files\\Precisely\\Patches\\cdq20221s02')) {Start-Sleep 10}"]
+        "runCommand": ["while (!(Test-Path -Path 'C:\\Program Files\\Precisely\\ExtractedPatches\\cdq20221s02.zip')) {Start-Sleep 10}"]
       }
     },
     {
@@ -70,10 +70,10 @@
     },
     {
       "action": "aws:runPowerShellScript",
-      "name": "moveJarFile",
+      "name": "extractPatchS02",
       "inputs": {
         "timeoutSeconds": 10800 ,
-        "runCommand": ["Copy-Item 'C:\\Program Files\\Precisely\\Patches\\cdq20221s02\\server\\exports\\spectrum-cli-22.1\\lib\\spectrum-sgi-cli-22.1.jar' -Destination 'C:\\Program Files\\Precisely\\spectrum\\server\\exports\\spectrum-cli-22.1\\lib\\spectrum-sgi-cli-22.1.jar' -Force "]
+        "runCommand": ["Expand-Archive -LiteralPath 'C:\\Program Files\\Precisely\\ExtractedPatches\\cdq20221s02.zip' -DestinationPath 'C:\\Program Files\\Precisely\\Spectrum' -Force"]
       }
     },
     {
@@ -114,6 +114,14 @@
       "inputs": {
         "timeoutSeconds": 10800 ,
         "runCommand": ["Remove-Item 'C:\\Program Files\\Precisely\\Spectrum\\server\\exports\\spectrum-cli-22.1' -Recurse -Force -Confirm:$false"]
+      }
+    },
+    {
+      "action": "aws:runPowerShellScript",
+      "name": "deletePatchesFolder",
+      "inputs": {
+        "timeoutSeconds": 10800 ,
+        "runCommand": ["Remove-Item 'C:\\Program Files\\Precisely\\Patches' -Recurse -Force -Confirm:$false"]
       }
     }
   ]

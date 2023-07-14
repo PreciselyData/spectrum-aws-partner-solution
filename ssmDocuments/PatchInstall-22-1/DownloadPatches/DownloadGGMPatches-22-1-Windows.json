@@ -97,46 +97,6 @@
         "timeoutSeconds": 10800 ,
         "runCommand": ["Expand-Archive -LiteralPath 'C:\\Program Files\\Precisely\\PatchesDownload\\cdq20221s08_Windows.zip' -DestinationPath 'C:\\Program Files\\Precisely\\ExtractedPatches' -Force"]
       }
-    },
-    {
-      "action": "aws:runPowerShellScript",
-      "name": "extractPatchS022",
-      "inputs": {
-        "timeoutSeconds": 10800 ,
-        "runCommand": ["Expand-Archive -LiteralPath 'C:\\Program Files\\Precisely\\ExtractedPatches\\cdq20221s02.zip' -DestinationPath 'C:\\Program Files\\Precisely\\Patches\\cdq20221s02' -Force"]
-      }
-    },
-    {
-      "action": "aws:runPowerShellScript",
-      "name": "extractPatchS042",
-      "inputs": {
-        "timeoutSeconds": 10800 ,
-        "runCommand": ["Expand-Archive -LiteralPath 'C:\\Program Files\\Precisely\\ExtractedPatches\\cdq20221s04.zip' -DestinationPath 'C:\\Program Files\\Precisely\\Patches\\cdq20221s04' -Force"]
-      }
-    },
-    {
-      "action": "aws:runPowerShellScript",
-      "name": "extractPatchS052",
-      "inputs": {
-        "timeoutSeconds": 10800 ,
-        "runCommand": ["Expand-Archive -LiteralPath 'C:\\Program Files\\Precisely\\ExtractedPatches\\cdq20221s05.zip' -DestinationPath 'C:\\Program Files\\Precisely\\Patches\\cdq20221s05' -Force"]
-      }
-    },
-    {
-      "action": "aws:runPowerShellScript",
-      "name": "extractPatchS072",
-      "inputs": {
-        "timeoutSeconds": 10800 ,
-        "runCommand": ["Expand-Archive -LiteralPath 'C:\\Program Files\\Precisely\\ExtractedPatches\\cdq20221s07.zip' -DestinationPath 'C:\\Program Files\\Precisely\\Patches\\cdq20221s07' -Force"]
-      }
-    },
-    {
-      "action": "aws:runPowerShellScript",
-      "name": "extractPatchS082",
-      "inputs": {
-        "timeoutSeconds": 10800 ,
-        "runCommand": ["Expand-Archive -LiteralPath 'C:\\Program Files\\Precisely\\ExtractedPatches\\cdq20221s08.zip' -DestinationPath 'C:\\Program Files\\Precisely\\Patches\\cdq20221s08' -Force"]
-      }
     }
   ]
 }
