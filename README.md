@@ -7,6 +7,7 @@ This is a project done in collabortation with AWS to automate the deployment of 
 - [Prerequisites](#prerequisites)
   - [Planning your deployment](#planning-your-deployment)
   - [AWS considerations](#aws-considerations)
+- [Customizing your deployment](#customizing-your-deployment)
 - [Additional Resources](#additional-resources)
 - [Use of Scripts](#use-of-scripts)
 
@@ -32,6 +33,8 @@ This is a project done in collabortation with AWS to automate the deployment of 
   3) Security Groups within the VPC
 
   Once you have these created, make note of them as you'll need them during the deployment.
+# Customizing your deployment
+Once your Spectrum deployment is finished, please reach out to [Spectrum trial team](mailto:spectrum_trial@precisely.com) for your 15 day trial license, access to the automation scripts to add modules and data for your deployment. 
 # Additional Resources
 Follow this link to additional documentation on Spectrum:
 https://docs.precisely.com/docs/sftw/spectrum/22.1/en/webhelp/DocumentationDirectory/index.html
