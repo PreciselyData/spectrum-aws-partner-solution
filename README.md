@@ -1,5 +1,5 @@
 # Spectrum on AWS
-This is a project done in collabortation with AWS to automate the deployment of Precisely's Spectrum application on AWS infrastructure.
+This is a project done in collaboration with AWS to automate the deployment of Precisely's Spectrum application on AWS infrastructure.
 - [Spectrum Application](#spectrum-application)
   - [Features](#features)
 - [Architecture](#architecture)
