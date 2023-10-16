@@ -297,7 +297,10 @@
         "Roles" : [
           {"Ref": "SSMIAMRole"}
         ]
-      }
+      },
+      "DependsOn": [
+                "Role"
+            ]
     },
     "SpectrumDeployment" : {
       "Type" : "AWS::EC2::Instance",
